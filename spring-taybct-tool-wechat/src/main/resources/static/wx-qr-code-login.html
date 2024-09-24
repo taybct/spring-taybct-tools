@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8"/>
+    <title>微信登录二维码</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="./arale-qrcode.js"></script>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        var timer;
+
+        /**
+         * 检查是否已经登录成功！
+         */
+        function checkLogin() {
+            var state = document.getElementById("state").value;
+            if (state) {
+                $.ajax({
+                    url: "wx/polling/" + state,
+                    type: "GET",
+                    success: function (result) {
+                        if (result.code === "200") {
+                            window.clearInterval(timer);
+                            alert(result.message);
+                            console.log(state, result.data);
+                            // 登录成功的后续操作就是，拿 state 去登录
+                        } else if (result.code === "W408") {
+                            window.clearInterval(timer);
+                            alert(result.message);
+                        }
+                    }
+                });
+            }
+        }
+
+        function wechatLogin() {
+            $.ajax({
+                url: "wx/authorization",
+                type: "GET",
+                success: function (result) {
+                    if (result) {
+                        var uri = result.uri;
+                        document.getElementById("state").value = result.state;
+                        var codeFigure = new AraleQRCode({
+                            "render": "svg",  // 生成的类型 'svg' or 'table'
+                            "text": uri, // 需要生成二维码的链接
+                            "size": 200 // 生成二维码大小
+                        });
+                        document.getElementById("share_tools").innerHTML = '';
+                        document.getElementById("share_tools").appendChild(codeFigure);
+                        timer = setInterval(checkLogin, 3000);//轮询查询
+                    }
+                }
+            });
+        }
+
+        /*]]>*/
+    </script>
+</head>
+<body>
+<input type="button" value="微信登录" onclick="wechatLogin()"/>
+
+<input type="hidden" id="state"/>
+<br/><br/><br/><br/>
+<div id="share_tools"></div>
+</body>
+</html>

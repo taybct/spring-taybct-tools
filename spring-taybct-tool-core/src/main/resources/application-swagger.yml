@@ -1,0 +1,27 @@
+swagger:
+  title: "业务模块"
+  description: "管理基础的功能"
+  version: 3.0.0
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  group-configs:
+    - group: 'default'
+      display-name: ${spring.application.name}
+      paths-to-match: '/**'
+      packages-to-scan: io.github.mangocrisp.spring.taybct
+  show-actuator: false
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    # Knife4j默认显示中文(zh-CN),如果开发者想直接显示英文(en-US)，在通过该配置进行设置即可
+    language: zh_cn
+  # 开启生产环境屏蔽
+  production: false

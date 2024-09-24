@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.mangocrisp</groupId>
+    <artifactId>spring-taybct-tools</artifactId>
+    <version>2.7.0-alpha.1</version>
+    <name>Spring TayBct Tools</name>
+    <description>Spring TayBct Tools</description>
+    <url>https://github.com/mangocrisp/spring-taybct-tools</url>
+    <packaging>pom</packaging>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>io.github.mangocrisp</name>
+        <url>https://github.com/mangocrisp</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>crisp</id>
+            <name>Mango Crisp</name>
+            <email>15014633363@163.com</email>
+            <url>https://mangocrisp.github.io</url>
+            <roles>
+                <role>Project Manager</role>
+                <role>Architect</role>
+            </roles>
+            <organization>io.github.mangocrisp</organization>
+            <organizationUrl>https://github.com/mangocrisp</organizationUrl>
+            <timezone>Asia/Shanghai</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/mangocrisp/spring-taybct-tools.git</connection>
+        <developerConnection>scm:git:https://gitee.com/mangocrisp/spring-taybct-tools.git</developerConnection>
+        <url>https://github.com/mangocrisp/spring-taybct-tools</url>
+    </scm>
+
+    <properties>
+        <!--central 发布插件-->
+        <central-publishing-maven-plugin.version>0.5.0</central-publishing-maven-plugin.version>
+        <!-- Collection 增强Java集合框架 -->
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <!--commons-dbutils jdbc 工具类-->
+        <commons-dbutils.version>1.8.1</commons-dbutils.version>
+        <!-- 文件上传工具类 -->
+        <commons-fileupload.version>1.5</commons-fileupload.version>
+        <!--commons-httpclient-->
+        <commons-httpclient.version>3.1</commons-httpclient.version>
+        <!--commons-lang3-->
+        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <!-- 公共资源池 -->
+        <commons-pool2.version>2.12.0</commons-pool2.version>
+        <!-- io常用工具类 -->
+        <commons-io.version>2.16.1</commons-io.version>
+        <!--dom4j-->
+        <dom4j.version>2.1.4</dom4j.version>
+        <!--阿里巴巴(Druid)德鲁伊连接池-->
+        <druid.version>1.2.21</druid.version>
+        <!--dubbo 3-->
+        <dubbo.version>3.2.12</dubbo.version>
+        <!--dysmsapi阿里云短信-->
+        <dysmsapi.version>2.0.1</dysmsapi.version>
+        <!--多数据源-->
+        <dynamic-datasource.version>4.3.0</dynamic-datasource.version>
+        <!--easyexcel poi 操作导入导出 excel SAX-->
+        <easyexcel.version>4.0.1</easyexcel.version>
+        <!--easy poi DOM-->
+        <easypoi.version>4.5.0</easypoi.version>
+        <!--fastdfs的Java客户端框架-->
+        <fastdfs-client.version>1.27.2</fastdfs-client.version>
+        <!--fastjson2-->
+        <fastjson2.version>2.0.50</fastjson2.version>
+        <!--feign-httpclient-->
+        <feign-httpclient.version>11.10</feign-httpclient.version>
+        <!--jackson-databind-->
+        <jackson-databind.version>2.15.4</jackson-databind.version>
+        <!--jackson-datatype-jsr310-->
+        <jackson-datatype-jsr310.version>2.15.4</jackson-datatype-jsr310.version>
+        <!--jdk 版本-->
+        <java.version>8</java.version>
+        <!--javax.servlet-api-->
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <!--加密工具-->
+        <jdk15on.version>1.70</jdk15on.version>
+        <jdk18on.version>1.77</jdk18on.version>
+        <!--junit 测试-->
+        <junit.version>4.13.2</junit.version>
+        <!--httpclient5-->
+        <httpclient5.version>5.2.3</httpclient5.version>
+        <!--java 工具类库-->
+        <hutool.version>5.8.27</hutool.version>
+        <!--knife4j-->
+        <knife4j.version>4.5.0</knife4j.version>
+        <lombok.version>1.18.32</lombok.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <!--maven 插件-->
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <!--Gpg Signature 插件-->
+        <maven-gpg-plugin.version>3.2.5</maven-gpg-plugin.version>
+        <!-- javadoc插件 -->
+        <maven-javadoc-plugin.version>3.8.0</maven-javadoc-plugin.version>
+        <!--maven 源码插件-->
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <!--采用 Annotation Processor 技术，自动生成 java spi 和 Spring boot starter 的配置-->
+        <mica-auto.version>2.3.4</mica-auto.version>
+        <!--minio 对象存储-->
+        <minio.version>8.5.2</minio.version>
+        <!--mybatis-plus-->
+        <mybatis-plus.version>3.5.6</mybatis-plus.version>
+        <!--mybatis-spring-->
+        <mybatis-spring.version>3.0.3</mybatis-spring.version>
+        <!--mybatis-typehandlers-jsr310-->
+        <mybatis-typehandlers-jsr310.version>1.0.2</mybatis-typehandlers-jsr310.version>
+        <!--mysql-->
+        <mysql-connector-j.version>8.3.0</mysql-connector-j.version>
+        <!--nacos 客户端-->
+        <nacos-client.version>2.3.2</nacos-client.version>
+        <!--JWT 解析库-->
+        <nimbus-jose-jwt.version>9.39</nimbus-jose-jwt.version>
+        <!--阿里云对象存储-->
+        <oss-alibaba.version>3.16.1</oss-alibaba.version>
+        <!--oracle-->
+        <ojdbc8.version>21.9.0.0</ojdbc8.version>
+        <!--oracle字符集支持-->
+        <orai18n.version>21.9.0.0</orai18n.version>
+        <!--对中文多音字处理-->
+        <pinyin4j.version>2.5.1</pinyin4j.version>
+        <!--    postgresql 驱动   -->
+        <postgresql.version>42.7.3</postgresql.version>
+        <!--项目打包编码设置-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Sentinel规则持久化至Nacos配置 -->
+        <sentinel-datasource-nacos.version>1.8.6</sentinel-datasource-nacos.version>
+        <!--基础工具版本-->
+        <project.version>2.7.0-alpha.1</project.version>
+        <!--skywalking 日志记录-->
+        <skywalking-logback.version>8.14.0</skywalking-logback.version>
+        <!--Spring Context Support cache mail scheduling-->
+        <spring-context-support.version>5.3.31</spring-context-support.version>
+        <!--管理和监视Spring Boot的应用程序-->
+        <spring-boot-admin.version>2.7.15</spring-boot-admin.version>
+        <!--spring boot 版本依赖-->
+        <spring-boot-maven-plugin.version>2.7.18</spring-boot-maven-plugin.version>
+        <!--spring boot 版本依赖-->
+        <spring-boot.version>2.7.18</spring-boot.version>
+        <!--spring-test-->
+        <spring-test.version>5.3.31</spring-test.version>
+        <!--spring-tx-->
+        <spring-tx.version>5.3.31</spring-tx.version>
+        <!--spring-cloud-context-->
+        <spring-cloud-context.version>3.1.8</spring-cloud-context.version>
+        <!--这里加密工具需要-->
+        <spring-security-crypto.version>5.7.11</spring-security-crypto.version>
+        <!--spring-security-rsa-->
+        <spring-security-rsa.version>1.1.2</spring-security-rsa.version>
+        <!--bootstrap 启动器-->
+        <spring-cloud-starter-bootstrap.version>3.1.8</spring-cloud-starter-bootstrap.version>
+        <!-- spring 客户端负载均衡器 -->
+        <spring-cloud-starter-loadbalancer.version>3.1.8</spring-cloud-starter-loadbalancer.version>
+        <!-- SpringCloud Openfeign 服务调用 -->
+        <spring-cloud-starter-openfeign.version>3.1.9</spring-cloud-starter-openfeign.version>
+        <!--spring cloud 微服务版本依赖-->
+        <spring-cloud.version>2021.0.9</spring-cloud.version>
+        <!--阿里巴巴版本依赖-->
+        <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+        <!--Spring web-->
+        <spring-web.version>5.3.31</spring-web.version>
+        <!--spring-webmvc-->
+        <spring-webmvc.version>5.3.31</spring-webmvc.version>
+        <!--swagger openapi3.0 注解-->
+        <swagger-annotations.version>2.2.21</swagger-annotations.version>
+    </properties>
+
+    <!-- 依赖声明 -->
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>io.github.mangocrisp</groupId>
+                <artifactId>spring-taybct-tools-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <!--配置文件处理器的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>${spring-boot.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- lombok getter setter slf4j -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--java 工具类库-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <!--自动生成 spring.factories 配置-->
+        <dependency>
+            <groupId>net.dreamlu</groupId>
+            <artifactId>mica-auto</artifactId>
+            <version>${mica-auto.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <modules>
+        <module>spring-taybct-tool-file</module>
+        <module>spring-taybct-tool-security</module>
+        <module>spring-taybct-tool-wechat</module>
+        <module>spring-taybct-tool-scheduling</module>
+        <module>spring-taybct-tool-launch</module>
+        <module>spring-taybct-tool-core</module>
+        <module>spring-taybct-tool-cloud</module>
+        <module>spring-taybct-tool-pki</module>
+    </modules>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <!--这里把框架默认的 jks 排除-->
+                    <exclude>
+                        *.jks
+                    </exclude>
+                    <!--这里把框架默认的 cer 公钥排除-->
+                    <exclude>
+                        *.cer
+                    </exclude>
+                    <!--这里把框架默认的 key 密钥排除-->
+                    <exclude>
+                        *.key
+                    </exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+        <!--设置子项目不需要指定maven插件版本-->
+        <pluginManagement>
+            <plugins>
+                <!--spring boot 打包插件-->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                </plugin>
+                <!--打包源码插件-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                </plugin>
+                <!-- javadoc插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                </plugin>
+                <!--central 发布插件-->
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>${central-publishing-maven-plugin.version}</version>
+                </plugin>
+                <!-- Gpg Signature -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven-gpg-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <!--spring boot 打包插件-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-maven-plugin.version}</version>
+                <configuration>
+                    <finalName>${project.build.finalName}</finalName>
+                    <!-- spring-boot:run 中文乱码解决 -->
+                    <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
+                    <skip>true</skip>
+                    <!--打包本地 jar 包到-->
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 指定maven编译的jdk版本,如果不指定,maven3默认用jdk 1.5 maven2默认用jdk1.3 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <!-- 一般而言，target与source是保持一致的，但是，有时候为了让程序能在其他版本的jdk中运行(对于低版本目标jdk
+                    ，源代码中不能使用低版本jdk中不支持的语法)，会存在target不同于source的情况 -->
+                    <!-- 源代码使用的JDK版本 -->
+                    <source>${java.version}</source>
+                    <!-- 需要生成的目标class文件的编译版本 -->
+                    <target>${java.version}</target>
+                    <!-- 字符集编码 -->
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <showWarnings>true</showWarnings>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <!--打包源码插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- javadoc插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--central 发布插件-->
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${central-publishing-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>taybct</publishingServerId>
+                </configuration>
+            </plugin>
+            <!-- Gpg Signature -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven-gpg-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <useAgent>true</useAgent>
+                            <!--<keyname>${gpg.keyname}</keyname>-->
+                            <!--<passphraseServerId>${gpg.keyname}</passphraseServerId>-->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
