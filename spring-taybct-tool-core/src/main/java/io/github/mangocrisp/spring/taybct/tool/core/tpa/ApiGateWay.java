@@ -1,6 +1,7 @@
 package io.github.mangocrisp.spring.taybct.tool.core.tpa;
 
 import com.alibaba.fastjson2.JSONObject;
+import io.github.mangocrisp.spring.taybct.tool.core.constant.AuthHeaderConstants;
 import io.github.mangocrisp.spring.taybct.tool.core.exception.def.BaseException;
 import io.github.mangocrisp.spring.taybct.tool.core.util.ObjectUtil;
 import lombok.Getter;
@@ -95,7 +96,7 @@ public class ApiGateWay<Config extends ApiConfig> {
      */
     @Setter
     protected Function<ApiToken, Header[]> getRequestWithTokenHeaders = apiToken -> {
-        BasicHeader authorization = new BasicHeader("Authorization", apiToken.getToken());
+        BasicHeader authorization = new BasicHeader(AuthHeaderConstants.AUTHORIZATION_KEY, apiToken.getToken());
         return new Header[]{authorization};
     };
 
