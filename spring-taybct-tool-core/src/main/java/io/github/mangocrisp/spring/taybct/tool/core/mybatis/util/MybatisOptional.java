@@ -25,6 +25,7 @@ import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -117,7 +118,7 @@ public class MybatisOptional<T> {
         optionalField(CollectionUtil.toList(columns)
                 , false
                 , fields -> orderBy(fields.stream()
-                        .map(field -> new OrderByField(field, isAsc ? Constants.ASC : Constants.DESC)).toList()));
+                        .map(field -> new OrderByField(field, isAsc ? Constants.ASC : Constants.DESC)).collect(Collectors.toList())));
         return this;
     }
 
@@ -140,7 +141,7 @@ public class MybatisOptional<T> {
                             f.setSc(Constants.ASC);
                         }
                     })
-                    .map(f -> String.format("%s %s", f.field, f.sc)).toList());
+                    .map(f -> String.format("%s %s", f.field, f.sc)).collect(Collectors.toList()));
             this.page.setSort(sort);
         }
         return this;
@@ -404,9 +405,9 @@ public class MybatisOptional<T> {
                 Constructor<?> declaredConstructor = clazz.getDeclaredConstructor();
                 Object temp = declaredConstructor.newInstance();
                 Object apply = column.apply((R) temp);
-                if (apply instanceof Collection<?> collection) {
+                if (apply instanceof Collection<?>) {
                     try {
-                        extract((Collection<SFunction<R, ?>>) collection, classLinkedHashSet, classFieldMaps);
+                        extract((Collection<SFunction<R, ?>>) apply, classLinkedHashSet, classFieldMaps);
                         return;
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -418,13 +419,15 @@ public class MybatisOptional<T> {
             String fieldName = PropertyNamer.methodToProperty(meta.getImplMethodName());
             classLinkedHashSet.add(clazz);
             Map<String, List<String>> fieldMaps = classFieldMaps.computeIfAbsent(clazz, k -> new LinkedHashMap<>());
-            if (meta instanceof ReflectLambdaMeta reflectLambdaMeta) {
+            if (meta instanceof ReflectLambdaMeta) {
+                ReflectLambdaMeta reflectLambdaMeta = (ReflectLambdaMeta) meta;
                 String key = reflectLambdaMeta.getLambda().getImplClass().replaceAll(StringPool.SLASH, StringPool.DOT);
                 List<String> list = fieldMaps.getOrDefault(key, new ArrayList<>());
                 list.add(fieldName);
                 fieldMaps.put(key, list);
             }
-            if (meta instanceof IdeaProxyLambdaMeta proxyLambdaMeta) {
+            if (meta instanceof IdeaProxyLambdaMeta) {
+                IdeaProxyLambdaMeta proxyLambdaMeta = (IdeaProxyLambdaMeta) meta;
                 String key = proxyLambdaMeta.getInstantiatedClass().getName();
                 List<String> list = fieldMaps.getOrDefault(key, new ArrayList<>());
                 list.add(fieldName);
@@ -469,7 +472,7 @@ public class MybatisOptional<T> {
     public static LinkedHashSet<String> optionalField(Class<?> clazz
             , boolean withTableName
             , Map<String, List<String>> fieldMaps) throws Exception {
-        return optionalField(Set.of(BaseEntity.class.getPackage().getName())
+        return optionalField(new LinkedHashSet<>(Collections.singletonList(BaseEntity.class.getPackage().getName()))
                 , clazz
                 , withTableName
                 , null
@@ -495,7 +498,7 @@ public class MybatisOptional<T> {
         LinkedHashSet<String> columns = new LinkedHashSet<>();
         for (Class<?> clazzFor = clazz; clazzFor != Object.class; clazzFor = clazzFor.getSuperclass()) {
             Field[] fields = clazzFor.getDeclaredFields();
-            if (!supperEntityPackage.contains(clazzFor.getPackageName())) {
+            if (!supperEntityPackage.contains(clazzFor.getPackage().getName())) {
                 // 表名
                 tableName = StringUtil.humpToUnderline(clazzFor.getSimpleName());
                 if (clazzFor.isAnnotationPresent(TableName.class)) {
@@ -542,7 +545,8 @@ public class MybatisOptional<T> {
                             && (field.getType().isAssignableFrom(List.class) || field.getType().isAssignableFrom(Set.class))) {
                         // 当前集合的泛型类型
                         Type genericType = field.getGenericType();
-                        if (genericType instanceof ParameterizedType parameterizedType) {
+                        if (genericType instanceof ParameterizedType) {
+                            ParameterizedType parameterizedType = (ParameterizedType) genericType;
                             // 得到泛型里的class类型对象
                             Class<?> actualTypeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
                             LinkedHashSet<String> collectionField = optionalField(supperEntityPackage, actualTypeArgument, withTableName, tableName, fieldMaps);

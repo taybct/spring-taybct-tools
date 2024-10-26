@@ -104,7 +104,8 @@ public class DBFieldUtil {
                     }
                     // 当前集合的泛型类型
                     Type genericType = field.getGenericType();
-                    if (genericType instanceof ParameterizedType parameterizedType) {
+                    if (genericType instanceof ParameterizedType) {
+                        ParameterizedType parameterizedType = (ParameterizedType) genericType;
                         // 得到泛型里的class类型对象
                         Class<?> actualTypeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
                         List<DBField> collectionField = generate(actualTypeArgument, name);
