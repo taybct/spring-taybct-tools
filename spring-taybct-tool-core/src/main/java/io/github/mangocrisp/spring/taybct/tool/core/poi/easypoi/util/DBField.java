@@ -22,7 +22,7 @@ import java.io.Serializable;
 @Builder
 public class DBField implements Serializable {
 
-    @Serial
+    
     private static final long serialVersionUID = 5815399030994726402L;
 
     /**

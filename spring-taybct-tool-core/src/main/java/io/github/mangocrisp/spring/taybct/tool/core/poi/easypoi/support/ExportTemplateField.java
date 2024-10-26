@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 @Schema(description = "Excel 导出模板的字段")
 public class ExportTemplateField implements Serializable {
 
-    @Serial
+    
     private static final long serialVersionUID = 1593493556010638811L;
 
     /**

@@ -24,7 +24,7 @@ import java.io.Serializable;
 @Schema(description = "excel 操作参数")
 public class ExcelParamsDTO implements Serializable {
 
-    @Serial
+    
     private static final long serialVersionUID = 5229459259657346485L;
 
     /**

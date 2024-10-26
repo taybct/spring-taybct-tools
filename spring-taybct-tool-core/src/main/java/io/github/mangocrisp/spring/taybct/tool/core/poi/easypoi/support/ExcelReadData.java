@@ -26,7 +26,7 @@ import java.io.Serializable;
 @Schema(description = "excel 操作参数")
 public class ExcelReadData implements Serializable {
 
-    @Serial
+    
     private static final long serialVersionUID = -3337514421493141938L;
 
     /**

@@ -23,7 +23,7 @@ import java.io.Serializable;
 @ToString
 public class OrderByField implements Serializable {
 
-    @Serial
+    
     private static final long serialVersionUID = 4615853301498882427L;
     /**
      * 字段名

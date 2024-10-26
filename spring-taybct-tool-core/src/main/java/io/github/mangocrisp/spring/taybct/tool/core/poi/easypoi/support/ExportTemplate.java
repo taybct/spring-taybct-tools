@@ -30,7 +30,7 @@ import java.util.List;
 @Schema(description = "Excel 导出模板")
 public class ExportTemplate<P extends Serializable> implements Serializable {
 
-    @Serial
+    
     private static final long serialVersionUID = 1593493556010638811L;
 
     /**

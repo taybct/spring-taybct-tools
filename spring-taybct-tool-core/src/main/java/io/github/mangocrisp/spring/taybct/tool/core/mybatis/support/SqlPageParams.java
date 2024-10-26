@@ -36,7 +36,7 @@ import static io.github.mangocrisp.spring.taybct.tool.core.constant.PageRequestC
 @Schema(description = "SQL 分页参数")
 @Builder
 public class SqlPageParams implements Serializable {
-    @Serial
+    
     private static final long serialVersionUID = -5669238366260294233L;
     /**
      * 分页页码
