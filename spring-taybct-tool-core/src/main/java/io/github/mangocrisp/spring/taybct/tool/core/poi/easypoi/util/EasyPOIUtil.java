@@ -113,7 +113,7 @@ public class EasyPOIUtil {
         try {
             String userAgent = request.getHeader("user-agent").toLowerCase();
             if (userAgent.contains("msie") || userAgent.contains("like gecko")) {
-                fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
+                fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.name());
             } else {
                 fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
             }
@@ -252,7 +252,7 @@ public class EasyPOIUtil {
             response.setContentType("application/octet-stream");
             response.setCharacterEncoding("utf-8");
             //response.setHeader("content-Type", "application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName + "." + ExcelTypeEnum.XLSX.getValue(), StandardCharsets.UTF_8));
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName + "." + ExcelTypeEnum.XLSX.getValue(), StandardCharsets.UTF_8.name()));
             workbook.write(response.getOutputStream());
         } catch (Exception e) {
             throw new IOException(e.getMessage());
