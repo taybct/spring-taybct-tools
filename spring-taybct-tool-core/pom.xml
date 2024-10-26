@@ -365,6 +365,11 @@
             <optional>true</optional>
             <scope>provided</scope>
         </dependency>
+        <!--excel模板导出-->
+        <dependency>
+            <groupId>net.sf.jxls</groupId>
+            <artifactId>jxls-core</artifactId>
+        </dependency>
 
     </dependencies>
 
