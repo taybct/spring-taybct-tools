@@ -181,19 +181,6 @@ public class MybatisOptional<T> {
     }
 
     /**
-     * 分页设置
-     *
-     * @param sqlPageParamsBuilderConsumer 分页 builder
-     * @return 当前
-     */
-    public MybatisOptional<T> page(Consumer<SqlPageParams.SqlPageParamsBuilder> sqlPageParamsBuilderConsumer) {
-        SqlPageParams.SqlPageParamsBuilder builder = SqlPageParams.builder();
-        sqlPageParamsBuilderConsumer.accept(builder);
-        this.page = builder.build();
-        return this;
-    }
-
-    /**
      * 同 JSONObject.from，不同的是可以往里面加数据，也可以直接替换
      *
      * @param e   查询参数对象
