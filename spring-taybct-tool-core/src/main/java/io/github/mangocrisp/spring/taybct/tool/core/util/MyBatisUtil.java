@@ -24,6 +24,7 @@ import io.github.mangocrisp.spring.taybct.tool.core.annotation.TableLogicUnique;
 import io.github.mangocrisp.spring.taybct.tool.core.config.DefaultTableFieldDefaultHandler;
 import io.github.mangocrisp.spring.taybct.tool.core.config.TableFieldDefaultHandler;
 import io.github.mangocrisp.spring.taybct.tool.core.constant.PageRequestConstants;
+import io.github.mangocrisp.spring.taybct.tool.core.mybatis.util.MybatisOptional;
 import io.github.mangocrisp.spring.taybct.tool.core.request.SqlQueryParams;
 import javax.validation.constraints.NotNull;
 import lombok.SneakyThrows;
@@ -53,6 +54,16 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class MyBatisUtil {
+
+    /**
+     * 字段可选配置
+     *
+     * @param <T> 类型
+     * @return 字段可选配置类
+     */
+    public static <T> MybatisOptional<T> mybatisOptional() {
+        return new MybatisOptional<>();
+    }
 
     /**
      * 以前的接口还是能用

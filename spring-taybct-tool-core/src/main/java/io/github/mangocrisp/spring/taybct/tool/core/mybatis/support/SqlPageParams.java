@@ -1,5 +1,7 @@
 package io.github.mangocrisp.spring.taybct.tool.core.mybatis.support;
 
+import io.github.mangocrisp.spring.taybct.tool.core.util.ObjectUtil;
+import io.github.mangocrisp.spring.taybct.tool.core.util.StringUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -7,21 +9,20 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.github.mangocrisp.spring.taybct.tool.core.constant.PageRequestConstants;
-import io.github.mangocrisp.spring.taybct.tool.core.request.SqlQueryParams;
-import io.github.mangocrisp.spring.taybct.tool.core.util.ObjectUtil;
-import io.github.mangocrisp.spring.taybct.tool.core.util.StringUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static io.github.mangocrisp.spring.taybct.tool.core.constant.PageRequestConstants.*;
 
 /**
  * SQL 分页参数
@@ -29,12 +30,13 @@ import java.util.stream.Stream;
  * @author xijieyin
  * @since 3.1.0
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "SQL 分页参数")
-public class SqlPageParams extends SqlQueryParams {
+@Builder
+public class SqlPageParams implements Serializable {
+    @Serial
     private static final long serialVersionUID = -5669238366260294233L;
     /**
      * 分页页码
@@ -86,7 +88,7 @@ public class SqlPageParams extends SqlQueryParams {
             return null;
         }
         // 按逗号隔开
-        return CollectionUtil.join(safeOrderBySql(Arrays.stream(orderStr.split(PageRequestConstants.FIELD_SEPARATE))), PageRequestConstants.FIELD_SEPARATE);
+        return CollectionUtil.join(safeOrderBySql(Arrays.stream(orderStr.split(FIELD_SEPARATE))), FIELD_SEPARATE);
     }
 
     /**
@@ -115,7 +117,7 @@ public class SqlPageParams extends SqlQueryParams {
             return this.pageOrder;
         }
         if (CollectionUtil.isNotEmpty(this.sort)) {
-            this.pageOrder = CollectionUtil.join(safeOrderBySql(this.sort.stream()), PageRequestConstants.FIELD_SEPARATE);
+            this.pageOrder = CollectionUtil.join(safeOrderBySql(this.sort.stream()), FIELD_SEPARATE);
         }
         return this.pageOrder;
     }
@@ -131,7 +133,7 @@ public class SqlPageParams extends SqlQueryParams {
             return this.sort;
         }
         if (StringUtil.isNotBlank(this.pageOrder)) {
-            this.sort = safeOrderBySql(Arrays.stream(this.pageOrder.split(PageRequestConstants.FIELD_SEPARATE)));
+            this.sort = safeOrderBySql(Arrays.stream(this.pageOrder.split(FIELD_SEPARATE)));
         }
         return this.sort;
     }
@@ -150,11 +152,11 @@ public class SqlPageParams extends SqlQueryParams {
                 // 然后按 " " 分开
                 .ifPresent(sortArray -> sortArray.forEach(s -> {
                     // 空格隔开字段
-                    String[] fieldOrder = s.split(PageRequestConstants.ORDER_SEPARATE);
+                    String[] fieldOrder = s.split(ORDER_SEPARATE);
                     String field = fieldOrder[0];
                     if (fieldOrder.length > 1) {
                         String order = fieldOrder[1];
-                        if (order.equalsIgnoreCase(PageRequestConstants.PAGE_SORT_ASC)) {
+                        if (order.equalsIgnoreCase(PAGE_SORT_ASC)) {
                             wrapper.orderByAsc(field);
                         } else {
                             wrapper.orderByDesc(field);
@@ -184,9 +186,9 @@ public class SqlPageParams extends SqlQueryParams {
         Optional.ofNullable(getSort())
                 // 然后按 " " 分开
                 .ifPresent(sortArray -> sortArray.forEach(s -> {
-                    String[] sa = s.split(PageRequestConstants.ORDER_SEPARATE);
+                    String[] sa = s.split(ORDER_SEPARATE);
                     if (sa.length > 1) {
-                        page.orders().add(sa[1].equalsIgnoreCase(PageRequestConstants.PAGE_SORT_ASC) ? OrderItem.asc(sa[0]) : OrderItem.desc(sa[0]));
+                        page.orders().add(sa[1].equalsIgnoreCase(PAGE_SORT_ASC) ? OrderItem.asc(sa[0]) : OrderItem.desc(sa[0]));
                     } else {
                         page.orders().add(OrderItem.asc(sa[0]));
                     }
