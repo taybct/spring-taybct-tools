@@ -369,6 +369,8 @@
         <dependency>
             <groupId>net.sf.jxls</groupId>
             <artifactId>jxls-core</artifactId>
+            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
