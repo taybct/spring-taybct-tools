@@ -1,5 +1,5 @@
 pki:
-  #base-url: http://127.0.0.1:6180
+  base-url: http://ip:port
   # 认证地址
   auth-url: ${pki.base-url}/MessageService
   # 应用标识
