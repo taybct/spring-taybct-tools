@@ -1,10 +1,9 @@
 pki:
-  #base-url: http://10.41.3.45:6180
   #base-url: http://127.0.0.1:6180
   # 认证地址
   auth-url: ${pki.base-url}/MessageService
   # 应用标识
-  app-id: thqbzhjczzpt
+  app-id: appid
   # 调用应用服务器或网关生成原文
   random-from: 1
   # 是否检查访问控制状态
