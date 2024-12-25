@@ -81,8 +81,8 @@ public class PKIController {
         // 这里测试开发环境的数据
         if (ArrayUtil.indexOf(activeProfiles, "dev") > -1) {
             String username = "某某";
-            String idCard = "460031********0425";
-            String phone = "188****0710";
+            String idCard = "xxxx********xxxx";
+            String phone = "xxx****xxxx";
             JSONObject result = new JSONObject();
             result.put("username", username);
             result.put("idCard", idCard);
