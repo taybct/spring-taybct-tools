@@ -1,0 +1,6 @@
+
+${AnsiColor.BRIGHT_GREEN}▒▄█▀▀█ █▀▄ █▀▀▄ ▀ █▄░█ ▄▀▀  ${AnsiColor.BRIGHT_RED}░░░▒█▀█▀█ ${AnsiColor.BRIGHT_CYAN}▄▀▄ ▀▄░▄▀▒${AnsiColor.BLUE}▐█▀▄░ ${AnsiColor.BRIGHT_CYAN}▄▀ ▀█▀
+${AnsiColor.BRIGHT_GREEN}▒▀▀█▄▄ █░█ █▐█▀ █ █░▀█ █░▀▌  ${AnsiColor.BRIGHT_RED}░░░░▒█░░ ${AnsiColor.BRIGHT_CYAN}█▀█ ░░█░░▒${AnsiColor.BLUE}▐█▀▀▄ ${AnsiColor.BRIGHT_CYAN}█░ ░█░
+${AnsiColor.BRIGHT_GREEN}▒█▄▄█▀ █▀░ ▀░▀▀ ▀ ▀░░▀ ▀▀▀  ${AnsiColor.BRIGHT_RED}░░░░▒▄█▄░ ${AnsiColor.BRIGHT_CYAN}▀░▀ ░░▀░░▒${AnsiColor.BLUE}▐█▄▄▀ ${AnsiColor.BRIGHT_CYAN}░▀ ░▀░
+
+${AnsiColor.BRIGHT_GREEN}:: Spring TayBct :: ${AnsiColor.BRIGHT_CYAN}${spring.application.name}:${AnsiColor.RED}${spring.profiles.active}${AnsiColor.BLUE} :: Running ${AnsiColor.BRIGHT_GREEN}SpringBoot ${AnsiColor.RED}${spring-boot.version} :: ${AnsiColor.BRIGHT_BLACK}

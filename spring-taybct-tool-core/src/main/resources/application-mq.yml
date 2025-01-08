@@ -1,0 +1,24 @@
+spring:
+  # mq 配置
+  rabbitmq:
+    listener:
+      simple:
+        # 手动应答
+        acknowledge-mode: manual
+        # 消费端最小并发数
+        concurrency: 5
+        # 消费端最大并发数
+        max-concurrency: 10
+        # 一次请求中预处理的消息数量
+        prefetch: 5
+    cache:
+      channel:
+        # 缓存的channel数量
+        size: 50
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: taybct
+    publisher-confirm-type: CORRELATED
+    publisher-returns: true

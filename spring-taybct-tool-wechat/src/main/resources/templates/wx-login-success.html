@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>认证成功</title>
+</head>
+<script type="text/javascript">
+    /*<![CDATA[*/
+    window.onload = function () {
+        var loginSuccessPageUrl = document.getElementById("loginSuccessPage").value;
+        if (loginSuccessPageUrl) {
+            location.href = loginSuccessPageUrl;
+        }
+    }
+    /*]]>*/
+</script>
+<body>
+<input id="loginSuccessPage" type="hidden" th:value="${loginSuccessPage}">
+认证成功！
+</body>
+</html>

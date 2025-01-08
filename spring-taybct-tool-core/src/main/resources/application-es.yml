@@ -1,0 +1,5 @@
+spring:
+  elasticsearch:
+    uris: https://127.0.0.1:9200
+    username: "elastic"
+    password: "nJamW9K6AgVszXipoN4V"

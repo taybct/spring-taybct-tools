@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.mangocrisp</groupId>
+        <artifactId>spring-taybct-tools</artifactId>
+        <version>3.2.0</version>
+    </parent>
+
+    <artifactId>spring-taybct-tool-pki</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+    <description>pki 登录</description>
+    <url>https://github.com/mangocrisp/spring-taybct-tools</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>io.github.mangocrisp</name>
+        <url>https://github.com/mangocrisp</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>crisp</id>
+            <name>Mango Crisp</name>
+            <email>15014633363@163.com</email>
+            <url>https://mangocrisp.github.io</url>
+            <roles>
+                <role>Project Manager</role>
+                <role>Architect</role>
+            </roles>
+            <organization>io.github.mangocrisp</organization>
+            <organizationUrl>https://github.com/mangocrisp</organizationUrl>
+            <timezone>Asia/Shanghai</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/mangocrisp/spring-taybct-tools.git</connection>
+        <developerConnection>scm:git:https://gitee.com/mangocrisp/spring-taybct-tools.git</developerConnection>
+        <url>https://github.com/mangocrisp/spring-taybct-tools</url>
+    </scm>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!--公共基础模块-->
+        <dependency>
+            <groupId>io.github.mangocrisp</groupId>
+            <artifactId>spring-taybct-tool-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>${spring-boot.version}</version>
+            <optional>true</optional>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>${commons-httpclient.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>${dom4j.version}</version>
+        </dependency>
+
+        <!--Redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${spring-boot.version}</version>
+            <optional>true</optional>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
