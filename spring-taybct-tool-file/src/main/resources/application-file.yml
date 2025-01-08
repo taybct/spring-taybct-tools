@@ -1,0 +1,53 @@
+taybct:
+  file:
+    # 是否启用
+    enable: true
+    type: local
+    # 文件类型后缀配置
+    file-content-type:
+      "image/png": "png"
+      "image/jpg": "jpg"
+      "image/jpeg": "jpeg"
+      "image/bmp": "bmp"
+      "image/gif": "gif"
+    local:
+      url: http://127.0.0.1:8080/file
+      local-file-prefix: /statics
+      local-file-path: temp/uploadPath
+      # 上传文件大小 MB ，小于 0 表示不限制
+      upload-file-size: 50
+      # 上传文件名长度限制
+      upload-file-name-length: 100
+      # 允许上传的文件类型，不配置表示允许所有
+      upload-allowed-extensions: png,jpg,jpeg,gif,pdf
+      # 指定默认文件服务器类型 local：本地 oss：阿里云对象存储 fdfs：FastDFS 文件存储 minio：MinIO 对象存储
+    oss:
+      endpoint: oss-cn-shenzhen.aliyuncs.com
+      accessKeyId: accessKeyId
+      accessKeySecret: accessKeySecret
+      bucketName: bucketName
+      frequency: 10
+      task: 0 0 0 * * ?
+      days: 7
+      proxy-url: http://127.0.0.1:8080
+      temp-path: temp
+      url: http://127.0.0.1:8080/file/echo
+    fdfs:
+      # 分组
+      group: group1
+      # 代理 url
+      url: http:/127.0.0.1:80
+    minio:
+      url: http://127.0.0.1:19000
+      accessKey: accessKey
+      secretKey: secretKey
+      bucketName: bucketName
+# fastdfs参数
+fdfs:
+  so-timeout: 3000
+  connect-timeout: 2000
+  thumb-image: #缩略图生成参数
+    width: 200
+    height: 200
+  tracker-list: #TrackerList参数,支持多个
+    - 127.0.0.1:22122

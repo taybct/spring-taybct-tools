@@ -1,0 +1,55 @@
+# mybatis-plus通用配置
+mybatis-plus:
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    # MyBatis-Plus 全局策略中的 DB 策略配置
+    db-config:
+      # 主键类型  0:"数据库 ID 自增", 1:"不操作", 2:"用户输入 ID",3:"数字型 snowflake", 4:"全局唯一ID UUID", 5:"字符串型 snowflake";
+      id-type: assign_id
+      # 表名是否使用驼峰转下划线命名,只对表名生效
+      table-underline: true
+      # 表主键生成器
+      # key-generators:
+      # 全局的entity的逻辑删除字段属性名,(逻辑删除下有效)
+      logic-delete-field: is_deleted
+      # 逻辑删除唯一标识，这个值的类型要和主键一致
+      logic-delete-unique-field: unique_key
+      # 逻辑已删除值,(逻辑删除下有效)
+      logic-delete-value: 1
+      # 逻辑未删除值,(逻辑删除下有效)
+      logic-not-delete-value: 0
+      # 字段验证策略之 insert,在 insert 的时候的字段验证策略
+      insert-strategy: not_null
+      # 字段验证策略之 update,在 update 的时候的字段验证策略
+      update-strategy: not_null
+      # 字段验证策略之 select,在 select 的时候的字段验证策略既 wrapper 根据内部 entity 生成的 where 条件
+      select-strategy: not_null
+  # 与 mybatis-config.xml 配置冲突
+  configuration:
+    # 是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN（下划线命名） 到经典 Java 属性名 aColumn（驼峰命名） 的类似映射
+    map-underscore-to-camel-case: true
+    # 开启Mybatis二级缓存
+    cache-enabled: false
+    # 单服务架构中（有且仅有只有一个程序提供相同服务），一级缓存开启不会影响业务，只会提高性能。 微服务架构中需要关闭一级缓存，
+    # 原因：Service1先查询数据，若之后Service2修改了数据，之后Service1又再次以同样的查询条件查询数据，因走缓存会出现查处的数据不是最新数据
+    local-cache-scope: statement
+    # 配置sql打印日志，开发环境需要，生产环境一般不需要
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  # Maven 多模块项目的扫描路径需以 classpath*: 开头 （即加载多个 jar 包下的 XML 文件）
+  mapper-locations:
+    - classpath*:/mapper/**/*.xml # 默认配置的位置
+    - classpath*:io/github/mangocrisp/spring/taybct/**/mapper/*Mapper.xml # 这种就建议是不要，资源就应该写在 resources 下面，丢在 java 类目录下面，其实是挺奇怪的
+    - classpath*:io/github/mangocrisp/spring/taybct/**/mapper/**/*Mapper.xml # 这种就建议是不要，资源就应该写在 resources 下面，丢在 java 类目录下面，其实是挺奇怪的
+    - classpath*:/mapper/**/mysql/*.xml # 添加了数据库类型的配置这个就需要你丢在不同的文件夹下面
+    - classpath*:/mapper/**/oracle/*.xml # 添加了数据库类型的配置这个就需要你丢在不同的文件夹下面
+  # 实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: io.github.mangocrisp.spring.taybct.**.domain
+  # 通过该属性可指定 MyBatis 的执行器 与 mybatis-config.xml 配置冲突
+  #  executor-type: simple
+  # MyBatis 配置文件位置
+#  config-location: classpath:mybatis/mybatis-config.xml
+taybct:
+  tenant:
+    enable: false
+    tenant-id-column: tenant_id

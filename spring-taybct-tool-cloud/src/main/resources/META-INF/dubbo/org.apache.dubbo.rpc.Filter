@@ -1,0 +1,2 @@
+dubboConsumerContextFilter=io.github.mangocrisp.spring.taybct.tool.cloud.dubbo.filter.DubboConsumerContextFilter
+dubboProviderContextFilter=io.github.mangocrisp.spring.taybct.tool.cloud.dubbo.filter.DubboProviderContextFilter

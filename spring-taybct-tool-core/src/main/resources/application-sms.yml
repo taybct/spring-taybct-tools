@@ -1,0 +1,16 @@
+sms:
+  access-key-id: access-key-id
+  access-key-secret: access-key-secret
+  configs:
+    register:
+      send-sms-request:
+        sign-name: sign-name
+        template-code: template-code
+    registered:
+      send-sms-request:
+        sign-name: sign-name
+        template-code: template-code
+    login:
+      send-sms-request:
+        sign-name: sign-name
+        template-code: template-code

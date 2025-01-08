@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>spring-taybct-tools</artifactId>
+        <groupId>io.github.mangocrisp</groupId>
+        <version>3.2.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>spring-taybct-tool-launch</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+    <description>启动模块</description>
+    <url>https://github.com/mangocrisp/spring-taybct-tools</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>io.github.mangocrisp</name>
+        <url>https://github.com/mangocrisp</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>crisp</id>
+            <name>Mango Crisp</name>
+            <email>15014633363@163.com</email>
+            <url>https://mangocrisp.github.io</url>
+            <roles>
+                <role>Project Manager</role>
+                <role>Architect</role>
+            </roles>
+            <organization>io.github.mangocrisp</organization>
+            <organizationUrl>https://github.com/mangocrisp</organizationUrl>
+            <timezone>Asia/Shanghai</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/mangocrisp/spring-taybct-tools.git</connection>
+        <developerConnection>scm:git:https://gitee.com/mangocrisp/spring-taybct-tools.git</developerConnection>
+        <url>https://github.com/mangocrisp/spring-taybct-tools</url>
+    </scm>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+
+        <!-- bootstrap 启动器 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <version>${spring-cloud-starter-bootstrap.version}</version>
+        </dependency>
+
+        <!--spring test-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring-test.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <!--skywalking 日志记录-->
+        <dependency>
+            <groupId>org.apache.skywalking</groupId>
+            <artifactId>apm-toolkit-logback-1.x</artifactId>
+            <version>${skywalking-logback.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

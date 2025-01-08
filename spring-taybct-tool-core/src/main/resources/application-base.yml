@@ -1,0 +1,38 @@
+#服务器配置
+server:
+  undertow:
+    threads:
+      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+      io: 4
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+      worker: 20
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    buffer-size: 1024
+    # 是否分配的直接内存
+    direct-buffers: true
+  compression:
+    # 是否开启压缩 开了全局就不要开fegin的压缩请求 互斥
+    enabled: false
+    # 配置支持压缩的 MIME TYPE
+    mime-types: text/html,text/xml,text/plain,application/xml,application/json
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+# 日志文件
+logging:
+  file:
+    name: logs/${spring.application.name}/info.log
+taybct:
+  datasource:
+    # 数据源加密连接
+    encrypted-connection:
+      # 开启是否？
+      enabled: true
+      # 配置统一的解码器
+      decrypt-function: io.github.mangocrisp.spring.taybct.tool.core.util.sm.SM4Coder.De
+      # 为每个数据源配置解码器
+      decrypt-functions:
+        master: io.github.mangocrisp.spring.taybct.tool.core.util.sm.SM4Coder.De
+        slave1: io.github.mangocrisp.spring.taybct.tool.core.util.sm.SM4Coder.De

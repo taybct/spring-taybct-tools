@@ -1,0 +1,73 @@
+spring:
+  main:
+    #springCloud 的2.1.0以上版本的，将不再默认支持 FeignClient 的name属性 的相同名字。
+    #即 ：多个接口上的@FeignClient(“相同服务名”)会报错，overriding is disabled(覆盖 是 禁止的/关闭的)。
+    allow-bean-definition-overriding: true
+  cloud:
+    sentinel:
+      # 取消控制台懒加载
+      eager: true
+      transport:
+        # 控制台地址
+        dashboard: 127.0.0.1:8718
+        port: 8719
+      log:
+        # 日志存放路径
+        dir: D:\logs\sentinel\${spring.application.name}\
+#服务器配置
+server:
+  undertow:
+    threads:
+      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+      io: 4
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+      worker: 20
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    buffer-size: 1024
+    # 是否分配的直接内存
+    direct-buffers: true
+  compression:
+    # 是否开启压缩 开了全局就不要开fegin的压缩请求 互斥
+    enabled: false
+    # 配置支持压缩的 MIME TYPE
+    mime-types: text/html,text/xml,text/plain,application/xml,application/json
+# feign 配置
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+  compression:
+    request:
+      # 开启请求压缩
+      enabled: true
+      # 配置压缩支持的 MIME TYPE
+      mime-types: text/xml,application/xml,application/json
+      # 配置压缩数据大小的下限
+      min-request-size: 2048
+    response:
+      # 开启响应压缩
+      enabled: true
+# 日志文件
+logging:
+  file:
+    name: logs/${spring.application.name}/info.log
+#对外暴露端口
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      enabled: true
+      external-file: logs/${spring.application.name}/info.log
