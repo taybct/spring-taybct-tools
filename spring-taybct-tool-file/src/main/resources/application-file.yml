@@ -26,12 +26,7 @@ taybct:
       accessKeyId: accessKeyId
       accessKeySecret: accessKeySecret
       bucketName: bucketName
-      frequency: 10
-      task: 0 0 0 * * ?
-      days: 7
       proxy-url: http://127.0.0.1:8080
-      temp-path: temp
-      url: http://127.0.0.1:8080/file/echo
     fdfs:
       # 分组
       group: group1
