@@ -37,7 +37,6 @@ public class FileConfig {
      */
     private Class<? extends IFileService> clazz;
     /**
-     * /**
      * 文件类型配置
      */
     private Map<String, String> fileContentType = new HashMap<>();
