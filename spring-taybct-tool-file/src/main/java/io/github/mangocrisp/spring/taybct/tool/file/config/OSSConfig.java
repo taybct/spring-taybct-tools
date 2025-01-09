@@ -32,14 +32,6 @@ public class OSSConfig implements Serializable {
      */
     private String proxyUrl;
     /**
-     * 临时存储路径（仅需要代理时设置）
-     */
-    private String tempPath;
-    /**
-     * 服务地址,文件访问前缀
-     */
-    private String url;
-    /**
      * oss 服务端
      */
     private String endpoint;
@@ -55,17 +47,5 @@ public class OSSConfig implements Serializable {
      * 桶
      */
     private String bucketName;
-    /**
-     * 使用频率
-     */
-    private Integer frequency;
-    /**
-     * cron 任务
-     */
-    private String task;
-    /**
-     * 多少天内的数据
-     */
-    private Integer days;
 
 }
