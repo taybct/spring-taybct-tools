@@ -88,7 +88,7 @@ public @interface SyncToAnywhere {
     Class<?> queryDataClass() default Void.class;
 
     /**
-     * 返回结果类型转换，查询回来的结果类型，不指定就是按原接口类型
+     * 返回结果类型转换，查询回来的结果类型，不指定就不转换
      *
      * @return 类型
      */
