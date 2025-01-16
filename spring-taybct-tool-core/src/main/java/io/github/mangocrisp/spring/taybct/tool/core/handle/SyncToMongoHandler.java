@@ -7,6 +7,8 @@ import io.github.mangocrisp.spring.taybct.tool.core.dto.SyncToAnywhereDTO;
 import io.github.mangocrisp.spring.taybct.tool.core.mybatis.support.SqlPageParams;
 import io.github.mangocrisp.spring.taybct.tool.core.mybatis.util.MybatisOptional;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -31,6 +33,38 @@ public class SyncToMongoHandler<PK extends Serializable, T extends SyncToAnywher
 
     final MongoTemplate mongoTemplate;
 
+    /**
+     * id 字段名
+     */
+    @Setter
+    private String idFieldName = "id";
+
+    public SyncToMongoHandler(MongoTemplate mongoTemplate, String idFieldName) {
+        this.mongoTemplate = mongoTemplate;
+        this.idFieldName = idFieldName;
+    }
+
+    /**
+     * 获取到指定的 id 字段
+     *
+     * @param clazz 数据类型
+     * @return id 字段名
+     */
+    private String idField(Class<?> clazz) {
+        for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                if (!Modifier.isStatic(field.getModifiers())) {
+                    field.setAccessible(true);
+                    if (field.isAnnotationPresent(Id.class)) {
+                        return field.getName();
+                    }
+                }
+            }
+        }
+        return idFieldName;
+    }
+
     @Override
     public boolean insert(Collection<T> dtoCollection) {
         dtoCollection.stream().findFirst().ifPresentOrElse(dto -> mongoTemplate.insert(dtoCollection, dto.getClass())
@@ -43,6 +77,7 @@ public class SyncToMongoHandler<PK extends Serializable, T extends SyncToAnywher
         dtoCollection.stream().forEach(dto -> {
             Update update = new Update();
             Class<?> clazz = dto.getClass();
+            Object id = dto.getId();
             for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
                 Field[] fields = clazz.getDeclaredFields();
                 for (Field field : fields) {
@@ -53,20 +88,23 @@ public class SyncToMongoHandler<PK extends Serializable, T extends SyncToAnywher
                             if (ObjectUtil.isNotEmpty(fieldValue)) {
                                 update.set(field.getName(), fieldValue);
                             }
+                            if (field.isAnnotationPresent(Id.class)) {
+                                id = fieldValue;
+                            }
                         } catch (IllegalAccessException e) {
                             throw new RuntimeException(e);
                         }
                     }
                 }
             }
-            mongoTemplate.updateFirst(new Query(Criteria.where("id").is(dto.getId())), update, dto.getClass());
+            mongoTemplate.updateFirst(new Query(Criteria.where(idField(dto.getClass())).is(id)), update, dto.getClass());
         });
         return true;
     }
 
     @Override
     public boolean delete(Collection<PK> dtoCollection, Class<T> convert) {
-        mongoTemplate.remove(new Query(Criteria.where("id").in(dtoCollection)), convert);
+        mongoTemplate.remove(new Query(Criteria.where(idField(convert)).in(dtoCollection)), convert);
         return true;
     }
 
