@@ -57,8 +57,8 @@ public @interface RecordHistory {
     /**
      * 操作类型
      *
-     * @see DataOperateType
      * @return 操作类型
+     * @see DataOperateType
      */
     int operateType() default DataOperateType.UPDATE;
 
