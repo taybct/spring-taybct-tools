@@ -87,25 +87,14 @@ public class SyncToAnywhereInterceptor implements MethodInterceptor {
                     }
                     SimpleDBOperateType type = annotation.type();
                     Class<?>[] convert = annotation.convert();
-                    // 直接异步执行
-                    cachedThreadPool.execute(() -> {
-                        if (ArrayUtil.isNotEmpty(handler)) {
-                            for (int i = 0; i < handler.length; i++) {
-                                SyncToAnywhereHandler bean = SpringUtil.getBean(handler[i]);
-                                if (ArrayUtil.isNotEmpty(convert)) {
-                                    if (type.equals(SimpleDBOperateType.DELETE)) {
-                                        // 如果需要转换类型就按转换类型的来传递
-                                        execute(bean, type, argList, convert[i]);
-                                    } else {
-                                        // 如果需要转换类型就按转换类型的来传递
-                                        execute(bean, type, BeanUtil.copyToList(argList, convert[i]), convert[i]);
-                                    }
-                                } else {
-                                    execute(bean, type, argList.stream().map(a -> (Serializable) a).collect(Collectors.toSet()), null);
-                                }
-                            }
-                        }
-                    });
+                    if (annotation.executeAsync()) {
+                        // 直接异步执行
+                        cachedThreadPool.execute(() -> {
+                            execute(handler, convert, type, argList);
+                        });
+                    } else {
+                        execute(handler, convert, type, argList);
+                    }
                 }
                 yield proceed;
             }
@@ -218,25 +207,52 @@ public class SyncToAnywhereInterceptor implements MethodInterceptor {
     /**
      * 执行操作
      *
-     * @param bean            处理器
-     * @param type            类型
-     * @param serializableSet 需要处理的数据
+     * @param handler 所有的处理器
+     * @param convert 处理器需要的数据类型
+     * @param type    操作类型
+     * @param argList 参数列表
      */
-    private static void execute(SyncToAnywhereHandler bean
+    private static void execute(Class<? extends SyncToAnywhereHandler>[] handler, Class<?>[] convert, SimpleDBOperateType type, List<Object> argList) {
+        if (ArrayUtil.isNotEmpty(handler)) {
+            for (int i = 0; i < handler.length; i++) {
+                SyncToAnywhereHandler syncToAnywhereHandler = SpringUtil.getBean(handler[i]);
+                if (ArrayUtil.isNotEmpty(convert)) {
+                    if (type.equals(SimpleDBOperateType.DELETE)) {
+                        // 如果需要转换类型就按转换类型的来传递
+                        execute(syncToAnywhereHandler, type, argList, convert[i]);
+                    } else {
+                        // 如果需要转换类型就按转换类型的来传递
+                        execute(syncToAnywhereHandler, type, BeanUtil.copyToList(argList, convert[i]), convert[i]);
+                    }
+                } else {
+                    execute(syncToAnywhereHandler, type, argList.stream().map(a -> (Serializable) a).collect(Collectors.toSet()), null);
+                }
+            }
+        }
+    }
+
+    /**
+     * 执行操作
+     *
+     * @param syncToAnywhereHandler 处理器
+     * @param type                  类型
+     * @param serializableSet       需要处理的数据
+     */
+    private static void execute(SyncToAnywhereHandler syncToAnywhereHandler
             , SimpleDBOperateType type
             , Collection<?> serializableSet
             , Class<?> convert) {
         if (type.equals(SimpleDBOperateType.INSERT)) {
-            bean.insert(serializableSet);
+            syncToAnywhereHandler.insert(serializableSet);
         }
         if (type.equals(SimpleDBOperateType.UPDATE)) {
-            bean.update(serializableSet);
+            syncToAnywhereHandler.update(serializableSet);
         }
         if (type.equals(SimpleDBOperateType.DELETE)) {
-            bean.delete(serializableSet, convert);
+            syncToAnywhereHandler.delete(serializableSet, convert);
         }
         if (type.equals(SimpleDBOperateType.UNKNOWN)) {
-            bean.unknown(serializableSet);
+            syncToAnywhereHandler.unknown(serializableSet);
         }
     }
 
