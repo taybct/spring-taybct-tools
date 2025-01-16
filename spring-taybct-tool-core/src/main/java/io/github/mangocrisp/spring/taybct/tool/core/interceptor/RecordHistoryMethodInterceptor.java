@@ -10,7 +10,6 @@ import io.github.mangocrisp.spring.taybct.tool.core.annotation.RecordHistory;
 import io.github.mangocrisp.spring.taybct.tool.core.bean.ILoginUser;
 import io.github.mangocrisp.spring.taybct.tool.core.bean.ISecurityUtil;
 import io.github.mangocrisp.spring.taybct.tool.core.domain.HistoryEntity;
-import io.github.mangocrisp.spring.taybct.tool.core.enums.DataOperateType;
 import io.github.mangocrisp.spring.taybct.tool.core.result.R;
 import io.github.mangocrisp.spring.taybct.tool.core.service.IHistoryService;
 import io.github.mangocrisp.spring.taybct.tool.core.util.ObjectUtil;

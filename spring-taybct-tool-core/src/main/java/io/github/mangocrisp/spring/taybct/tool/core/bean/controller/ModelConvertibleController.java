@@ -181,7 +181,7 @@ public interface ModelConvertibleController<T
     /**
      * 查询总数
      *
-     * @param dto           {@literal 请求参数}
+     * @param dto {@literal 请求参数}
      * @return {@code R<IPage < ? extends T>>}
      * @author xijieyin <br> 2022/8/4 18:36
      * @since 1.0.0

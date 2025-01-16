@@ -200,7 +200,7 @@ public class MybatisPlusConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    public IJDBCFieldMapper jdbcFieldMapper(){
+    public IJDBCFieldMapper jdbcFieldMapper() {
         return new IJDBCFieldMapper() {
             @Override
             public ConcurrentHashMap<Class<?>, BiFunction<DbType, Object, String>> j2d() {
@@ -217,7 +217,9 @@ public class MybatisPlusConfig {
                 return typeMap;
             }
         };
-    };
+    }
+
+    ;
 
     @Bean
     @ConditionalOnMissingBean(DeleteLogicExtraHandle.class)

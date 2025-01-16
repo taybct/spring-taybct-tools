@@ -4,7 +4,6 @@ import io.github.mangocrisp.spring.taybct.tool.core.constant.PropertiesPrefixCon
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.util.unit.DataSize;
 
 import java.io.Serial;
 import java.io.Serializable;
