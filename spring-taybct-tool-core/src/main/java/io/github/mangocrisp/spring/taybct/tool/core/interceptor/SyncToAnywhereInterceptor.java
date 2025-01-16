@@ -89,9 +89,7 @@ public class SyncToAnywhereInterceptor implements MethodInterceptor {
                     Class<?>[] convert = annotation.convert();
                     if (annotation.executeAsync()) {
                         // 直接异步执行
-                        cachedThreadPool.execute(() -> {
-                            execute(handler, convert, type, argList);
-                        });
+                        cachedThreadPool.execute(() -> execute(handler, convert, type, argList));
                     } else {
                         execute(handler, convert, type, argList);
                     }
