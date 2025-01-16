@@ -203,6 +203,15 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--mongodb-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <version>${spring-boot.version}</version>
+            <optional>true</optional>
+            <scope>provided</scope>
+        </dependency>
+
         <!--Redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

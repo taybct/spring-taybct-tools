@@ -2,7 +2,6 @@ package io.github.mangocrisp.spring.taybct.tool.core.util.sm;
 
 import io.github.mangocrisp.spring.taybct.tool.core.constant.PropertiesPrefixConstants;
 import lombok.Data;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.Serial;

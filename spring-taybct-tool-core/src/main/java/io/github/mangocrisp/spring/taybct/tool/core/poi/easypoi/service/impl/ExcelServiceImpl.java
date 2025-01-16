@@ -9,6 +9,12 @@ import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import cn.afterturn.easypoi.handler.inter.IWriter;
 import cn.afterturn.easypoi.util.PoiMergeCellUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ArrayUtil;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONWriter;
 import io.github.mangocrisp.spring.taybct.tool.core.exception.def.BaseException;
 import io.github.mangocrisp.spring.taybct.tool.core.mybatis.support.SqlPageParams;
 import io.github.mangocrisp.spring.taybct.tool.core.poi.easypoi.constants.EasyPOIConstant;
@@ -17,12 +23,6 @@ import io.github.mangocrisp.spring.taybct.tool.core.poi.easypoi.support.*;
 import io.github.mangocrisp.spring.taybct.tool.core.poi.easypoi.util.EasyPOIUtil;
 import io.github.mangocrisp.spring.taybct.tool.core.util.BeanUtil;
 import io.github.mangocrisp.spring.taybct.tool.core.util.StringUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ArrayUtil;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.JSONWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -210,7 +210,7 @@ public class ExcelServiceImpl implements IExcelService {
             if (StringUtil.isBlank(field.getKey())) {
                 throw new BaseException("key[字段]不能为空！");
             }
-            if (StringUtil.isBlank(field.getFormat()) || !field.getFormat().equals(PoiBaseConstants.IS_ADD_INDEX)){
+            if (StringUtil.isBlank(field.getFormat()) || !field.getFormat().equals(PoiBaseConstants.IS_ADD_INDEX)) {
                 // 如果是索引就不添加到数据库字段里面去
                 // 数据库查询字段，这里替换一下一些特殊字符，防止 sql 注入
                 String dbField = field.getKey().replaceAll(";", "")

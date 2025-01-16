@@ -19,15 +19,16 @@ public interface IJDBCFieldMapper {
      *
      * @return 转换之后的类型转换方法匹配
      */
-    default ConcurrentHashMap<Class<?>, BiFunction<DbType, Object, String>> j2d(){
+    default ConcurrentHashMap<Class<?>, BiFunction<DbType, Object, String>> j2d() {
         return new ConcurrentHashMap<>();
     }
+
     /**
      * 数据库字段 转 Java 字段
      *
      * @return 转换之后的类型转换方法匹配
      */
-    default ConcurrentHashMap<String, BiFunction<DbType, Object, Class<?>>> d2j(){
+    default ConcurrentHashMap<String, BiFunction<DbType, Object, Class<?>>> d2j() {
         return new ConcurrentHashMap<>();
     }
 

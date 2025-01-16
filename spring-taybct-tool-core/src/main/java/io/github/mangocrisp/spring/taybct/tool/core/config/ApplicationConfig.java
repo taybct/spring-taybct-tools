@@ -18,6 +18,7 @@ import io.github.mangocrisp.spring.taybct.tool.core.handle.TableFieldDefaultLogi
 import io.github.mangocrisp.spring.taybct.tool.core.handle.TableFieldDefaultPKHandler;
 import io.github.mangocrisp.spring.taybct.tool.core.handle.TableFieldDefaultUKHandler;
 import io.github.mangocrisp.spring.taybct.tool.core.interceptor.MethodEnhanceInterceptor;
+import io.github.mangocrisp.spring.taybct.tool.core.interceptor.SyncToAnywhereInterceptor;
 import io.github.mangocrisp.spring.taybct.tool.core.message.MessageProperties;
 import io.github.mangocrisp.spring.taybct.tool.core.support.IEncryptedPassable;
 import io.github.mangocrisp.spring.taybct.tool.core.util.rsa.RSACoder;
@@ -175,6 +176,27 @@ public class ApplicationConfig {
         advisor.setAdvice(methodInterceptor);
         return advisor;
     }
+
+    @Bean
+    public DefaultPointcutAdvisor syncToAnywhereAdvisor() {
+        SyncToAnywhereInterceptor methodInterceptor = new SyncToAnywhereInterceptor();
+        // 匹配一个切点，这里使用注解
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("@annotation(io.github.mangocrisp.spring.taybct.tool.core.annotation.SyncToAnywhere)");
+        // 增强
+        DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();
+        advisor.setPointcut(pointcut);
+        // 增强的方法
+        advisor.setAdvice(methodInterceptor);
+        return advisor;
+    }
+
+//    @Bean
+//    public SyncToMongoHandler<? extends Serializable,? extends SyncToAnywhereDTO<? extends Serializable>> syncToAnywhereMongoHandler(
+//            MongoTemplate mongoTemplate
+//    ){
+//        return new SyncToMongoHandler<>(mongoTemplate);
+//    }
 
     /**
      * 加密校验，默认支持 sm2 和 rsa

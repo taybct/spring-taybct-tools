@@ -5,7 +5,6 @@ import io.github.mangocrisp.spring.taybct.tool.file.service.impl.FileServiceFast
 import io.github.mangocrisp.spring.taybct.tool.file.service.impl.FileServiceLocalImpl;
 import io.github.mangocrisp.spring.taybct.tool.file.service.impl.FileServiceMinioImpl;
 import io.github.mangocrisp.spring.taybct.tool.file.service.impl.FileServiceOSSImpl;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.io.Serializable;

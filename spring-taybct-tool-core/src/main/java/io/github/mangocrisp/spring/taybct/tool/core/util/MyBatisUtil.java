@@ -42,7 +42,6 @@ import java.lang.reflect.*;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -624,7 +623,7 @@ public class MyBatisUtil {
      * 获取字段上的默认值
      *
      * @param entity 实体类
-     * @param field 字段
+     * @param field  字段
      * @return 默认值
      */
     @SneakyThrows
@@ -636,8 +635,8 @@ public class MyBatisUtil {
      * 获取字段上的默认值
      *
      * @param entity 实体类
-     * @param field 字段
-     * @param ms    调用的方法
+     * @param field  字段
+     * @param ms     调用的方法
      * @return 默认值
      */
     @SneakyThrows
@@ -661,7 +660,7 @@ public class MyBatisUtil {
         if (!annotation.handler().equals(DefaultTableFieldDefaultHandler.class)) {
             TableFieldDefaultHandler bean = SpringUtil.getBean(annotation.handler());
             return Optional.ofNullable(bean)
-                    .map(b-> b.get(entity))
+                    .map(b -> b.get(entity))
                     .orElse(null);
         }
         // 如果原值为空，默认值不为空就设置成默认值

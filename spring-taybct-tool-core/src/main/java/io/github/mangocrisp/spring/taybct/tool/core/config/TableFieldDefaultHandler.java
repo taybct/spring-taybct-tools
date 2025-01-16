@@ -1,7 +1,5 @@
 package io.github.mangocrisp.spring.taybct.tool.core.config;
 
-import java.util.function.Supplier;
-
 /**
  * 自定义默认值规则
  *

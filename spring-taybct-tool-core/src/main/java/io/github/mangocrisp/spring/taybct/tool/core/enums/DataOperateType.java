@@ -1,8 +1,5 @@
 package io.github.mangocrisp.spring.taybct.tool.core.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * 数据库操作类型
  *
