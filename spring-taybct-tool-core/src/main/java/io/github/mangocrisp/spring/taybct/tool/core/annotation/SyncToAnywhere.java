@@ -94,4 +94,11 @@ public @interface SyncToAnywhere {
      */
     Class<?> queryResultConverter() default Void.class;
 
+    /**
+     * 是否异步操作
+     *
+     * @return 是否
+     */
+    boolean executeAsync() default true;
+
 }
