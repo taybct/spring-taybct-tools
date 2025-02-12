@@ -7,11 +7,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.util.FileUtil;
 import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.gm.GMNamedCurves;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
+import org.bouncycastle.asn1.x9.X9ECParameters;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
@@ -27,6 +29,8 @@ import org.bouncycastle.jce.X509KeyUsage;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.jce.spec.ECNamedCurveGenParameterSpec;
 import org.bouncycastle.jce.spec.ECParameterSpec;
+import org.bouncycastle.jce.spec.ECPrivateKeySpec;
+import org.bouncycastle.jce.spec.ECPublicKeySpec;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
@@ -998,6 +1002,40 @@ public class SM2Coder {
         BCECPrivateKey bcecPrivateKey = (BCECPrivateKey) privateKey;
         BigInteger intPrivateKey = bcecPrivateKey.getD();
         return intPrivateKey.toString(16);
+    }
+
+    /**
+     * 根据16进制公钥字符串获取公钥
+     * @param pubKeyHex 16进制加密公钥字符串
+     * @return 公钥
+     */
+    public static BCECPublicKey getECPublicKeyByPublicKeyHex(String pubKeyHex) {
+        if (pubKeyHex.length() > 128) {
+            pubKeyHex = pubKeyHex.substring(pubKeyHex.length() - 128);
+        }
+        String stringX = pubKeyHex.substring(0, 64);
+        String stringY = pubKeyHex.substring(stringX.length());
+        BigInteger x = new BigInteger(stringX, 16);
+        BigInteger y = new BigInteger(stringY, 16);
+
+        X9ECParameters x9ECParameters = GMNamedCurves.getByName(SM2_CURVE_NAME);
+        ECParameterSpec ecDomainParameters = new ECParameterSpec(x9ECParameters.getCurve(), x9ECParameters.getG(), x9ECParameters.getN());
+        ECPublicKeySpec ecPublicKeySpec = new ECPublicKeySpec(x9ECParameters.getCurve().createPoint(x, y), ecDomainParameters);
+
+        return new BCECPublicKey(ALGORITHM, ecPublicKeySpec, BouncyCastleProvider.CONFIGURATION);
+    }
+
+    /**
+     * 根据16进制公钥字符串获取私钥
+     * @param privateKeyHex 16进制加密私钥字符串
+     * @return 私钥
+     */
+    public static BCECPrivateKey getECPrivateKeyByPrivateKeyHex(String privateKeyHex) {
+        BigInteger d = new BigInteger(privateKeyHex, 16);
+        X9ECParameters x9ECParameters = GMNamedCurves.getByName(SM2_CURVE_NAME);
+        ECParameterSpec ecDomainParameters = new ECParameterSpec(x9ECParameters.getCurve(), x9ECParameters.getG(), x9ECParameters.getN());
+        ECPrivateKeySpec ecPrivateKeySpec = new ECPrivateKeySpec(d, ecDomainParameters);
+        return new BCECPrivateKey(ALGORITHM, ecPrivateKeySpec, BouncyCastleProvider.CONFIGURATION);
     }
 
     /**
