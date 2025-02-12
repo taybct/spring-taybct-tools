@@ -1017,11 +1017,9 @@ public class SM2Coder {
         String stringY = pubKeyHex.substring(stringX.length());
         BigInteger x = new BigInteger(stringX, 16);
         BigInteger y = new BigInteger(stringY, 16);
-
         X9ECParameters x9ECParameters = GMNamedCurves.getByName(SM2_CURVE_NAME);
         ECParameterSpec ecDomainParameters = new ECParameterSpec(x9ECParameters.getCurve(), x9ECParameters.getG(), x9ECParameters.getN());
         ECPublicKeySpec ecPublicKeySpec = new ECPublicKeySpec(x9ECParameters.getCurve().createPoint(x, y), ecDomainParameters);
-
         return new BCECPublicKey(ALGORITHM, ecPublicKeySpec, BouncyCastleProvider.CONFIGURATION);
     }
 
