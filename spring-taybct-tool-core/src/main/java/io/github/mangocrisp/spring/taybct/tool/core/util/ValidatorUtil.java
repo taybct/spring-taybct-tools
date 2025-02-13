@@ -35,7 +35,7 @@ public class ValidatorUtil extends ValidationUtil {
      */
     public static <T> Set<ConstraintViolation<T>> validateFast(T domain) {
         Set<ConstraintViolation<T>> validateResult = validatorFast.validate(domain);
-        if (validateResult.size() > 0) {
+        if (!validateResult.isEmpty()) {
             log.error(validateResult.iterator().next().getPropertyPath() + "：" + validateResult.iterator().next().getMessage());
             throw new ConstraintViolationException(validateResult);
         }
@@ -52,10 +52,8 @@ public class ValidatorUtil extends ValidationUtil {
      */
     public static <T> Set<ConstraintViolation<T>> validateAll(T domain) {
         Set<ConstraintViolation<T>> validateResult = validatorAll.validate(domain);
-        if (validateResult.size() > 0) {
-            Iterator<ConstraintViolation<T>> it = validateResult.iterator();
-            while (it.hasNext()) {
-                ConstraintViolation<T> cv = it.next();
+        if (!validateResult.isEmpty()) {
+            for (ConstraintViolation<T> cv : validateResult) {
                 log.debug(cv.getPropertyPath() + "：" + cv.getMessage());
             }
         }
