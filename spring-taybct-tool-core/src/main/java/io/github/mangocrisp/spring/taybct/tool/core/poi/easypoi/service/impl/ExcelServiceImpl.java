@@ -246,7 +246,10 @@ public class ExcelServiceImpl implements IExcelService {
         String excelFileName = fileName + "-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss", Locale.CHINA));
         //Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(fileName, template.getSheetName()), entity, list);
         // 大数据导出
-        IWriter<Workbook> writer = ExcelExportUtil.exportBigExcel(new ExportParams(fileName, template.getSheetName(), template.getExcelType()), entity);
+        ExportParams exportParams = new ExportParams(fileName, template.getSheetName(), template.getExcelType());
+        // 设置字典翻译
+        exportParams.setDictHandler(EasyPOIUtil.excelDictHandler);
+        IWriter<Workbook> writer = ExcelExportUtil.exportBigExcel(exportParams, entity);
         writer.write(list);
         Workbook workbook = writer.get();
         if (CollectionUtil.isNotEmpty(mergeColumns)) {
