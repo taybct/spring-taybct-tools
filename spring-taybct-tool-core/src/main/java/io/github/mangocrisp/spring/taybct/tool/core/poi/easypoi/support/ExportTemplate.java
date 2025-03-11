@@ -1,5 +1,6 @@
 package io.github.mangocrisp.spring.taybct.tool.core.poi.easypoi.support;
 
+import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import com.alibaba.fastjson2.JSONObject;
 import io.github.mangocrisp.spring.taybct.tool.core.mybatis.support.SqlPageParams;
@@ -58,6 +59,11 @@ public class ExportTemplate<P extends Serializable> implements Serializable {
      */
     @Schema(description = "纵向合并相同单元格开始行", defaultValue = "2")
     private Integer mergeSameStartRow = 2;
+    /**
+     * 导出配置
+     */
+    @Schema(description = "导出配置")
+    private ExportParams exportParams;
     /**
      * 模板字段数组
      */
