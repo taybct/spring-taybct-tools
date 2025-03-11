@@ -61,6 +61,11 @@ public class DBField implements Serializable {
     @Schema(description = "列宽")
     private double width = 25d;
     /**
+     * 纵向合并相同单元格
+     */
+    @Schema(description = "纵向合并相同单元格")
+    private boolean mergeSame = true;
+    /**
      * 是否需要合并
      */
     @Schema(description = "是否需要合并")
