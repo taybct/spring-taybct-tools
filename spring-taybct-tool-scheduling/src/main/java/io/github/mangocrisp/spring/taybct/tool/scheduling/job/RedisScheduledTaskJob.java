@@ -1,5 +1,6 @@
 package io.github.mangocrisp.spring.taybct.tool.scheduling.job;
 
+import cn.hutool.core.net.NetUtil;
 import io.github.mangocrisp.spring.taybct.tool.core.constant.CacheConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -40,8 +41,8 @@ public abstract class RedisScheduledTaskJob extends AbstractScheduledTaskJob {
     @SneakyThrows
     @Override
     public void run() {
-        String ip = InetAddress.getLocalHost().getHostAddress();
-        String hostName = InetAddress.getLocalHost().getHostName();
+        String ip = NetUtil.getLocalhost().getHostAddress();
+        String hostName = NetUtil.getLocalhost().getHostName();
         String port = env.getProperty("server.port", "8080");
         String taskKey = CacheConstants.Scheduled.PREFIX + key;
         String serve = String.format("%s[%s]:%s", ip, hostName, port);
