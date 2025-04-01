@@ -187,9 +187,7 @@ public class MybatisPlusConfig {
                     log.trace("获取用户失败！", e);
                 }
                 try {
-                    Configuration configuration = mappedStatement.getConfiguration();
-                    Connection connection = configuration.getEnvironment().getDataSource().getConnection();
-                    DbType dbType = DBHelper.getDbType(connection, DbType.POSTGRE_SQL);
+                    DbType dbType = DBHelper.getDbType(mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection(), DbType.POSTGRE_SQL);
                     stringObjectMap.put("_database_id_", dbType.getDb());
                 } catch (Exception e) {
                     log.trace("设置数据源类型失败！", e);
