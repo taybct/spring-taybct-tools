@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerIntercept
 import io.github.mangocrisp.spring.taybct.tool.core.bean.ISecurityUtil;
 import io.github.mangocrisp.spring.taybct.tool.core.config.DataScopeCondition;
 import io.github.mangocrisp.spring.taybct.tool.core.config.DataScopeCustom;
+import io.github.mangocrisp.spring.taybct.tool.core.ds.DBHelper;
 import io.github.mangocrisp.spring.taybct.tool.core.interceptor.RecordHistoryMethodInterceptor;
 import io.github.mangocrisp.spring.taybct.tool.core.mybatis.handle.*;
 import io.github.mangocrisp.spring.taybct.tool.core.mybatis.interceptor.MyBatisExtraParamsInterceptor;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
+import org.apache.ibatis.session.Configuration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -37,6 +39,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.Nullable;
 
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -182,6 +185,14 @@ public class MybatisPlusConfig {
                     stringObjectMap.put("_login_user_", securityUtil.getLoginUser().getPayload());
                 } catch (Exception e) {
                     log.trace("获取用户失败！", e);
+                }
+                try {
+                    Configuration configuration = mappedStatement.getConfiguration();
+                    Connection connection = configuration.getEnvironment().getDataSource().getConnection();
+                    DbType dbType = DBHelper.getDbType(connection, DbType.POSTGRE_SQL);
+                    stringObjectMap.put("_database_id_", dbType.getDb());
+                } catch (Exception e) {
+                    log.trace("设置数据源类型失败！", e);
                 }
                 return stringObjectMap;
             }
