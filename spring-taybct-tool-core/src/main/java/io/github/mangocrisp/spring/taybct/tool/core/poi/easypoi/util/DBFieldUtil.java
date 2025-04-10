@@ -57,7 +57,7 @@ public class DBFieldUtil {
             if (!Modifier.isStatic(field.getModifiers())) {
                 field.setAccessible(true);
                 Object fieldValue = field.get(temp);
-                if (field.isAnnotationPresent(ExcelIgnore.class)){
+                if (field.isAnnotationPresent(ExcelIgnore.class)) {
                     continue;
                 }
                 if (field.isAnnotationPresent(Excel.class)) {
@@ -80,6 +80,7 @@ public class DBFieldUtil {
                             .mergeVertical(excel.mergeVertical())
                             .replace(excel.replace())
                             .orderNum(excel.orderNum())
+                            .mergeSame(true)
                             .format(excel.format())
                             .needMerge(excel.needMerge())
                             .defaultValue(fieldValue)
