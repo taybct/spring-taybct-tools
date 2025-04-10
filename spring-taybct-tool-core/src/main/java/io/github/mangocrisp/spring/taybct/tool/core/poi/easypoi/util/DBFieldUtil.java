@@ -1,9 +1,6 @@
 package io.github.mangocrisp.spring.taybct.tool.core.poi.easypoi.util;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
-import cn.afterturn.easypoi.excel.annotation.ExcelCollection;
-import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
-import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
+import cn.afterturn.easypoi.excel.annotation.*;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -60,6 +57,9 @@ public class DBFieldUtil {
             if (!Modifier.isStatic(field.getModifiers())) {
                 field.setAccessible(true);
                 Object fieldValue = field.get(temp);
+                if (field.isAnnotationPresent(ExcelIgnore.class)){
+                    continue;
+                }
                 if (field.isAnnotationPresent(Excel.class)) {
                     // 先找这个类里面的所有的注解
                     Excel excel = field.getAnnotation(Excel.class);
