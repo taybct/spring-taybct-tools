@@ -12,7 +12,14 @@ import org.apache.hc.core5.http.ContentType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.net.ssl.*;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,6 +34,38 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.0.0
  */
 public class FileServiceBuilder {
+
+    static {
+        try {
+            // 创建一个信任所有证书的 TrustManager
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return null;
+                        }
+
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+                        }
+
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+                        }
+                    }
+            };
+            // 初始化 SSLContext
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            // 创建一个信任所有主机名的 HostnameVerifier
+            HostnameVerifier allHostsValid = new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * 文件配置
@@ -232,6 +271,39 @@ public class FileServiceBuilder {
      */
     public static String getBase64(String path) throws Exception {
         return Base64.getEncoder().encodeToString(getByteArray(path));
+    }
+
+    /**
+     * 保存网址文件
+     *
+     * @param downloadUri 的文件地址
+     * @param fileName    上传的文件名（主要用来获取文件类型）
+     * @return 上传后的文件地址
+     * @throws Exception 异常
+     */
+    private static String saveFile(String downloadUri, String fileName) throws Exception {
+        URL url = new URL(downloadUri);
+        HttpURLConnection connection = null;
+        HttpsURLConnection connections = null;
+        if (downloadUri.startsWith("https://")) {
+            connections = (HttpsURLConnection) url.openConnection();
+        } else {
+            connection = (HttpURLConnection) url.openConnection();
+        }
+        if (connections == null) {
+            connection = (HttpURLConnection) url.openConnection();
+        }
+        String path;
+        try (InputStream stream = connections != null ? connections.getInputStream() : connection.getInputStream()) {
+            path = FileServiceBuilder.upload(stream, ContentType.MULTIPART_FORM_DATA, fileName);
+        }
+        if (connection != null) {
+            connection.disconnect();
+        }
+        if (connections != null) {
+            connections.disconnect();
+        }
+        return path;
     }
 
 }
