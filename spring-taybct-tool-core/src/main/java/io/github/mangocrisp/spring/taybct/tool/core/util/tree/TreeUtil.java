@@ -1,5 +1,6 @@
 package io.github.mangocrisp.spring.taybct.tool.core.util.tree;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson2.JSONObject;
 import io.github.mangocrisp.spring.taybct.tool.core.util.CollectionSortUtil;
 
@@ -7,6 +8,8 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 树工具，依赖于集合排序工具
@@ -165,6 +168,52 @@ public class TreeUtil {
         }
         // 这里可以做排序
         p.setChildren(CollectionSortUtil.sortListByName(p.getChildren(), p.getSortField(), p.sortAsc()));
+    }
+
+
+    /**
+     * 排除根节点
+     *
+     * @param set        集合
+     * @param topParentId 根节点的id
+     * @return 树结构
+     */
+    public static <T extends Tree<T>> LinkedHashSet<T> excludeRootNode(LinkedHashSet<T> set, Long topParentId) {
+        return tree(new LinkedHashSet<>(set.stream().filter(i -> !i.getId().equals(topParentId)).toList()));
+    }
+
+    /**
+     * 生成树结构
+     *
+     * @param set 数据
+     * @return 树结构
+     */
+    public static <T extends Tree<T>> LinkedHashSet<T> tree(LinkedHashSet<T> set) {
+        if (CollectionUtil.isEmpty(set)) {
+            return new LinkedHashSet<>();
+        }
+        // 拿到所有的 id
+        Set<Serializable> idSet = set.stream().map(Tree::getId).collect(Collectors.toSet());
+        LinkedHashSet<T> tree = new LinkedHashSet<>();
+        set.forEach(i -> {
+            if (!idSet.contains(i.getParentId())) {
+                // 如果找父级不到了就往 tree 里面放在第一级
+                tree.add(i);
+            } else {
+                set.forEach(j -> {
+                    if (j.getId().equals(i.getParentId())) {
+                        if (j.getChildren() == null) {
+                            j.setChildren(new LinkedHashSet<>());
+                        }
+                        j.getChildren().add(i);
+                        // 排序
+                        j.setChildren(CollectionSortUtil.sortListByName(j.getChildren(), j.getSortField(), j.sortAsc()));
+                    }
+                });
+            }
+            // 这里可以做排序
+        });
+        return tree;
     }
 
 }
