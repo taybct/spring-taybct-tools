@@ -43,11 +43,11 @@ public class Demo {
 //        list.add(new BaseTree(1, "12", 11, "6", "label", null, BaseTree.class, new ArrayList<>()));
         long l = System.currentTimeMillis();
         // 不排序
-        List<BaseTree> tree = TreeUtil.tree(list);
+//        List<BaseTree> tree = TreeUtil.tree(list);
         // 硬比较，也就是比较数字大小
 //        List<BaseTree> tree = TreeUtil.tree(list, Comparator.comparingInt(t-> Convert.toInt(t.getSort())));
         // 可以比较中文，按拼音比较
-//        List<BaseTree> tree = TreeUtil.tree(list, CollectionSortUtil.comparingAny(BaseTree::getLabel, true));
+        List<BaseTree> tree = TreeUtil.tree(list, CollectionSortUtil.comparingAny(BaseTree::getLabel, true));
         System.out.println("TreeUtil.tree：" + (System.currentTimeMillis() - l));
 
 //        l = System.currentTimeMillis();
