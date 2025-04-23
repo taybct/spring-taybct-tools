@@ -5,11 +5,8 @@ import com.alibaba.fastjson2.JSONObject;
 import io.github.mangocrisp.spring.taybct.tool.core.util.CollectionSortUtil;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 树工具，依赖于集合排序工具
@@ -23,7 +20,7 @@ public class TreeUtil {
 
         /**
          * 用来排序的字段，排序使用的是<br>
-         * {@link CollectionSortUtil#sortListByName(LinkedHashSet, String)}<br>
+         * {@link CollectionSortUtil#sortListByName(List, String)}<br>
          * 如果你要排序，这里默认是使用的 sort，但是建议你是自己再准备一个专门用来排序的字段
          *
          * @return String
@@ -36,7 +33,7 @@ public class TreeUtil {
 
         /**
          * 是否是正序排序,结合排序来使用，这个配置其实也就是<br>
-         * {@link CollectionSortUtil#sortListByName(LinkedHashSet, String, Boolean)}<br>
+         * {@link CollectionSortUtil#sortListByName(List, String, Boolean)}<br>
          * 里面的排序字段，本来默认也是正序，如果想倒序排序，就返回一个 false
          *
          * @return Boolean
@@ -95,42 +92,41 @@ public class TreeUtil {
         /**
          * 获取子级
          */
-        LinkedHashSet<T> getChildren();
+        List<T> getChildren();
 
         /**
          * 设置子级
          */
-        void setChildren(LinkedHashSet<T> children);
+        void setChildren(List<T> children);
 
     }
 
-
-    public static <T extends Tree<T>> LinkedHashSet<T> genTree(LinkedHashSet<T> set) {
-        return genTree(set, "0", false);
+    public static <T extends Tree<T>> List<T> genTree(List<T> list) {
+        return genTree(list, "0", false);
     }
 
-    public static <T extends Tree<T>> LinkedHashSet<T> genTree(LinkedHashSet<T> set, Serializable parentId) {
-        return genTree(set, parentId, false);
+    public static <T extends Tree<T>> List<T> genTree(List<T> list, Serializable parentId) {
+        return genTree(list, parentId, false);
     }
 
-    public static <T extends Tree<T>> LinkedHashSet<T> genTree(LinkedHashSet<T> set, boolean includeTopParent) {
-        return genTree(set, "0", includeTopParent);
+    public static <T extends Tree<T>> List<T> genTree(List<T> list, boolean includeTopParent) {
+        return genTree(list, "0", includeTopParent);
     }
 
     /**
      * 生成树
      *
-     * @param set              集合
+     * @param list             集合
      * @param parentId         从哪个父级开始往下生子子集
      * @param includeTopParent 是否包含顶级父级，如果不包含，会有多个根目录
-     * @return {@code LinkedHashSet<T>}
+     * @return {@code List<T>}
      * @author xijieyin <br> 2022/8/5 19:12
      * @since 1.0.0
      */
-    public static <T extends Tree<T>> LinkedHashSet<T> genTree(LinkedHashSet<T> set, Serializable parentId, boolean includeTopParent) {
-        LinkedHashSet<T> result = new LinkedHashSet<>();
+    public static <T extends Tree<T>> List<T> genTree(List<T> list, Serializable parentId, boolean includeTopParent) {
+        List<T> result = new ArrayList<>();
         // 先获取到第一个，如果一个都没有就直接返回空了
-        Optional<T> first = set.stream().findFirst();
+        Optional<T> first = list.stream().findFirst();
         if (first.isEmpty()) {
             return result;
         }
@@ -138,9 +134,9 @@ public class TreeUtil {
         // 先找到所有的顶级节点
         Serializable finalParentLevel = parentId;
         // 先排序
-        set = CollectionSortUtil.sortListByName(set, first.get().getSortField(), first.get().sortAsc());
+        list = CollectionSortUtil.sortListByName(list, first.get().getSortField(), first.get().sortAsc());
         // 然后在所有的集合里面找父级
-        set.forEach(t -> {
+        list.forEach(t -> {
             if (includeTopParent) {
                 if (Objects.equals(t.getId(), finalParentLevel)) {
                     result.add(t);
@@ -151,17 +147,17 @@ public class TreeUtil {
                 }
             }
         });
-        LinkedHashSet<T> finalSet = set;
+        List<T> finalSet = list;
         result.forEach(p -> Iteration(p, finalSet));
         return result;
     }
 
-    private static <T extends Tree<T>> void Iteration(T p, LinkedHashSet<T> set) {
+    private static <T extends Tree<T>> void Iteration(T p, List<T> set) {
         for (T c : set) {
             if (Objects.equals(p.getId(), c.getParentId())) {
                 Iteration(c, set);
                 if (p.getChildren() == null) {
-                    p.setChildren(new LinkedHashSet<>());
+                    p.setChildren(new ArrayList<>());
                 }
                 p.getChildren().add(c);
             }
@@ -170,93 +166,90 @@ public class TreeUtil {
         p.setChildren(CollectionSortUtil.sortListByName(p.getChildren(), p.getSortField(), p.sortAsc()));
     }
 
-
     /**
-     * 排除根节点
+     * 生成树结构, 如果对顺序没有要求，不排序可以增加生成树结构的速度（不排序）
      *
-     * @param set         集合
-     * @param topParentId 根节点的id
+     * @param list           数据
+     * @param excludeNodeIds 需要排除的节点的 id
      * @return 树结构
      */
-    public static <T extends Tree<T>> LinkedHashSet<T> excludeRootNode(LinkedHashSet<T> set, Long topParentId) {
-        return excludeRootNode(set, topParentId, true);
-    }
-
-    /**
-     * 排除根节点
-     *
-     * @param set         集合
-     * @param topParentId 根节点的id
-     * @param sort        排序
-     * @return 树结构
-     */
-    public static <T extends Tree<T>> LinkedHashSet<T> excludeRootNode(LinkedHashSet<T> set, Long topParentId, boolean sort) {
-        return tree(new LinkedHashSet<>(set.stream().filter(i -> !i.getId().equals(topParentId)).toList()), sort);
-    }
-
-    /**
-     * 生成树结构
-     *
-     * @param set 数据
-     * @return 树结构
-     */
-    public static <T extends Tree<T>> LinkedHashSet<T> tree(LinkedHashSet<T> set) {
-        return tree(set, true);
+    public static <T extends Tree<T>> List<T> tree(List<T> list, Serializable... excludeNodeIds) {
+        return tree(list, null, new HashSet<>(Arrays.asList(excludeNodeIds)));
     }
 
     /**
      * 生成树结构, 如果对顺序没有要求，不排序可以增加生成树结构的速度
      *
-     * @param set  数据
-     * @param sort 排序
+     * @param list           数据
+     * @param sort           排序规则
+     * @param excludeNodeIds 需要排除的节点的 id
      * @return 树结构
      */
-    public static <T extends Tree<T>> LinkedHashSet<T> tree(LinkedHashSet<T> set, boolean sort) {
-        if (CollectionUtil.isEmpty(set)) {
-            return new LinkedHashSet<>();
+    public static <T extends Tree<T>> List<T> tree(List<T> list, Comparator<? super T> sort, Serializable... excludeNodeIds) {
+        return tree(list, sort, new HashSet<>(Arrays.asList(excludeNodeIds)));
+    }
+
+    /**
+     * 生成树结构, 如果对顺序没有要求，不排序可以增加生成树结构的速度(不排序)
+     *
+     * @param list             数据
+     * @param excludeNodeIdSet 需要排除的节点的 id
+     * @return 树结构
+     */
+    public static <T extends Tree<T>> List<T> tree(List<T> list, Set<Serializable> excludeNodeIdSet) {
+        return tree(list, null, excludeNodeIdSet);
+    }
+
+    /**
+     * 生成树结构, 如果对顺序没有要求，不排序可以增加生成树结构的速度
+     *
+     * @param list             数据
+     * @param sort             排序规则
+     * @param excludeNodeIdSet 需要排除的节点的 id
+     * @return 树结构
+     */
+    public static <T extends Tree<T>> List<T> tree(List<T> list, Comparator<? super T> sort, Set<Serializable> excludeNodeIdSet) {
+        if (CollectionUtil.isEmpty(list)) {
+            return new ArrayList<>();
         }
-        // 拿到所有的 id
-        Set<Serializable> idSet = set.stream().map(Tree::getId).collect(Collectors.toSet());
-        LinkedHashSet<T> tree = new LinkedHashSet<>();
-        set.forEach(i -> {
-            if (idSet.contains(i.getParentId())) {
-                set.forEach(j -> {
-                    if (j.getId().equals(i.getParentId())) {
-                        if (j.getChildren() == null) {
-                            j.setChildren(new LinkedHashSet<>());
-                        }
-                        j.getChildren().add(i);
+        // 先给所有的数据找到自己的位置
+        Map<Serializable, Integer> indexMap = new ConcurrentHashMap<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (excludeNodeIdSet.contains(list.get(i).getId())) {
+                continue;
+            }
+            indexMap.put(list.get(i).getId(), i);
+        }
+        list.forEach(i -> {
+            if (excludeNodeIdSet.contains(i.getId())) {
+                return;
+            }
+            if (i.getParentId() != null) {
+                // 如果有父级就往父级里面添加
+                Integer index = indexMap.get(i.getParentId());
+                if (index != null) {
+                    T j = list.get(index);
+                    if (j.getChildren() == null) {
+                        j.setChildren(new ArrayList<>());
                     }
-                });
+                    j.getChildren().add(i);
+                }
             }
         });
-        set.forEach(i -> {
-            if (!idSet.contains(i.getParentId())) {
-                if (sort && CollectionUtil.isNotEmpty(i.getChildren())) {
-                    i.setChildren(sortChildren(i, i.getChildren()));
-                }
+        List<T> tree = new ArrayList<>();
+        list.forEach(i -> {
+            if (excludeNodeIdSet.contains(i.getId())) {
+                return;
+            }
+            if (sort != null) {
+                i.getChildren().sort(sort);
+            }
+            if (i.getParentId() == null || indexMap.get(i.getParentId()) == null) {
                 // 如果找父级不到了就往 tree 里面放在第一级
                 tree.add(i);
             }
         });
         return tree;
-    }
-
-    /**
-     * 给子集排序
-     *
-     * @param t   父级
-     * @param set 子集
-     * @return 排序后的子集
-     */
-    public static <T extends Tree<T>> LinkedHashSet<T> sortChildren(T t, LinkedHashSet<T> set) {
-        set.forEach(i -> {
-            if (CollectionUtil.isNotEmpty(i.getChildren())) {
-                i.setChildren(sortChildren(i, i.getChildren()));
-            }
-        });
-        // 这里可以做排序
-        return CollectionSortUtil.sortListByName(set, t.getSortField(), t.sortAsc());
     }
 
 }

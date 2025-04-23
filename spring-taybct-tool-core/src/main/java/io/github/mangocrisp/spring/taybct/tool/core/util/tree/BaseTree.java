@@ -10,7 +10,10 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * 基础树<br>
@@ -45,7 +48,7 @@ public class BaseTree implements TreeUtil.Tree<BaseTree> {
      * 父 id
      */
     @Schema(description = "父 id")
-    private Serializable pid;
+    private Serializable sort;
     /**
      * 父级 id
      */
@@ -70,9 +73,10 @@ public class BaseTree implements TreeUtil.Tree<BaseTree> {
      * 子集
      */
     @Schema(description = "子集")
-    private LinkedHashSet<BaseTree> children;
+    private List<BaseTree> children;
 
-    public void setChildren(LinkedHashSet<BaseTree> children) {
+    @Override
+    public  void setChildren(List<BaseTree> children) {
         this.children = children;
     }
 
