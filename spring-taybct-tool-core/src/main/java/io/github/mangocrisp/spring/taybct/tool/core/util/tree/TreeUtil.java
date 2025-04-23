@@ -101,14 +101,17 @@ public class TreeUtil {
 
     }
 
+    @Deprecated(since = "3.2.2", forRemoval = true)
     public static <T extends Tree<T>> List<T> genTree(List<T> list) {
         return genTree(list, "0", false);
     }
 
+    @Deprecated(since = "3.2.2", forRemoval = true)
     public static <T extends Tree<T>> List<T> genTree(List<T> list, Serializable parentId) {
         return genTree(list, parentId, false);
     }
 
+    @Deprecated(since = "3.2.2", forRemoval = true)
     public static <T extends Tree<T>> List<T> genTree(List<T> list, boolean includeTopParent) {
         return genTree(list, "0", includeTopParent);
     }
@@ -123,6 +126,7 @@ public class TreeUtil {
      * @author xijieyin <br> 2022/8/5 19:12
      * @since 1.0.0
      */
+    @Deprecated(since = "3.2.2", forRemoval = true)
     public static <T extends Tree<T>> List<T> genTree(List<T> list, Serializable parentId, boolean includeTopParent) {
         List<T> result = new ArrayList<>();
         // 先获取到第一个，如果一个都没有就直接返回空了
@@ -152,6 +156,7 @@ public class TreeUtil {
         return result;
     }
 
+    @Deprecated(since = "3.2.2", forRemoval = true)
     private static <T extends Tree<T>> void Iteration(T p, List<T> set) {
         for (T c : set) {
             if (Objects.equals(p.getId(), c.getParentId())) {
