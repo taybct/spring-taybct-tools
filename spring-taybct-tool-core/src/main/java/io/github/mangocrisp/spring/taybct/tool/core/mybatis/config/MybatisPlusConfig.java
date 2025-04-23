@@ -188,8 +188,6 @@ public class MybatisPlusConfig {
                 }
                 try (Connection connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection()) {
                     DbType dbType = DBHelper.getDbType(connection, DbType.POSTGRE_SQL);
-                    // 拿到类型之后就断开连接，不然连接数太多了，就会卡住
-                    //connection.close();
                     stringObjectMap.put("_db_type_db_", dbType.getDb());
                 } catch (Exception e) {
                     log.trace("设置数据源类型失败！", e);
