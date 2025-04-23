@@ -241,7 +241,7 @@ public class TreeUtil {
             if (excludeNodeIdSet.contains(i.getId())) {
                 return;
             }
-            if (sort != null) {
+            if (sort != null && CollectionUtil.isNotEmpty(i.getChildren())) {
                 i.getChildren().sort(sort);
             }
             if (i.getParentId() == null || indexMap.get(i.getParentId()) == null) {
