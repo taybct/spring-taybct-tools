@@ -404,6 +404,7 @@ public class EasyPOIUtil {
         params.setSaveUrl("/excel/");
         params.setNeedSave(true);
         params.setNeedVerify(needVerfiy);
+        params.setDictHandler(excelDictHandler);
         try {
             return ExcelImportUtil.importExcel(inputStream, pojoClass, params);
         } catch (NoSuchElementException e) {
