@@ -80,8 +80,8 @@ public class DBFieldUtil {
                             .mergeVertical(excel.mergeVertical())
                             .replace(excel.replace())
                             .orderNum(excel.orderNum())
-                            .mergeSame(true)
                             .format(excel.format())
+                            .mergeSame(true)
                             .needMerge(excel.needMerge())
                             .defaultValue(fieldValue)
                             .build());
