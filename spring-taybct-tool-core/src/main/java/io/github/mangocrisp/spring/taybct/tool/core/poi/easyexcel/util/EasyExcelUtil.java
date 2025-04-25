@@ -20,6 +20,20 @@ public class EasyExcelUtil {
 
     @SneakyThrows
     public static void export(String fileName, HttpServletResponse response, Class<?> clazz, Supplier<Collection<?>> data) {
+        configResponse(fileName, response);
+        EasyExcel.write(response.getOutputStream(), clazz)
+                // EasyExcel对象Long类型太长导致导出变成科学计数法解决方法，也可以在单独的字段加上如：@NumberFormat(value = “#”)
+                .registerConverter(new LongStringConverter())
+                .sheet("Sheet1").doWrite(data.get());
+    }
+
+    /**
+     * 配置 response
+     *
+     * @param fileName 文件名
+     * @param response response
+     */
+    public static void configResponse(String fileName, HttpServletResponse response) {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         response.setContentType("application/octet-stream");
         response.setCharacterEncoding("utf-8");
@@ -27,10 +41,6 @@ public class EasyExcelUtil {
         fileName = URLEncoder.encode((fileName + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss", Locale.CHINA)))
                 , StandardCharsets.UTF_8).replaceAll("\\+", "%20");
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
-        EasyExcel.write(response.getOutputStream(), clazz)
-                // EasyExcel对象Long类型太长导致导出变成科学计数法解决方法，也可以在单独的字段加上如：@NumberFormat(value = “#”)
-                .registerConverter(new LongStringConverter())
-                .sheet("Sheet1").doWrite(data.get());
     }
 
 }
