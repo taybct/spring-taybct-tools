@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2025/4/23 09:16
  */
 public class Demo {
-    public static void main(String[] args) {
+    public void main(String[] args) {
         List<BaseTree> list = new ArrayList<>();
         List<TreeNode<Integer>> list1 = new ArrayList<>();
 //        list.add(new BaseTree(1, "0", 0, null, "label", null, BaseTree.class, new ArrayList<>()));
