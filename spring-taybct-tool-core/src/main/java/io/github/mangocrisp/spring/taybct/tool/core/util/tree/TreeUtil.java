@@ -254,6 +254,10 @@ public class TreeUtil {
                 tree.add(i);
             }
         });
+        // 顶级也需要排序
+        if (sort != null && CollectionUtil.isNotEmpty(tree)) {
+            tree.sort(sort);
+        }
         return tree;
     }
 
