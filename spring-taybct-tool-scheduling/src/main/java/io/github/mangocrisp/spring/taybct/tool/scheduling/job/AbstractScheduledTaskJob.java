@@ -67,13 +67,6 @@ public abstract class AbstractScheduledTaskJob implements IScheduledTaskJob {
     }
 
     /**
-     * 这个 run 需要用户自己支写逻辑
-     *
-     * @param params 参数就是配置的参数
-     */
-    public abstract void run(Map<String, Object> params) throws Exception;
-
-    /**
      * 这个 run spring scheduling 会调用
      */
     @Override
@@ -83,7 +76,7 @@ public abstract class AbstractScheduledTaskJob implements IScheduledTaskJob {
         }
         try {
             log.debug(">>>>>> 任务 [{}] 开始 >>>>>> ", this.description);
-            run(this.params);
+            this.run(this.params);
             log.debug(">>>>>> 任务 [{}] 结束 >>>>>> ", this.description);
             if (getLogRecorder() != null) {
                 stopRecord(OperateStatus.SUCCESS.getIntCode(), String.format("任务 [%s] 执行完毕", this.description));

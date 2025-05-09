@@ -69,6 +69,19 @@ public class SchedulingTaskServiceImpl implements ISchedulingService {
     }
 
     @Override
+    public boolean tryOnce(String taskKey, Map<String, Object> params) {
+        Optional.ofNullable(scheduledTaskJobMap.get(taskKey)).ifPresent(scheduledTaskJob -> {
+            log.debug(">>>>>> 尝试执行一次任务 [ {} ] ", taskKey);
+            try {
+                scheduledTaskJob.run(params);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return true;
+    }
+
+    @Override
     public Boolean start(String taskKey) {
         log.debug(">>>>>> 启动任务 {} 开始 >>>>>>", taskKey);
         //添加锁放一个线程启动，防止多人启动多次
