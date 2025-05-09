@@ -32,4 +32,11 @@ public interface IScheduledTaskJob extends Runnable {
      */
     void setParams(Map<String, Object> params);
 
+    /**
+     * 这个 run 需要用户自己支写逻辑
+     *
+     * @param params 参数就是配置的参数
+     */
+    void run(Map<String, Object> params) throws Exception;
+
 }
