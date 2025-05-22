@@ -607,14 +607,14 @@ public class MyBatisUtil {
             PGobject pGobject = new PGobject();
             pGobject.setType("json");
             try {
-                if (fieldValue instanceof JSONArray) {
-                    pGobject.setValue(((JSONArray) fieldValue).toJSONString());
+                if (fieldValue instanceof JSONArray jsonArray) {
+                    pGobject.setValue(jsonArray.toJSONString());
                 }
-                if (fieldValue instanceof JSONObject) {
-                    pGobject.setValue(((JSONObject) fieldValue).toJSONString());
+                if (fieldValue instanceof JSONObject jsonObject) {
+                    pGobject.setValue(jsonObject.toJSONString());
                 }
-                if (fieldValue instanceof String) {
-                    pGobject.setValue((String) fieldValue);
+                if (fieldValue instanceof String string) {
+                    pGobject.setValue(string);
                 }
                 fieldValue = pGobject;
             } catch (SQLException e) {
