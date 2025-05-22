@@ -6,6 +6,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.PrimitiveArrayUtil;
 import cn.hutool.extra.expression.engine.spel.SpELEngine;
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.annotation.DbType;
@@ -607,14 +608,14 @@ public class MyBatisUtil {
             PGobject pGobject = new PGobject();
             pGobject.setType("json");
             try {
-                if (fieldValue instanceof JSONArray jsonArray) {
-                    pGobject.setValue(jsonArray.toJSONString());
-                }
-                if (fieldValue instanceof JSONObject jsonObject) {
-                    pGobject.setValue(jsonObject.toJSONString());
-                }
                 if (fieldValue instanceof String string) {
                     pGobject.setValue(string);
+                } else if (fieldValue instanceof JSONObject jsonObject) {
+                    pGobject.setValue(jsonObject.toJSONString());
+                } else if (fieldValue instanceof JSONArray jsonArray) {
+                    pGobject.setValue(jsonArray.toJSONString());
+                } else {
+                    pGobject.setValue(JSON.toJSONString(fieldValue));
                 }
                 fieldValue = pGobject;
             } catch (SQLException e) {
