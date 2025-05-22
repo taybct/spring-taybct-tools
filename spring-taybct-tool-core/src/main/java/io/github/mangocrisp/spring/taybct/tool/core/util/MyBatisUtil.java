@@ -6,6 +6,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.PrimitiveArrayUtil;
 import cn.hutool.extra.expression.engine.spel.SpELEngine;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -603,15 +604,21 @@ public class MyBatisUtil {
         DbType dbType = DbType.getDbType(ms.getConfiguration().getDatabaseId());
         if (Objects.requireNonNull(dbType) == DbType.POSTGRE_SQL) {
             // 如果是 pgsql 需要做额外处理
-            if (fieldValue instanceof String) {
-                PGobject pGobject = new PGobject();
-                pGobject.setType("json");
-                try {
-                    pGobject.setValue((String) fieldValue);
-                    fieldValue = pGobject;
-                } catch (SQLException e) {
-                    log.trace(e.getMessage(), e);
+            PGobject pGobject = new PGobject();
+            pGobject.setType("json");
+            try {
+                if (fieldValue instanceof JSONArray) {
+                    pGobject.setValue(((JSONArray) fieldValue).toJSONString());
                 }
+                if (fieldValue instanceof JSONObject) {
+                    pGobject.setValue(((JSONObject) fieldValue).toJSONString());
+                }
+                if (fieldValue instanceof String) {
+                    pGobject.setValue((String) fieldValue);
+                }
+                fieldValue = pGobject;
+            } catch (SQLException e) {
+                log.trace(e.getMessage(), e);
             }
         }
         // 后面再添加其他数据库的兼容，这里先兼容 pgsql
