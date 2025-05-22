@@ -8,7 +8,7 @@ import java.io.Serial;
 
 /**
  * <pre>
- * JSONObject 转换成字符串
+ * PGobject 转换成字符串
  * </pre>
  *
  * @author XiJieYin
