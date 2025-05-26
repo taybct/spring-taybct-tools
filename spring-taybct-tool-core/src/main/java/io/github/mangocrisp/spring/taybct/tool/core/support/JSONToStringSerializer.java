@@ -1,5 +1,6 @@
 package io.github.mangocrisp.spring.taybct.tool.core.support;
 
+import cn.hutool.core.convert.Convert;
 import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializerBase;
 import org.postgresql.util.PGobject;
@@ -32,11 +33,14 @@ public class JSONToStringSerializer extends ToStringSerializerBase {
 
     @Override
     public String valueToString(Object o) {
+        if (o == null) {
+            return null;
+        }
         if (o instanceof PGobject pGobject) {
             if (pGobject.getType().equalsIgnoreCase("json")) {
                 return pGobject.getValue();
             }
         }
-        return o.toString();
+        return Convert.toStr(o, null);
     }
 }
