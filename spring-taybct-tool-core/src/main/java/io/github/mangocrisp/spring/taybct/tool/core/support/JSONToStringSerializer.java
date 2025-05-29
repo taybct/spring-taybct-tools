@@ -1,6 +1,7 @@
 package io.github.mangocrisp.spring.taybct.tool.core.support;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializerBase;
 import org.postgresql.util.PGobject;
@@ -33,7 +34,7 @@ public class JSONToStringSerializer extends ToStringSerializerBase {
 
     @Override
     public String valueToString(Object o) {
-        if (o == null) {
+        if (ObjectUtil.isEmpty(o)) {
             return null;
         }
         if (o instanceof PGobject pGobject) {
