@@ -64,7 +64,7 @@ import java.util.Set;
  * @see MyBatisUtil
  * @since 1.0.0
  */
-public interface FullBaseController<T extends BaseEntity
+public interface    FullBaseController<T extends BaseEntity
         , S extends IBaseService<T>
         , P extends Serializable
         , Q extends T

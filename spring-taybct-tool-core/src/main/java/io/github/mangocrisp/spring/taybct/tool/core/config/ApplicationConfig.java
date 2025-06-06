@@ -205,7 +205,7 @@ public class ApplicationConfig {
      */
     @Bean
     @ConditionalOnMissingBean(IEncryptedPassable.class)
-    IEncryptedPassable encryptedPassable() {
+    public IEncryptedPassable encryptedPassable() {
         return s -> {
             try {
                 if (s.startsWith("04")) {
