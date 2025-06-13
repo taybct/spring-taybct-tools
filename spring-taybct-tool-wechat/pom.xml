@@ -73,6 +73,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--排除Tomcat依赖 使用 undertow-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
         <!--httpclient-->
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
