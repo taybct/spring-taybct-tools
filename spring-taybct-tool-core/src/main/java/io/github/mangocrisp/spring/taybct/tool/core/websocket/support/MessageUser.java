@@ -1,0 +1,17 @@
+package io.github.mangocrisp.spring.taybct.tool.core.websocket.support;
+
+import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserType;
+
+/**
+ * <pre>
+ * 消息用户
+ * </pre>
+ *
+ * @param messageUserType 用户类型
+ * @param userId 用户 id
+ * @author XiJieYin
+ * @since 2025/6/13 15:36
+ */
+public record MessageUser(MessageUserType messageUserType, Long userId) {
+
+}
