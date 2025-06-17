@@ -3,6 +3,7 @@ package io.github.mangocrisp.spring.taybct.tool.core.websocket.config;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WebSocketReactiveHandlerMapping;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -26,6 +27,7 @@ public class AutoWebSocketReactiveConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public WebSocketHandlerAdapter handlerAdapter() {
         return new WebSocketHandlerAdapter();
     }
