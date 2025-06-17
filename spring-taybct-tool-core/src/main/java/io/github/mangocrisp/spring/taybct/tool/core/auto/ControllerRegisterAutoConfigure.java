@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -30,6 +31,7 @@ import java.util.LinkedHashSet;
 @Slf4j
 @RequiredArgsConstructor
 @EnableConfigurationProperties({ControllerRegisterConfigure.class})
+@ConditionalOnClass(RequestMappingInfo.class)
 public class ControllerRegisterAutoConfigure implements ApplicationRunner {
 
     final ControllerRegisterConfigure controllerRegisterConfigure;
