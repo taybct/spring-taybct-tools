@@ -2,16 +2,21 @@ package io.github.mangocrisp.spring.taybct.tool.core.websocket.endpoint;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson2.JSONObject;
+import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserType;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.MessageUser;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WebSocketMessagePayload;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.LinkedHashSet;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -23,71 +28,91 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @author XiJieYin
  * @since 2025/3/14 15:37
  */
+@Getter
 @Slf4j
 @RequiredArgsConstructor
 @ConditionalOnClass(Session.class)
 public abstract class AbstractWebSocketServer implements IWebSocketServer<Session> {
 
     /**
-     * 与某个客户端的连接会话，需要通过它来给客户端发送数据
+     * 存放 session
      */
-    private Session session;
-
+    protected static final ConcurrentHashMap<Long, CopyOnWriteArraySet<Session>> userSessionPool = new ConcurrentHashMap<>();
     /**
-     * 用户ID
+     * 存放 websocket 会话
      */
-    private Long userId;
-
+    protected static final ConcurrentHashMap<String, Session> sessionPool = new ConcurrentHashMap<>();
     /**
-     * <pre>
-     * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-     * 虽然@Component默认是单例模式的，但springboot还是会为每个websocket连接初始化一个bean，
-     * 所以可以用一个静态set保存起来。
-     * 注：底下WebSocket是当前类名
-     * </pre>
+     * 存放请求参数
      */
-    private static final CopyOnWriteArraySet<AbstractWebSocketServer> webSockets = new CopyOnWriteArraySet<>();
-
+    protected static final ConcurrentHashMap<String, Map<String, List<String>>> requestParameterMap = new ConcurrentHashMap<>();
     /**
-     * <pre>
-     * 用来存在线连接用户信息
-     * </pre>
+     * 存放路径请求参数
      */
-    private static final ConcurrentHashMap<Long, Session> sessionPool = new ConcurrentHashMap<>();
-
-    @Override
-    public Session getSession(Long userId) {
-        return sessionPool.get(userId);
-    }
+    protected static final ConcurrentHashMap<String, Map<String, String>> pathParameterMap = new ConcurrentHashMap<>();
+    /**
+     * 会话用户
+     */
+    protected static final ConcurrentHashMap<String, Long> sessionUser = new ConcurrentHashMap<>();
 
     /**
      * 链接成功调用的方法
      */
     @OnOpen
     public void onOpen(Session session, @PathParam(value = "userId") Long userId) {
-        this.session = session;
-        this.userId = userId;
-        webSockets.add(this);
-        sessionPool.put(userId, session);
-        onOpen(userId);
+        requestParameterMap.put(session.getId(), session.getRequestParameterMap());
+        pathParameterMap.put(session.getId(), session.getPathParameters());
+        sessionUser.put(session.getId(), userId);
+        cacheSession(userId, session);
+        onOpen(userId, session);
     }
 
     @Override
-    public void onOpen(Long userId) {
-        log.debug("用户已连接：{}", userId);
+    public void onOpen(Long userId, Session session) {
+        log.debug("用户已连接：{}:{}", userId, session.getId());
         onlineCount();
+        // 返回告诉客户端连接成功，返回的第一条消息就是 sessionId
+        sendSimpleMessage(session.getId(), new MessageUser(MessageUserType.USER, userId, session.getId()));
+    }
+
+    @Override
+    public void cacheSession(Long userId, Session session) {
+        CopyOnWriteArraySet<Session> userWebSocketRecordPoolOrDefault = userSessionPool.getOrDefault(userId, new CopyOnWriteArraySet<>());
+        userWebSocketRecordPoolOrDefault.add(session);
+        userSessionPool.put(userId, userWebSocketRecordPoolOrDefault);
+        sessionPool.put(session.getId(), session);
+    }
+
+    @Override
+    public CopyOnWriteArraySet<Session> getSession(Long userId) {
+        return userSessionPool.get(userId);
+    }
+
+    @Override
+    public Session getSession(String sessionId) {
+        return sessionPool.get(sessionId);
+    }
+
+    @Override
+    public Map<String, List<String>> getRequestParameterMap(String sessionId) {
+        return requestParameterMap.get(sessionId);
+    }
+
+    @Override
+    public Map<String, String> getPathParameterMap(String sessionId) {
+        return pathParameterMap.get(sessionId);
     }
 
     /**
      * 发送错误时的处理
      */
     @OnError
-    public void onError(Throwable error) {
-        onError(userId, error);
+    public void onError(Session session, Throwable error) {
+        onError(session, sessionUser.get(session.getId()), error);
     }
 
     @Override
-    public void onError(Long userId, Throwable error) {
+    public void onError(Session session, Long userId, Throwable error) {
         log.error("WebSocket 异常！{}", userId, error);
     }
 
@@ -95,18 +120,25 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
      * 链接关闭调用的方法
      */
     @OnClose
-    public void onClose() {
-        log.debug("用户[{}]已断开连接！", userId);
-        webSockets.remove(this);
-        sessionPool.remove(this.userId);
-        onClose(userId);
+    public void onClose(Session session) {
+        Long userId = sessionUser.get(session.getId());
+        log.debug("用户[{}:{}]已断开连接！", userId, session.getId());// 当连接关闭时执行，无论正常关闭还是异常关闭
+        // 删除用户和 session 的关联
+        userSessionPool.getOrDefault(userId, new CopyOnWriteArraySet<>()).remove(session);
+        // 删除 session
+        sessionPool.remove(session.getId());
+        // 删除session的请求参数
+        requestParameterMap.remove(session.getId());
+        pathParameterMap.remove(session.getId());
+        sessionUser.remove(session.getId());
+        onClose(session, userId);
         onlineCount();
     }
 
     @Override
     public long onlineCount() {
-        log.debug("连接总数为: {}", webSockets.size());
-        return webSockets.size();
+        log.debug("连接总数为: {}", sessionPool.size());
+        return sessionPool.size();
     }
 
     /**
@@ -115,16 +147,16 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
      * @param message 消息
      */
     @OnMessage
-    public void onMessage(String message) {
-        onMessage(userId, message);
+    public void onMessage(Session session, String message) {
+        onMessage(session, sessionUser.get(session.getId()), message);
     }
 
     /**
      * 收到客户端消息后调用的方法(二进制)
      */
     @OnMessage
-    public void onMessage(byte[] message) {
-        onMessage(userId, message);
+    public void onMessage(Session session, byte[] message) {
+        onMessage(session, sessionUser.get(session.getId()), message);
     }
 
     /**
@@ -136,21 +168,35 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
     public void sendMessage(WebSocketMessagePayload message) {
         if (!ObjectUtils.isEmpty(message)) {
             log.debug("【websocket消息】 消息:{}", JSONObject.toJSONString(message));
-            LinkedHashSet<Long> messageToUserId = new LinkedHashSet<>(message.getToUser().stream().map(MessageUser::userId).toList());
-            if (CollectionUtil.isEmpty(messageToUserId)) {
+            if (CollectionUtil.isEmpty(message.getToUser())) {
                 sendAllMessage(message);
             } else {
-                for (Long userId : messageToUserId) {
-                    Session session = sessionPool.get(userId);
-                    if (session != null && session.isOpen()) {
-                        try {
-                            send(message, session);
-                        } catch (Exception e) {
-                            log.error("消息发送失败！", e);
+                message.getToUser().forEach(messageToUser -> {
+                    if (StringUtils.hasText(messageToUser.sessionId())) {
+                        // 如果设置了指定的 session id 则发送给指定的 session
+                        sendMessage(message, messageToUser, sessionPool.get(messageToUser.sessionId()));
+                    } else {
+                        // 如果只是指定发给某个用户，那这个用户所有联接的会话都会收到消息
+                        if (userSessionPool.containsKey(messageToUser.userId())) {
+                            userSessionPool.get(messageToUser.userId()).forEach(session -> sendMessage(message, messageToUser, session));
+                        } else {
+                            log.warn("用户{}的websocket连接不存在或已断开！", messageToUser.userId());
                         }
                     }
-                }
+                });
             }
+        }
+    }
+
+    public void sendMessage(WebSocketMessagePayload message, MessageUser messageToUser, Session session) {
+        if (session.isOpen()) {
+            try {
+                send(message, session);
+            } catch (Exception e) {
+                log.error("消息发送失败！", e);
+            }
+        } else {
+            log.warn("用户{}:{}的websocket连接不存在或已断开！", messageToUser.userId(), session.getId());
         }
     }
 
@@ -161,15 +207,16 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
      */
     @Override
     public void sendAllMessage(WebSocketMessagePayload message) {
-        for (AbstractWebSocketServer webSocket : webSockets) {
-            try {
-                if (webSocket.session.isOpen()) {
-                    send(message, webSocket.session);
-                }
-            } catch (Exception e) {
-                log.error("广播消息失败！", e);
-            }
-        }
+        userSessionPool.values().stream().flatMap(Collection::stream)
+                .forEach(session -> {
+                    try {
+                        if (session.isOpen()) {
+                            send(message, session);
+                        }
+                    } catch (Exception e) {
+                        log.error("广播消息失败！", e);
+                    }
+                });
     }
 
     /**

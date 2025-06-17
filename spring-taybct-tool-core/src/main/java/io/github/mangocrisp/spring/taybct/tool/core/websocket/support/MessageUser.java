@@ -9,9 +9,10 @@ import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserT
  *
  * @param messageUserType 用户类型
  * @param userId 用户 id
+ * @param sessionId session id
  * @author XiJieYin
  * @since 2025/6/13 15:36
  */
-public record MessageUser(MessageUserType messageUserType, Long userId) {
+public record MessageUser(MessageUserType messageUserType, Long userId, String sessionId) {
 
 }
