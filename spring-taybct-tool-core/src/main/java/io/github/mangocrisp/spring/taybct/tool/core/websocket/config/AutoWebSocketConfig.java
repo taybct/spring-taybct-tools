@@ -1,6 +1,5 @@
 package io.github.mangocrisp.spring.taybct.tool.core.websocket.config;
 
-import jakarta.websocket.Session;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,7 +15,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
  * @since 2025/3/14 15:30
  */
 @AutoConfiguration
-@ConditionalOnClass(Session.class)
+@ConditionalOnClass(ServerEndpointExporter.class)
 public class AutoWebSocketConfig {
 
     /**
