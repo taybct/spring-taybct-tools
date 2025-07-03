@@ -607,6 +607,9 @@ public class MyBatisUtil {
         }
         DbType dbType = DbType.getDbType(ms.getConfiguration().getDatabaseId());
         if (Objects.requireNonNull(dbType) == DbType.POSTGRE_SQL) {
+            if (fieldValue instanceof PGobject) {
+                return fieldValue;
+            }
             // 如果是 pgsql 需要做额外处理
             PGobject pGobject = new PGobject();
             pGobject.setType("json");
