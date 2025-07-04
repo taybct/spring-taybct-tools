@@ -141,14 +141,14 @@ public class ApiGateWay<Config extends ApiConfig> {
     /**
      * 带统一处理返回结果的方法
      *
-     * @param tokenInfoFunction 传 token 信息给需要调用的方法，然后返回结果
+     * @param apiFunction 接口方法
      * @return 请求的返回结果
      */
-    public JSONObject withTokenInfoJSON(BiFunction<Config, Header[], String> tokenInfoFunction) {
+    public JSONObject withTokenInfoJSON(BiFunction<Config, Header[], String> apiFunction) {
         for (int i = 0; ; i++) {
             try {
                 log.debug("进行第({})次请求", i + 1);
-                String resultJSONStr = withTokenInfo(tokenInfoFunction);
+                String resultJSONStr = withTokenInfo(apiFunction);
                 // 失败：{msg:,code,version}
                 JSONObject resultJSON = JSONObject.parseObject(resultJSONStr);
                 checkResult.accept(resultJSON, thirdPartName + "调用失败！");
@@ -156,6 +156,31 @@ public class ApiGateWay<Config extends ApiConfig> {
             } catch (Exception e) {
                 // 操作失败，有可能是登录失败了，这里删除 token 信息再请求一次
                 clearTokenInfo();
+                log.error("接口请求失败！", e);
+                if (i >= 2) {
+                    log.error("请求超过3次，退出操作！");
+                    // 失败超过 3 次就不再继续了
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * 带统一处理返回结果的方法
+     *
+     * @param apiFunction 接口方法
+     * @return 请求的返回结果
+     */
+    public JSONObject withInfoJSON(BiFunction<Config, Header[], String> apiFunction) {
+        for (int i = 0; ; i++) {
+            try {
+                log.debug("进行第({})次请求", i + 1);
+                String resultJSONStr = apiFunction.apply(config, null);
+                JSONObject resultJSON = JSONObject.parseObject(resultJSONStr);
+                checkResult.accept(resultJSON, thirdPartName + "调用失败！");
+                return resultJSON;
+            } catch (Exception e) {
                 log.error("接口请求失败！", e);
                 if (i >= 2) {
                     log.error("请求超过3次，退出操作！");
