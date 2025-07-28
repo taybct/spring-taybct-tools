@@ -1,3 +1,17 @@
+/*
+pikaへ　　　　　／|
+　　/＼7　　　 ∠＿/
+　 /　│　　 ／　／
+　│　Z ＿,＜　／　　 /`ヽ
+　│　　　　　ヽ　　 /　　〉
+　 Y　　　　　`　 /　　/
+　ｲ●　､　●　　⊂⊃〈　　/
+　()　 へ　　　　|　＼〈
+　　>ｰ ､_　 ィ　 │ ／／
+　 / へ　　 /　ﾉ＜| ＼＼
+　 ヽ_ﾉ　　(_／　 │／／
+　　7　　　　　　　|
+ */
 package io.github.mangocrisp.spring.taybct.tool.launch;
 
 import lombok.extern.slf4j.Slf4j;

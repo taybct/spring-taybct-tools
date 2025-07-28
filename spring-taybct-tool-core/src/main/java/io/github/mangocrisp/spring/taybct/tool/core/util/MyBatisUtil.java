@@ -603,7 +603,15 @@ public class MyBatisUtil {
      */
     public static Object getJSONFieldValue(MappedStatement ms, Object fieldValue) {
         if (ObjectUtil.isEmpty(fieldValue)){
-            return null;
+            // 如果是 pgsql 需要做额外处理
+            PGobject pGobject = new PGobject();
+            pGobject.setType("json");
+            try {
+                pGobject.setValue(null);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return pGobject;
         }
         DbType dbType = DbType.getDbType(ms.getConfiguration().getDatabaseId());
         if (Objects.requireNonNull(dbType) == DbType.POSTGRE_SQL) {
