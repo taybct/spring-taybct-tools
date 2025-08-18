@@ -272,7 +272,7 @@ public abstract class AbstractWebSocketReactiveServer implements WebSocketHandle
             onMessage(session, userId, webSocketMessage.getPayloadAsText(Charset.defaultCharset()));
         }
         if (webSocketMessage.getType().equals(WebSocketMessage.Type.BINARY)) {
-            onMessage(session, userId, IoUtil.readBytes(webSocketMessage.getPayload().asInputStream(true)));
+            onMessage(session, userId, IoUtil.readBytes(webSocketMessage.getPayload().asInputStream(), true));
         }
     }
 
