@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.mangocrisp</groupId>
         <artifactId>spring-taybct-tools</artifactId>
-        <version>3.2.2</version>
+        <version>3.2.3</version>
     </parent>
 
     <artifactId>spring-taybct-tool-pki</artifactId>
