@@ -3,16 +3,19 @@ package io.github.mangocrisp.spring.taybct.tool.core.websocket.endpoint;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson2.JSONObject;
 import io.github.mangocrisp.spring.taybct.tool.core.annotation.ServerReactiveEndpoint;
+import io.github.mangocrisp.spring.taybct.tool.core.websocket.constant.MessageTopic;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserType;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.MessageUser;
-import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WebSocketMessagePayload;
+import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WSR;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WebsocketReactiveSession;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.socket.*;
@@ -117,7 +120,7 @@ public abstract class AbstractWebSocketReactiveServer implements WebSocketHandle
     public Map<String, String> checkPathParameter(String path) {
         Map<String, String> pathParameterMap = new ConcurrentHashMap<>();
         ServerReactiveEndpoint annotation = getClass().getAnnotation(ServerReactiveEndpoint.class);
-        if (annotation!=null){
+        if (annotation != null) {
             String matchPath = annotation.value();
             // 提取变量名
             Pattern varNamePattern = Pattern.compile("\\{([^/]+)}");
@@ -201,7 +204,10 @@ public abstract class AbstractWebSocketReactiveServer implements WebSocketHandle
         log.debug("用户已连接：{}:{}", userId, session.session().getId());
         onlineCount();
         // 返回告诉客户端连接成功，返回的第一条消息就是 sessionId
-        sendSimpleMessage(session.session().getId(), new MessageUser(MessageUserType.USER, userId, session.session().getId()));
+        sendMessage(WSR.ok("连接成功！")
+                .setData(JSONObject.of("sessionId", session.session().getId(), "userId", userId))
+                .setToUser(new LinkedHashSet<>(Collections.singletonList(new MessageUser(MessageUserType.USER, userId, session.session().getId()))))
+                .setTopic(MessageTopic.SYSTEM_MESSAGE));
     }
 
     @Override
@@ -282,14 +288,14 @@ public abstract class AbstractWebSocketReactiveServer implements WebSocketHandle
      * @param message 消息
      */
     @Override
-    public void sendMessage(WebSocketMessagePayload message) {
+    public <E> void sendMessage(WSR<E> message) {
         if (!ObjectUtils.isEmpty(message)) {
             log.debug("【websocket消息】 消息:{}", JSONObject.toJSONString(message));
             if (CollectionUtil.isEmpty(message.getToUser())) {
                 sendAllMessage(message);
             } else {
                 message.getToUser().forEach(messageToUser -> {
-                    if (StringUtils.hasText(messageToUser.sessionId())) {
+                    if (StringUtils.hasText(messageToUser.sessionId()) && webSocketRecordPool.containsKey(messageToUser.sessionId())) {
                         // 如果设置了指定的 session id 则发送给指定的 session
                         sendMessage(message, messageToUser, webSocketRecordPool.get(messageToUser.sessionId()));
                     } else {
@@ -305,12 +311,13 @@ public abstract class AbstractWebSocketReactiveServer implements WebSocketHandle
         }
     }
 
-    public void sendMessage(WebSocketMessagePayload message, MessageUser messageToUser, WebsocketReactiveSession session) {
+    public <E> void sendMessage(WSR<E> message, MessageUser messageToUser, WebsocketReactiveSession session) {
         if (session.session().isOpen()) {
             try {
                 send(message, session);
             } catch (Exception e) {
                 log.error("消息发送失败！", e);
+                afterSend(message, e);
             }
         } else {
             log.warn("用户{}:{}的websocket连接不存在或已断开！", messageToUser.userId(), session.session().getId());
@@ -318,7 +325,7 @@ public abstract class AbstractWebSocketReactiveServer implements WebSocketHandle
     }
 
     @Override
-    public void sendAllMessage(WebSocketMessagePayload message) {
+    public <E> void sendAllMessage(WSR<E> message) {
         userWebSocketRecordPool.values().stream().flatMap(Collection::stream)
                 .forEach(session -> {
                     try {
@@ -327,17 +334,53 @@ public abstract class AbstractWebSocketReactiveServer implements WebSocketHandle
                         }
                     } catch (Exception e) {
                         log.error("广播消息失败！", e);
+                        afterSend(message, e);
                     }
                 });
     }
 
     @Override
-    public void send(WebSocketMessagePayload message, WebsocketReactiveSession session) {
-        if (message.getByteBuffer() != null) {
-            session.sink().next(session.session().binaryMessage(data -> data.wrap(message.getByteBuffer())));
+    public <E> void send(WSR<E> message, WebsocketReactiveSession session) {
+        if (message.getBytes() != null) {
+            session.sink().next(session.session().binaryMessage(data -> data.wrap(message.getBytes())));
         } else {
             session.sink().next(session.session().textMessage(JSONObject.toJSONString(message)));
         }
+        afterSend(message, null);
     }
 
+    @Override
+    public <E> void afterSend(WSR<E> message, @Nullable Throwable error) {
+        if (error != null) {
+            log.error("发送失败！{}", JSONObject.toJSONString(message), error);
+            onSendError(message, error);
+        } else {
+            onSendSuccess(message);
+        }
+        if (ObjectUtil.isNotNull(message.getFromUser())) {
+            MessageUser fromUser = message.getFromUser();
+            if (StringUtils.hasText(fromUser.sessionId()) && webSocketRecordPool.containsKey(fromUser.sessionId())) {
+                afterSend(message, error, webSocketRecordPool.get(fromUser.sessionId()));
+            } else {
+                if (userWebSocketRecordPool.containsKey(fromUser.userId())) {
+                    try {
+                        userWebSocketRecordPool.get(fromUser.userId()).forEach(session -> afterSend(message, error, session));
+                    } catch (Exception e) {
+                        log.error("发送失败消息失败！", e);
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public <E> void afterSend(WSR<E> message, Throwable error, WebsocketReactiveSession session) {
+        session.sink()
+                .next(session.session().textMessage(JSONObject.toJSONString((error == null ? WSR.ok("发送成功！") : WSR.fail("发送失败！"))
+                        .setData(JSONObject.of("source", JSONObject.toJSONString(message)))
+                        .setTopic(MessageTopic.SYSTEM_MESSAGE)
+                        .setError(error))));
+
+    }
 }

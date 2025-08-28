@@ -1,22 +1,24 @@
 package io.github.mangocrisp.spring.taybct.tool.core.websocket.endpoint;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson2.JSONObject;
+import io.github.mangocrisp.spring.taybct.tool.core.websocket.constant.MessageTopic;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserType;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.MessageUser;
-import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WebSocketMessagePayload;
+import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WSR;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.nio.ByteBuffer;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -72,7 +74,10 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
         log.debug("用户已连接：{}:{}", userId, session.getId());
         onlineCount();
         // 返回告诉客户端连接成功，返回的第一条消息就是 sessionId
-        sendSimpleMessage(session.getId(), new MessageUser(MessageUserType.USER, userId, session.getId()));
+        sendMessage(WSR.ok("连接成功！")
+                .setData(JSONObject.of("sessionId", session.getId(), "userId", userId))
+                .setToUser(new LinkedHashSet<>(Collections.singletonList(new MessageUser(MessageUserType.USER, userId, session.getId()))))
+                .setTopic(MessageTopic.SYSTEM_MESSAGE));
     }
 
     @Override
@@ -165,14 +170,14 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
      * @param message 消息
      */
     @Override
-    public void sendMessage(WebSocketMessagePayload message) {
+    public <E> void sendMessage(WSR<E> message) {
         if (!ObjectUtils.isEmpty(message)) {
             log.debug("【websocket消息】 消息:{}", JSONObject.toJSONString(message));
             if (CollectionUtil.isEmpty(message.getToUser())) {
                 sendAllMessage(message);
             } else {
                 message.getToUser().forEach(messageToUser -> {
-                    if (StringUtils.hasText(messageToUser.sessionId())) {
+                    if (StringUtils.hasText(messageToUser.sessionId()) && sessionPool.containsKey(messageToUser.sessionId())) {
                         // 如果设置了指定的 session id 则发送给指定的 session
                         sendMessage(message, messageToUser, sessionPool.get(messageToUser.sessionId()));
                     } else {
@@ -188,12 +193,13 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
         }
     }
 
-    public void sendMessage(WebSocketMessagePayload message, MessageUser messageToUser, Session session) {
+    public <E> void sendMessage(WSR<E> message, MessageUser messageToUser, Session session) {
         if (session.isOpen()) {
             try {
                 send(message, session);
             } catch (Exception e) {
                 log.error("消息发送失败！", e);
+                afterSend(message, e);
             }
         } else {
             log.warn("用户{}:{}的websocket连接不存在或已断开！", messageToUser.userId(), session.getId());
@@ -206,7 +212,7 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
      * @param message 消息
      */
     @Override
-    public void sendAllMessage(WebSocketMessagePayload message) {
+    public <E> void sendAllMessage(WSR<E> message) {
         userSessionPool.values().stream().flatMap(Collection::stream)
                 .forEach(session -> {
                     try {
@@ -215,6 +221,7 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
                         }
                     } catch (Exception e) {
                         log.error("广播消息失败！", e);
+                        afterSend(message, e);
                     }
                 });
     }
@@ -225,11 +232,46 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
      * @param message 消息
      * @param session session
      */
-    public void send(WebSocketMessagePayload message, Session session) {
-        if (message.getByteBuffer() != null) {
-            session.getAsyncRemote().sendBinary(message.getByteBuffer());
+    public <E> void send(WSR<E> message, Session session) {
+        if (message.getBytes() != null) {
+            session.getAsyncRemote().sendBinary(ByteBuffer.wrap(message.getBytes()));
         } else {
             session.getAsyncRemote().sendText(JSONObject.toJSONString(message));
         }
+        afterSend(message, null);
+    }
+
+    @Override
+    public <E> void afterSend(WSR<E> message, @Nullable Throwable error) {
+        if (error != null) {
+            log.error("发送失败！{}", JSONObject.toJSONString(message), error);
+            onSendError(message, error);
+        } else {
+            onSendSuccess(message);
+        }
+        if (ObjectUtil.isNotNull(message.getFromUser())) {
+            MessageUser fromUser = message.getFromUser();
+            if (StringUtils.hasText(fromUser.sessionId()) && sessionPool.containsKey(fromUser.sessionId())) {
+                afterSend(message, error, sessionPool.get(fromUser.sessionId()));
+            } else {
+                if (userSessionPool.containsKey(fromUser.userId())) {
+                    try {
+                        userSessionPool.get(fromUser.userId()).forEach(session -> afterSend(message, error, session));
+                    } catch (Exception e) {
+                        log.error("发送失败消息失败！", e);
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public <E> void afterSend(WSR<E> message, Throwable error, Session session) {
+        session.getAsyncRemote()
+                .sendText(JSONObject.toJSONString((error == null ? WSR.ok("发送成功！") : WSR.fail("发送失败！"))
+                        .setData(JSONObject.of("source", JSONObject.toJSONString(message)))
+                        .setTopic(MessageTopic.SYSTEM_MESSAGE)
+                        .setError(error)));
     }
 }
