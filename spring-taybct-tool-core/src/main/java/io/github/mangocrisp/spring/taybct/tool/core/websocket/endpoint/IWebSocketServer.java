@@ -1,9 +1,12 @@
 package io.github.mangocrisp.spring.taybct.tool.core.websocket.endpoint;
 
 import cn.hutool.core.util.IdUtil;
+import io.github.mangocrisp.spring.taybct.tool.core.result.ResultCode;
+import io.github.mangocrisp.spring.taybct.tool.core.websocket.constant.MessageTopic;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserType;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.MessageUser;
-import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WebSocketMessagePayload;
+import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WSR;
+import jakarta.websocket.Session;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
@@ -50,6 +53,7 @@ public interface IWebSocketServer<S> {
 
     /**
      * 获取会话的路径参数
+     *
      * @param sessionId 会话 id
      * @return 路径参数
      */
@@ -197,13 +201,49 @@ public interface IWebSocketServer<S> {
      */
     default void sendSimpleMessage(@Nullable MessageUser fromUser, String message, LinkedHashSet<MessageUser> toUserSet) {
         // 发送消息
-        sendMessage(WebSocketMessagePayload.builder()
+        sendMessage(WSR.builder()
+                .code(ResultCode.OK.getCode())
                 .messageId(IdUtil.randomUUID())
                 .sendTime(LocalDateTime.now())
                 .fromUser(fromUser)
                 .toUser(toUserSet)
-                .content(message)
+                .topic(MessageTopic.SIMPLE_MESSAGE)
+                .message(message)
                 .build());
+    }
+
+    /**
+     * 批量发送指定用户消息
+     *
+     * @param message  批量消息
+     * @param toUserId 要发送给的用户 id
+     * @param <E>      消息数据类型
+     */
+    default <E> void sendMessage(WSR<E> message, Long... toUserId) {
+        sendMessage(message, new LinkedHashSet<>(Arrays.stream(toUserId).map(id -> new MessageUser(MessageUserType.USER, id, null)).toList()));
+    }
+
+    /**
+     * 批量发送指定用户消息
+     *
+     * @param message 批量消息
+     * @param toUser  要发送给的用户
+     * @param <E>     消息数据类型
+     */
+    default <E> void sendMessage(WSR<E> message, MessageUser... toUser) {
+        sendMessage(message, new LinkedHashSet<>(Arrays.asList(toUser)));
+    }
+
+    /**
+     * 发送指定用户消息
+     *
+     * @param message   消息
+     * @param toUserSet 要发送给的用户集合
+     * @param <E>       消息数据类型
+     */
+    default <E> void sendMessage(WSR<E> message, LinkedHashSet<MessageUser> toUserSet) {
+        message.setToUser(toUserSet);
+        sendMessage(message);
     }
 
     /**
@@ -211,7 +251,7 @@ public interface IWebSocketServer<S> {
      *
      * @param message 消息
      */
-    default void sendMessage(WebSocketMessagePayload message) {
+    default <E> void sendMessage(WSR<E> message) {
 
     }
 
@@ -220,7 +260,7 @@ public interface IWebSocketServer<S> {
      *
      * @param message 消息
      */
-    default void sendAllMessage(WebSocketMessagePayload message) {
+    default <E> void sendAllMessage(WSR<E> message) {
         // 发送消息
     }
 
@@ -230,5 +270,37 @@ public interface IWebSocketServer<S> {
      * @param message 消息
      * @param session session
      */
-    void send(WebSocketMessagePayload message, S session);
+    <E> void send(WSR<E> message, S session);
+
+    /**
+     * 发送消息成功后的处理
+     *
+     * @param message 消息
+     */
+    default <E> void onSendSuccess(WSR<E> message){}
+
+    /**
+     * 发送消息失败后的处理
+     *
+     * @param message 消息
+     * @param error   错误
+     */
+    default <E> void onSendError(WSR<E> message, Throwable error){}
+
+    /**
+     * 发送消息失败后的处理
+     *
+     * @param message 消息
+     * @param error   错误
+     */
+    <E> void afterSend(WSR<E> message, @Nullable Throwable error);
+
+    /**
+     * 发送消息失败后的处理
+     *
+     * @param message 消息
+     * @param error   错误
+     * @param session session
+     */
+    <E> void afterSend(WSR<E> message, Throwable error, S session);
 }
