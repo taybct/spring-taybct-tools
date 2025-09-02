@@ -520,7 +520,7 @@ public class MyBatisUtil {
                                 }
                             }
                         }
-                        if (field.isAnnotationPresent(TableFieldJSON.class)) {
+                        if (field.isAnnotationPresent(TableFieldJSON.class) && ObjectUtil.isNotEmpty(fieldValue)) {
                             // 如果是表 json 类型字段处理
                             fieldValue = getJSONFieldValue(ms, fieldValue);
                             // 这里拿到默认值后，把值设置进去
