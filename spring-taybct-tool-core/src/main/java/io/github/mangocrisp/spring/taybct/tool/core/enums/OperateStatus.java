@@ -1,17 +1,15 @@
 package io.github.mangocrisp.spring.taybct.tool.core.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * 操作状态
  *
+ * @param code        代码
+ * @param intCode     数字代码
+ * @param description 描述
  * @author xijieyin <br> 2022/8/5 18:32
  * @since 1.0.0
  */
-@Getter
-@AllArgsConstructor
-public final class OperateStatus {
+public record OperateStatus(String code, int intCode, String description) {
     /**
      * 正常
      */
@@ -20,19 +18,6 @@ public final class OperateStatus {
      * 失败
      */
     public static final OperateStatus FAILED = new OperateStatus("FAILED", 0, "失败");
-    /**
-     * 代码
-     */
-    private final String code;
-    /**
-     * 数字代码
-     */
-    private final int intCode;
-    /**
-     * 描述
-     */
-    private final String description;
-
 
     @Override
     public boolean equals(Object obj) {
@@ -43,11 +28,11 @@ public final class OperateStatus {
             return false;
         }
         OperateStatus that = (OperateStatus) obj;
-        return this.getIntCode() == that.intCode;
+        return this.intCode() == that.intCode;
     }
 
     @Override
     public int hashCode() {
-        return this.getCode().hashCode();
+        return this.code().hashCode();
     }
 }

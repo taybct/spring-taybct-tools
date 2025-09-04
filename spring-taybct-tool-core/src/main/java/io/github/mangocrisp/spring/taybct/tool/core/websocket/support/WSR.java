@@ -15,7 +15,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -85,7 +84,7 @@ public class WSR<T> implements Serializable {
      * 消息标题
      */
     @Schema(description = "消息标题")
-    private String title =  "消息通知";
+    private String title = "消息通知";
     /**
      * 消息主题
      */
@@ -106,7 +105,7 @@ public class WSR<T> implements Serializable {
      */
     @Schema(description = "二进制数据")
     @JsonIgnore
-    private byte [] bytes;
+    private byte[] bytes;
     /**
      * 额外的数据
      */
@@ -138,6 +137,7 @@ public class WSR<T> implements Serializable {
     public WSR<T> setToUserId(Long... toUserId) {
         return setToUser(new LinkedHashSet<>(Arrays.stream(toUserId).map(id -> new MessageUser(MessageUserType.USER, id, null)).toList()));
     }
+
     public WSR<T> setToMessageUser(MessageUser... toUser) {
         return setToUser(new LinkedHashSet<>(Arrays.asList(toUser)));
     }

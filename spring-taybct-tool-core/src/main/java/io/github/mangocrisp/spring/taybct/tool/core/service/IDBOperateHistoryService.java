@@ -47,9 +47,9 @@ public interface IDBOperateHistoryService {
     /**
      * 记录历史表，这里有考虑到，可能有多数据源的问题，所以这里可以指定是从哪个数据源去操作数据
      *
-     * @param dataSource       数据源
-     * @param historyTableName 记录历史记录的表名
-     * @param dbOperateHistoryEntity    历史记录
+     * @param dataSource             数据源
+     * @param historyTableName       记录历史记录的表名
+     * @param dbOperateHistoryEntity 历史记录
      */
     default void recordingHistory(String dataSource
             , String historyTableName

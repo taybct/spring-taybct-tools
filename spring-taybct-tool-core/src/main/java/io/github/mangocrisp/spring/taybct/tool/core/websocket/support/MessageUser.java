@@ -10,11 +10,12 @@ import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserT
  * </pre>
  *
  * @param messageUserType 用户类型
- * @param userId 用户 id
- * @param sessionId session id
+ * @param userId          用户 id
+ * @param sessionId       session id
  * @author XiJieYin
  * @since 2025/6/13 15:36
  */
-public record MessageUser(MessageUserType messageUserType, @JsonSerialize(using = ToStringSerializer.class) Long userId, String sessionId) {
+public record MessageUser(MessageUserType messageUserType, @JsonSerialize(using = ToStringSerializer.class) Long userId,
+                          String sessionId) {
 
 }

@@ -1,10 +1,5 @@
 package io.github.mangocrisp.spring.taybct.tool.core.message;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.function.Supplier;
 
 /**
@@ -12,32 +7,15 @@ import java.util.function.Supplier;
  * 消息类型
  * </pre>
  *
+ * @param messageClass 消息类型
+ * @param prefix       生成临时文件的前缀
+ * @param generateName 生成文件名
+ * @param suffix       生成临时文件的后缀
  * @author XiJieYin
  * @since 2024/9/1 00:48
  */
-@AllArgsConstructor
-@Getter
-public final class MessageType implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = -5127349829385831365L;
-
-    /**
-     * 消息类型
-     */
-    private Class<? extends Message> messageClass;
-    /**
-     * 生成临时文件的前缀
-     */
-    private String prefix;
-    /**
-     * 生成文件名
-     */
-    private Supplier<String> generateName;
-    /**
-     * 生成临时文件的后缀
-     */
-    private String suffix;
+public record MessageType(Class<? extends Message> messageClass, String prefix, Supplier<String> generateName,
+                          String suffix) {
 
     /**
      * 比较是否是这个类型的
@@ -46,7 +24,7 @@ public final class MessageType implements Serializable {
      * @return 是否
      */
     public boolean supports(Class<? extends Message> messageClass) {
-        return this.getMessageClass().equals(messageClass);
+        return this.messageClass().equals(messageClass);
     }
 
     @Override
@@ -58,13 +36,13 @@ public final class MessageType implements Serializable {
             return false;
         }
         MessageType that = (MessageType) obj;
-        return this.getMessageClass().equals(that.getMessageClass())
-                && this.getPrefix().equals(that.getPrefix())
-                && this.getSuffix().equals(that.getSuffix());
+        return this.messageClass().equals(that.messageClass())
+                && this.prefix().equals(that.prefix())
+                && this.suffix().equals(that.suffix());
     }
 
     @Override
     public int hashCode() {
-        return this.getMessageClass().hashCode();
+        return this.messageClass().hashCode();
     }
 }

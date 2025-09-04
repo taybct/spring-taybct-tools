@@ -9,7 +9,6 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- *
  * <pre>
  * 数据同步配置
  * </pre>
