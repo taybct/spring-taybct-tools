@@ -85,9 +85,9 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                             // 生成一个唯一的 id 用来存成文件到本地
                             File logFile = new File(String.format("%s/%s%s%s"
                                     , folder
-                                    , type.getPrefix()
+                                    , type.prefix()
                                     , UUID.fastUUID()
-                                    , type.getSuffix()));
+                                    , type.suffix()));
                             // 消息
                             FileUtil.writeUtf8String(message.getPayload(), logFile);
                             log.debug("生成本地日志文件{}", logFile.getPath());
@@ -151,8 +151,8 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
             File tempLogFolder = new File(folder);
             if (tempLogFolder.exists()) {
                 messageSendHandlerList.forEach((messageType, handler) -> {
-                    File[] files = tempLogFolder.listFiles(file -> file.getName().startsWith(messageType.getPrefix())
-                            && file.getName().endsWith(messageType.getSuffix()));
+                    File[] files = tempLogFolder.listFiles(file -> file.getName().startsWith(messageType.prefix())
+                            && file.getName().endsWith(messageType.suffix()));
                     // 将会报错的文件路径
                     AtomicReference<String> errorPath = new AtomicReference<>(folder);
                     try {
