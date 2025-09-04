@@ -6,7 +6,6 @@ import io.github.mangocrisp.spring.taybct.tool.core.websocket.constant.MessageTo
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserType;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.MessageUser;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.support.WSR;
-import jakarta.websocket.Session;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
@@ -277,7 +276,8 @@ public interface IWebSocketServer<S> {
      *
      * @param message 消息
      */
-    default <E> void onSendSuccess(WSR<E> message){}
+    default <E> void onSendSuccess(WSR<E> message) {
+    }
 
     /**
      * 发送消息失败后的处理
@@ -285,7 +285,8 @@ public interface IWebSocketServer<S> {
      * @param message 消息
      * @param error   错误
      */
-    default <E> void onSendError(WSR<E> message, Throwable error){}
+    default <E> void onSendError(WSR<E> message, Throwable error) {
+    }
 
     /**
      * 发送消息失败后的处理

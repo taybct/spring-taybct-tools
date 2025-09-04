@@ -46,8 +46,8 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
-import java.security.cert.Certificate;
 import java.security.cert.*;
+import java.security.cert.Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -1006,6 +1006,7 @@ public class SM2Coder {
 
     /**
      * 根据16进制公钥字符串获取公钥
+     *
      * @param pubKeyHex 16进制加密公钥字符串
      * @return 公钥
      */
@@ -1025,6 +1026,7 @@ public class SM2Coder {
 
     /**
      * 根据16进制公钥字符串获取私钥
+     *
      * @param privateKeyHex 16进制加密私钥字符串
      * @return 私钥
      */

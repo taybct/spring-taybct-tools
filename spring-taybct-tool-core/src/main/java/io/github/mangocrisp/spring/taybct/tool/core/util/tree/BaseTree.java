@@ -10,9 +10,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -76,7 +73,7 @@ public class BaseTree implements TreeUtil.Tree<BaseTree> {
     private List<BaseTree> children;
 
     @Override
-    public  void setChildren(List<BaseTree> children) {
+    public void setChildren(List<BaseTree> children) {
         this.children = children;
     }
 

@@ -79,13 +79,13 @@ public abstract class AbstractScheduledTaskJob implements IScheduledTaskJob {
             this.run(this.params);
             log.debug(">>>>>> 任务 [{}] 结束 >>>>>> ", this.description);
             if (getLogRecorder() != null) {
-                stopRecord(OperateStatus.SUCCESS.getIntCode(), String.format("任务 [%s] 执行完毕", this.description));
+                stopRecord(OperateStatus.SUCCESS.intCode(), String.format("任务 [%s] 执行完毕", this.description));
             }
         } catch (Exception e) {
             log.error(">>>>>> 任务 [{}] 异常 >>>>>> ", this.description);
             log.error("\r\n", e);
             if (getLogRecorder() != null) {
-                stopRecord(OperateStatus.FAILED.getIntCode(), String.format("任务 [%s] 执行完毕", this.description), e.getMessage());
+                stopRecord(OperateStatus.FAILED.intCode(), String.format("任务 [%s] 执行完毕", this.description), e.getMessage());
             }
         }
     }

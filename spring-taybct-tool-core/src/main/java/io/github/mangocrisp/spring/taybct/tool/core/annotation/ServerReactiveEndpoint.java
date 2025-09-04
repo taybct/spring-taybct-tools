@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)//运行时有效
 @Documented //标识这是个注解并应该被 javadoc工具记录
 public @interface ServerReactiveEndpoint {
-    
+
     String value() default "";
 
 }

@@ -1,19 +1,17 @@
 package io.github.mangocrisp.spring.taybct.tool.core.websocket.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * <pre>
  * 消息用户类型
  * </pre>
  *
+ * @param code        类型 code
+ * @param intCode     类型 code
+ * @param description 描述
  * @author XiJieYin
  * @since 2025/6/13 15:36
  */
-@Getter
-@AllArgsConstructor
-public final class MessageUserType {
+public record MessageUserType(String code, int intCode, String description) {
 
     /**
      * 用户
@@ -24,19 +22,6 @@ public final class MessageUserType {
      */
     public static final MessageUserType GROUP = new MessageUserType("GROUP", 0, "群组");
 
-    /**
-     * 类型 code
-     */
-    private final String code;
-    /**
-     * 类型 code
-     */
-    private final int intCode;
-    /**
-     * 描述
-     */
-    private final String description;
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -46,11 +31,11 @@ public final class MessageUserType {
             return false;
         }
         MessageUserType that = (MessageUserType) obj;
-        return this.getIntCode() == that.intCode;
+        return this.intCode() == that.intCode;
     }
 
     @Override
     public int hashCode() {
-        return this.getCode().hashCode();
+        return this.code().hashCode();
     }
 }

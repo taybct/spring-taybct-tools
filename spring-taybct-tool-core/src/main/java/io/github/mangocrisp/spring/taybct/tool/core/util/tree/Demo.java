@@ -1,14 +1,11 @@
 package io.github.mangocrisp.spring.taybct.tool.core.util.tree;
 
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.util.RandomUtil;
 import io.github.mangocrisp.spring.taybct.tool.core.util.CollectionSortUtil;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -26,8 +23,8 @@ public class Demo {
 //        list.add(new BaseTree(1, "0", 0, null, "label", null, BaseTree.class, new ArrayList<>()));
         for (int i = 1; i < 999999; i++) {
             int sort = RandomUtil.randomInt(1, 100);
-            list.add(new BaseTree(1, i+"", sort, (i - 1) / 2 + "", "label", null, BaseTree.class, new ArrayList<>()));
-            list1.add(new TreeNode<>(i, (i - 1) / 2, i+"", sort));
+            list.add(new BaseTree(1, i + "", sort, (i - 1) / 2 + "", "label", null, BaseTree.class, new ArrayList<>()));
+            list1.add(new TreeNode<>(i, (i - 1) / 2, i + "", sort));
         }
 //        list.add(new BaseTree(1, "1", 0, "0", "label", null, BaseTree.class, new ArrayList<>()));
 //        list.add(new BaseTree(1, "3", 2, "1", "label", null, BaseTree.class, new ArrayList<>()));

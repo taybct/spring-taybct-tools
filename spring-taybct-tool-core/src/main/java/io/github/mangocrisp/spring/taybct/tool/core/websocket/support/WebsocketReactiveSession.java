@@ -10,7 +10,7 @@ import reactor.core.publisher.FluxSink;
  * </pre>
  *
  * @param session session
- * @param sink sink 异步处理
+ * @param sink    sink 异步处理
  * @author XiJieYin
  * @since 2025/6/11 14:33
  */

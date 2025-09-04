@@ -114,7 +114,7 @@ public class ApiLogAspect {
                     apiLog.setParams(paraMap.toJSONString());
                 }
                 // 状态码
-                apiLog.setCode(OperateStatus.SUCCESS.getCode());
+                apiLog.setCode(OperateStatus.SUCCESS.code());
                 // 是否要保存返回结果
                 if (controllerLog.isSaveResultData()) {
                     if (e == null) {
@@ -124,7 +124,7 @@ public class ApiLogAspect {
                 }
                 if (e != null) {
                     // 状态码
-                    apiLog.setCode(OperateStatus.FAILED.getCode());
+                    apiLog.setCode(OperateStatus.FAILED.code());
                     apiLog.setResult(StringUtils.substring(e.getMessage(), 0, 2000));
                 }
 

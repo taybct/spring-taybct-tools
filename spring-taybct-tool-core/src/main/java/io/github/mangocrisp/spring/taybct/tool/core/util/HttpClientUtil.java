@@ -321,7 +321,7 @@ public class HttpClientUtil {
             , Header[] headers
             , Map<String, String> param
             , BiFunction<URI, String
-            , HttpUriRequest> httpUriRequestFunction
+                    , HttpUriRequest> httpUriRequestFunction
             , String json) throws URISyntaxException {
         return doRequestJson(makeUrlParameter(url, param), headers, httpUriRequestFunction, json);
     }

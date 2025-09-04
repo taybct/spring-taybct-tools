@@ -79,9 +79,9 @@ public class DataSyncOracleHandler implements IDataSyncHandler {
             while (targetResultSet.next()) {
                 Object date = targetResultSet.getDate(config.getFieldLastSyncTime());
                 Object time = targetResultSet.getTime(config.getFieldLastSyncTime());
-                if (date!=null && time != null) {
+                if (date != null && time != null) {
                     lastSyncTime = date + " " + time;
-                    log.debug("\033[40;32;0m 上一次更新时间：{} \t\t\t\033[0m",lastSyncTime);
+                    log.debug("\033[40;32;0m 上一次更新时间：{} \t\t\t\033[0m", lastSyncTime);
                     break;
                 }
             }

@@ -602,7 +602,7 @@ public class MyBatisUtil {
      * @return 最终结果
      */
     public static Object getJSONFieldValue(MappedStatement ms, Object fieldValue) {
-        if (ObjectUtil.isEmpty(fieldValue)){
+        if (ObjectUtil.isEmpty(fieldValue)) {
             // 如果是 pgsql 需要做额外处理
             PGobject pGobject = new PGobject();
             pGobject.setType("json");

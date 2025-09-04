@@ -8,7 +8,6 @@ import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.HibernateValidator;
 
-import java.util.Iterator;
 import java.util.Set;
 
 /**
