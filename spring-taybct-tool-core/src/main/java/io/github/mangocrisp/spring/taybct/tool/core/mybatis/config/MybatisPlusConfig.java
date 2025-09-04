@@ -17,14 +17,13 @@ import io.github.mangocrisp.spring.taybct.tool.core.mybatis.interceptor.MyBatisE
 import io.github.mangocrisp.spring.taybct.tool.core.mybatis.prop.TenantSupplierProperties;
 import io.github.mangocrisp.spring.taybct.tool.core.mybatis.util.DataScopeUtil;
 import io.github.mangocrisp.spring.taybct.tool.core.mybatis.util.JDBCFieldUtil;
-import io.github.mangocrisp.spring.taybct.tool.core.service.IHistoryService;
-import io.github.mangocrisp.spring.taybct.tool.core.service.impl.HistoryServiceJdbcImpl;
+import io.github.mangocrisp.spring.taybct.tool.core.service.IDBOperateHistoryService;
+import io.github.mangocrisp.spring.taybct.tool.core.service.impl.DBOperateHistoryServiceJdbcImpl;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
-import org.apache.ibatis.session.Configuration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -241,13 +240,13 @@ public class MybatisPlusConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean(IHistoryService.class)
-    public IHistoryService historyService(@Nullable JdbcTemplate jdbcTemplate) {
-        return new HistoryServiceJdbcImpl(jdbcTemplate);
+    @ConditionalOnMissingBean(IDBOperateHistoryService.class)
+    public IDBOperateHistoryService historyService(@Nullable JdbcTemplate jdbcTemplate) {
+        return new DBOperateHistoryServiceJdbcImpl(jdbcTemplate);
     }
 
     @Bean
-    public DefaultPointcutAdvisor recordHistoryPointcutAdvisor(IHistoryService historyService) {
+    public DefaultPointcutAdvisor recordHistoryPointcutAdvisor(IDBOperateHistoryService historyService) {
         RecordHistoryMethodInterceptor methodInterceptor = new RecordHistoryMethodInterceptor(historyService, securityUtil);
         // 匹配一个切点，这里使用注解
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();

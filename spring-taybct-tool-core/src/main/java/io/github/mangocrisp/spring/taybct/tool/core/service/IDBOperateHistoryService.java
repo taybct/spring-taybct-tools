@@ -1,20 +1,20 @@
 package io.github.mangocrisp.spring.taybct.tool.core.service;
 
 import io.github.mangocrisp.spring.taybct.tool.core.annotation.RecordHistory;
-import io.github.mangocrisp.spring.taybct.tool.core.domain.HistoryEntity;
+import io.github.mangocrisp.spring.taybct.tool.core.domain.DBOperateHistoryEntity;
 import io.github.mangocrisp.spring.taybct.tool.core.exception.def.BaseException;
 
 import java.io.Serializable;
 import java.util.Map;
 
 /**
- * 历史记录 Service，
+ * 数据库操作历史记录 Service，
  * <br>
  * 关于多数据源的设置，这个可以看一下注解 {@linkplain RecordHistory @RecordHistory}
  *
  * @author XiJieYin <br> 2023/1/29 16:38
  */
-public interface IHistoryService {
+public interface IDBOperateHistoryService {
 
     /**
      * 查询语句
@@ -49,11 +49,11 @@ public interface IHistoryService {
      *
      * @param dataSource       数据源
      * @param historyTableName 记录历史记录的表名
-     * @param historyEntity    历史记录
+     * @param dbOperateHistoryEntity    历史记录
      */
     default void recordingHistory(String dataSource
             , String historyTableName
-            , HistoryEntity historyEntity) {
+            , DBOperateHistoryEntity dbOperateHistoryEntity) {
         throw new BaseException("没有找到历史记录 Service 的实现类");
     }
 

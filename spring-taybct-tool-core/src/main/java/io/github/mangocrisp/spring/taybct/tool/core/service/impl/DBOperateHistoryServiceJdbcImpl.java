@@ -1,10 +1,10 @@
 package io.github.mangocrisp.spring.taybct.tool.core.service.impl;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import io.github.mangocrisp.spring.taybct.tool.core.domain.HistoryEntity;
+import io.github.mangocrisp.spring.taybct.tool.core.domain.DBOperateHistoryEntity;
 import io.github.mangocrisp.spring.taybct.tool.core.ds.DBHelper;
 import io.github.mangocrisp.spring.taybct.tool.core.ds.JdbcTemplateUtil;
-import io.github.mangocrisp.spring.taybct.tool.core.service.IHistoryService;
+import io.github.mangocrisp.spring.taybct.tool.core.service.IDBOperateHistoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.util.PGobject;
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Slf4j
-public class HistoryServiceJdbcImpl implements IHistoryService {
+public class DBOperateHistoryServiceJdbcImpl implements IDBOperateHistoryService {
 
     final JdbcTemplate jdbcTemplate;
 
@@ -48,7 +48,7 @@ public class HistoryServiceJdbcImpl implements IHistoryService {
     @Async
     public void recordingHistory(String dataSource
             , String historyTableName
-            , HistoryEntity historyEntity) {
+            , DBOperateHistoryEntity dbOperateHistoryEntity) {
         Connection connection = JdbcTemplateUtil.getConnection(jdbcTemplate, dataSource);
         // 默认使用 pgsql
         DbType datasourceDbType = DBHelper.getDbType(connection, DbType.POSTGRE_SQL);
@@ -56,18 +56,18 @@ public class HistoryServiceJdbcImpl implements IHistoryService {
                 , String.format(SAVE_SQL, historyTableName)
                 , ps -> {
                     // id
-                    ps.setLong(1, historyEntity.getId());
+                    ps.setLong(1, dbOperateHistoryEntity.getId());
                     // created_by
-                    ps.setString(2, historyEntity.getCreateUser());
+                    ps.setString(2, dbOperateHistoryEntity.getCreateUser());
                     // created_time
-                    ps.setTimestamp(3, new Timestamp(java.util.Date.from(historyEntity
+                    ps.setTimestamp(3, new Timestamp(java.util.Date.from(dbOperateHistoryEntity
                             .getCreateTime().atZone(ZoneId.systemDefault()).toInstant()).getTime()));
                     // 表名，数据来自哪个表
-                    ps.setString(4, historyEntity.getTableName());
+                    ps.setString(4, dbOperateHistoryEntity.getTableName());
                     // 数据来源表的主键值
-                    ps.setString(5, historyEntity.getPrimaryKey());
+                    ps.setString(5, dbOperateHistoryEntity.getPrimaryKey());
                     // 数据
-                    String jsonData = historyEntity.getJsonData();
+                    String jsonData = dbOperateHistoryEntity.getJsonData();
                     if (datasourceDbType.equals(DbType.ORACLE)) {
                         // 兼容 ORACLE 这里使用 CLOB 存储
                         StringReader reader = new StringReader(jsonData);
@@ -83,9 +83,9 @@ public class HistoryServiceJdbcImpl implements IHistoryService {
                         ps.setString(6, jsonData);
                     }
                     // 操作类型
-                    ps.setInt(7, historyEntity.getOperateType());
+                    ps.setInt(7, dbOperateHistoryEntity.getOperateType());
                     // 主键值
-                    ps.setString(8, historyEntity.getPrimaryValue().toString());
+                    ps.setString(8, dbOperateHistoryEntity.getPrimaryValue().toString());
                 });
     }
 

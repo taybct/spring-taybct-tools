@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -26,8 +27,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "历史记录")
-public class HistoryEntity implements Serializable {
+public class DBOperateHistoryEntity implements Serializable {
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 2135595980986647658L;
 
