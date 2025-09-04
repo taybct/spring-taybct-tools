@@ -9,9 +9,9 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import io.github.mangocrisp.spring.taybct.tool.core.annotation.RecordHistory;
 import io.github.mangocrisp.spring.taybct.tool.core.bean.ILoginUser;
 import io.github.mangocrisp.spring.taybct.tool.core.bean.ISecurityUtil;
-import io.github.mangocrisp.spring.taybct.tool.core.domain.HistoryEntity;
+import io.github.mangocrisp.spring.taybct.tool.core.domain.DBOperateHistoryEntity;
 import io.github.mangocrisp.spring.taybct.tool.core.result.R;
-import io.github.mangocrisp.spring.taybct.tool.core.service.IHistoryService;
+import io.github.mangocrisp.spring.taybct.tool.core.service.IDBOperateHistoryService;
 import io.github.mangocrisp.spring.taybct.tool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -31,7 +31,7 @@ import java.util.*;
  */
 @RequiredArgsConstructor
 public class RecordHistoryMethodInterceptor implements MethodInterceptor {
-    final IHistoryService historyService;
+    final IDBOperateHistoryService historyService;
 
     final ISecurityUtil securityUtil;
 
@@ -57,7 +57,7 @@ public class RecordHistoryMethodInterceptor implements MethodInterceptor {
         // 数据源
         String dataSource = recordHistory.dataSource();
         // 在操作之前先把数据读出来，考虑到，有修改也有删除操作，如果是删除之后再去保存，会读不到数据，因为数据已经被删除了，得事先把数据读出来
-        List<HistoryEntity> recordList = new ArrayList<>();
+        List<DBOperateHistoryEntity> recordList = new ArrayList<>();
         // 登录用户信息
         ILoginUser loginUser = securityUtil.getLoginUser();
         // 操作数据类型
@@ -144,10 +144,10 @@ public class RecordHistoryMethodInterceptor implements MethodInterceptor {
                 || (proceed instanceof Integer && ((Integer) proceed) > 0)
                 // 如果是返回了 R，也就是放在 Controller 方法上的这里有返回是否操作成功
                 || (proceed instanceof R && ((R) proceed).isOk())) {
-            recordList.forEach(historyEntity ->
+            recordList.forEach(dbOperateHistoryEntity ->
                     historyService.recordingHistory(dataSource
                             , recordHistory.historyTableName()
-                            , historyEntity));
+                            , dbOperateHistoryEntity));
         }
         return proceed;
     }
@@ -162,7 +162,7 @@ public class RecordHistoryMethodInterceptor implements MethodInterceptor {
      * @param primaryKey      主键名
      * @param primaryKeyValue 主键值
      */
-    private HistoryEntity record(String dataSource
+    private DBOperateHistoryEntity record(String dataSource
             , int dataOperateType
             , ILoginUser loginUser
             , String tableName
@@ -173,16 +173,16 @@ public class RecordHistoryMethodInterceptor implements MethodInterceptor {
         Map<String, Object> recordByPrimaryKey = historyService.getRecordByPrimaryKey(dataSource, tableName, primaryKey, primaryKeyValue, pkTypes);
         // 然后转换成 json
         String jsonData = JSONObject.toJSONString(recordByPrimaryKey, JSONWriter.Feature.WriteMapNullValue);
-        HistoryEntity historyEntity = new HistoryEntity();
-        historyEntity.setId(IdWorker.getId());
-        historyEntity.setCreateUser(loginUser.getUsername());
-        historyEntity.setCreateTime(LocalDateTime.now());
-        historyEntity.setTableName(tableName);
-        historyEntity.setPrimaryKey(primaryKey);
-        historyEntity.setPrimaryValue(primaryKeyValue);
-        historyEntity.setJsonData(jsonData);
-        historyEntity.setOperateType(dataOperateType);
-        return historyEntity;
+        DBOperateHistoryEntity dbOperateHistoryEntity = new DBOperateHistoryEntity();
+        dbOperateHistoryEntity.setId(IdWorker.getId());
+        dbOperateHistoryEntity.setCreateUser(loginUser.getUsername());
+        dbOperateHistoryEntity.setCreateTime(LocalDateTime.now());
+        dbOperateHistoryEntity.setTableName(tableName);
+        dbOperateHistoryEntity.setPrimaryKey(primaryKey);
+        dbOperateHistoryEntity.setPrimaryValue(primaryKeyValue);
+        dbOperateHistoryEntity.setJsonData(jsonData);
+        dbOperateHistoryEntity.setOperateType(dataOperateType);
+        return dbOperateHistoryEntity;
     }
 
 }
