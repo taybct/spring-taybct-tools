@@ -18,7 +18,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * 广州市指挥中心110警情信息（汇聚）
+ * 第三方接口
  */
 @Getter
 @RequiredArgsConstructor
