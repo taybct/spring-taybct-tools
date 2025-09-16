@@ -142,6 +142,7 @@ public class MybatisPlusConfig {
         properties.put("Oracle", "oracle");
         properties.put("MySQL", "mysql");
         properties.setProperty("PostgreSQL", "postgresql");
+        properties.setProperty("Sqlite", "sqlite");
         properties.setProperty("DB2", "db2");
         properties.setProperty("SQL Server", "sqlserver");
         databaseIdProvider.setProperties(properties);
