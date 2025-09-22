@@ -132,6 +132,7 @@ public class FileServiceBuilder {
      * @throws Exception 这里有很多种异常，MinIO的异常最多
      */
     public static String upload(MultipartFile file) throws Exception {
+        checkWordFileEmpty(file);
         return FileServiceBuilder.build(getType()).upload(file);
     }
 
@@ -145,6 +146,7 @@ public class FileServiceBuilder {
      * @throws Exception 这里有很多种异常，MinIO的异常最多
      */
     public static String upload(MultipartFile file, String path, String filename) throws Exception {
+        checkWordFileEmpty(file);
         if (path == null) {
             path = "";
         }
@@ -304,6 +306,27 @@ public class FileServiceBuilder {
             connections.disconnect();
         }
         return path;
+    }
+
+    /**
+     * 判断文件是否为空
+     *
+     * @param wordFile 文件
+     * @return boolean
+     */
+    private static boolean isWordFileEmpty(MultipartFile wordFile) {
+        return wordFile == null || wordFile.isEmpty();
+    }
+
+    /**
+     * 检测文件是否为空
+     *
+     * @param wordFile 文件
+     */
+    private static void checkWordFileEmpty(MultipartFile wordFile){
+        if (isWordFileEmpty(wordFile)){
+            throw new FileUploadException("上传文件不能为空");
+        }
     }
 
 }
