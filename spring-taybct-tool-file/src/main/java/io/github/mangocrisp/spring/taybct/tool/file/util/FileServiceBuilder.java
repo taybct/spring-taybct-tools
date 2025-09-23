@@ -323,8 +323,8 @@ public class FileServiceBuilder {
      *
      * @param wordFile 文件
      */
-    private static void checkWordFileEmpty(MultipartFile wordFile){
-        if (isWordFileEmpty(wordFile)){
+    private static void checkWordFileEmpty(MultipartFile wordFile) {
+        if (isWordFileEmpty(wordFile)) {
             throw new FileUploadException("上传文件不能为空");
         }
     }
