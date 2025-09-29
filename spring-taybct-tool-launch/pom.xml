@@ -9,7 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>io.github.mangocrisp</groupId>
     <artifactId>spring-taybct-tool-launch</artifactId>
+    <version>3.2.4</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
     <description>启动模块</description>
