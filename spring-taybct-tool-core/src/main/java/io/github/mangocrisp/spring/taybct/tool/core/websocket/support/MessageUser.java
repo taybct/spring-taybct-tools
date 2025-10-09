@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserType;
 
+import java.io.Serializable;
+
 /**
  * <pre>
  * 消息用户
@@ -16,6 +18,6 @@ import io.github.mangocrisp.spring.taybct.tool.core.websocket.enums.MessageUserT
  * @since 2025/6/13 15:36
  */
 public record MessageUser(MessageUserType messageUserType, @JsonSerialize(using = ToStringSerializer.class) Long userId,
-                          String sessionId) {
+                          String sessionId) implements Serializable {
 
 }

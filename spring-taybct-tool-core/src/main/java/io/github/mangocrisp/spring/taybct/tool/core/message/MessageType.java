@@ -1,5 +1,6 @@
 package io.github.mangocrisp.spring.taybct.tool.core.message;
 
+import java.io.Serializable;
 import java.util.function.Supplier;
 
 /**
@@ -15,7 +16,7 @@ import java.util.function.Supplier;
  * @since 2024/9/1 00:48
  */
 public record MessageType(Class<? extends Message> messageClass, String prefix, Supplier<String> generateName,
-                          String suffix) {
+                          String suffix) implements Serializable {
 
     /**
      * 比较是否是这个类型的

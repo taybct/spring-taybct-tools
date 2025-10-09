@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
  * @author xijieyin <br> 2022/10/14 15:14
  * @since 1.0.5
  */
-public record ApiVersionCondition(int apiVersion) implements RequestCondition<ApiVersionCondition> {
+public record ApiVersionCondition(int apiVersion) implements RequestCondition<ApiVersionCondition> , Serializable {
 
     /**
      * 在路径中直接匹配 /v1/ 类似这样的，如果是直接 /v1 这样结尾的 RESTFul 接口，也没关系默认加个 / 就好了

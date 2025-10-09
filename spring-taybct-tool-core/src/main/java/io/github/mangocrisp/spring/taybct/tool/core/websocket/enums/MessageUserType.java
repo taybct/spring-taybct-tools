@@ -1,5 +1,7 @@
 package io.github.mangocrisp.spring.taybct.tool.core.websocket.enums;
 
+import java.io.Serializable;
+
 /**
  * <pre>
  * 消息用户类型
@@ -11,7 +13,7 @@ package io.github.mangocrisp.spring.taybct.tool.core.websocket.enums;
  * @author XiJieYin
  * @since 2025/6/13 15:36
  */
-public record MessageUserType(String code, int intCode, String description) {
+public record MessageUserType(String code, int intCode, String description) implements Serializable {
 
     /**
      * 用户
