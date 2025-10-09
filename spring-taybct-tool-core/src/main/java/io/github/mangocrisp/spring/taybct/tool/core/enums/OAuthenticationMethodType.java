@@ -1,5 +1,7 @@
 package io.github.mangocrisp.spring.taybct.tool.core.enums;
 
+import java.io.Serializable;
+
 /**
  * 认证方式枚举
  *
@@ -8,7 +10,7 @@ package io.github.mangocrisp.spring.taybct.tool.core.enums;
  * @author xijieyin <br> 2022/8/5 18:30
  * @since 1.0.0
  */
-public record OAuthenticationMethodType(String value, String label) {
+public record OAuthenticationMethodType(String value, String label) implements Serializable {
 
     /**
      * 用户名

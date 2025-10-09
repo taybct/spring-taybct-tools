@@ -1,5 +1,7 @@
 package io.github.mangocrisp.spring.taybct.tool.core.enums;
 
+import java.io.Serializable;
+
 /**
  * 操作状态
  *
@@ -9,7 +11,7 @@ package io.github.mangocrisp.spring.taybct.tool.core.enums;
  * @author xijieyin <br> 2022/8/5 18:32
  * @since 1.0.0
  */
-public record OperateStatus(String code, int intCode, String description) {
+public record OperateStatus(String code, int intCode, String description) implements Serializable {
     /**
      * 正常
      */
