@@ -5,13 +5,13 @@
     <parent>
         <groupId>io.github.mangocrisp</groupId>
         <artifactId>spring-taybct-tools</artifactId>
-        <version>3.2.4</version>
+        <version>3.5.0-beta.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.mangocrisp</groupId>
     <artifactId>spring-taybct-tool-core</artifactId>
-    <version>3.2.4</version>
+    <version>3.5.0-beta.1</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
     <description>基础模块：工具类、公共配置、系统常量、字典等</description>
@@ -52,8 +52,8 @@
     </scm>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>${spring-context-support.version}</version>
+            <version>${spring.version}</version>
         </dependency>
         <!--aop 切面-->
         <dependency>
@@ -74,7 +74,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${spring-web.version}</version>
+            <version>${spring.version}</version>
             <scope>compile</scope>
         </dependency>
         <!--validation-->
@@ -173,20 +173,20 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>${spring-tx.version}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
-            <version>${spring-cloud-context.version}</version>
+            <version>${spring-cloud-build.version}</version>
         </dependency>
 
         <!--mvc 配置-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring-webmvc.version}</version>
+            <version>${spring.version}</version>
             <optional>true</optional>
             <scope>provided</scope>
         </dependency>
@@ -248,8 +248,8 @@
         <!--oracle驱动-->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
-            <version>${ojdbc8.version}</version>
+            <artifactId>ojdbc11</artifactId>
+            <version>${ojdbc.version}</version>
             <optional>true</optional>
             <scope>provided</scope>
         </dependency>
@@ -338,7 +338,7 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-ext-jdk18on</artifactId>
-            <version>${jdk18on.version}</version>
+            <version>${bcprov-ext-jdk18on.version}</version>
         </dependency>
 
         <!--easyexcel poi 操作导入导出 excel-->
