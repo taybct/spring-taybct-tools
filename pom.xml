@@ -6,7 +6,7 @@
 
     <groupId>io.github.mangocrisp</groupId>
     <artifactId>spring-taybct-tools</artifactId>
-    <version>3.2.4</version>
+    <version>3.5.0-beta.1</version>
     <name>Spring TayBct Tools</name>
     <description>Spring TayBct Tools</description>
     <url>https://github.com/mangocrisp/spring-taybct-tools</url>
@@ -54,135 +54,118 @@
         <!--commons-dbutils jdbc 工具类-->
         <commons-dbutils.version>1.8.1</commons-dbutils.version>
         <!-- 文件上传工具类 -->
-        <commons-fileupload.version>1.5</commons-fileupload.version>
+        <commons-fileupload.version>1.6.0</commons-fileupload.version>
         <!--commons-httpclient-->
         <commons-httpclient.version>3.1</commons-httpclient.version>
+        <!-- io常用工具类 -->
+        <commons-io.version>2.20.0</commons-io.version>
         <!--commons-lang3-->
-        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <commons-lang3.version>3.19.0</commons-lang3.version>
         <!-- 公共资源池 -->
         <commons-pool2.version>2.12.0</commons-pool2.version>
-        <!-- io常用工具类 -->
-        <commons-io.version>2.15.1</commons-io.version>
         <!--dom4j-->
-        <dom4j.version>2.1.4</dom4j.version>
+        <dom4j.version>2.2.0</dom4j.version>
         <!--阿里巴巴(Druid)德鲁伊连接池-->
-        <druid.version>1.2.21</druid.version>
+        <druid.version>1.2.27</druid.version>
         <!--dubbo 3-->
-        <dubbo.version>3.2.12</dubbo.version>
+        <dubbo.version>3.3.5</dubbo.version>
         <!--dysmsapi阿里云短信-->
         <dysmsapi.version>2.0.1</dysmsapi.version>
         <!--多数据源-->
-        <dynamic-datasource.version>4.3.0</dynamic-datasource.version>
+        <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
         <!--easyexcel poi 操作导入导出 excel SAX-->
-        <easyexcel.version>4.0.1</easyexcel.version>
+        <easyexcel.version>4.0.3</easyexcel.version>
         <!--easy poi DOM-->
         <easypoi.version>4.5.0</easypoi.version>
         <!--fastdfs的Java客户端框架-->
         <fastdfs-client.version>1.27.2</fastdfs-client.version>
         <!--fastjson2-->
-        <fastjson2.version>2.0.50</fastjson2.version>
+        <fastjson2.version>2.0.59</fastjson2.version>
         <!--feign-httpclient-->
-        <feign-httpclient.version>13.2.1</feign-httpclient.version>
-        <!--jackson-databind-->
-        <jackson-databind.version>2.15.4</jackson-databind.version>
-        <!--jackson-datatype-jsr310-->
-        <jackson-datatype-jsr310.version>2.15.4</jackson-datatype-jsr310.version>
-        <!--jdk 版本-->
-        <java.version>17</java.version>
-        <!--jakarta.servlet-api-->
-        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
-        <!--加密工具-->
-        <jdk15on.version>1.70</jdk15on.version>
-        <jdk18on.version>1.77</jdk18on.version>
-        <!--poi 导出依赖-->
-        <jxls-core.version>1.0.3</jxls-core.version>
-        <!--junit 测试-->
-        <junit.version>4.13.2</junit.version>
+        <feign-httpclient.version>13.6</feign-httpclient.version>
         <!--httpclient5-->
-        <httpclient5.version>5.2.3</httpclient5.version>
+        <httpclient5.version>5.5.1</httpclient5.version>
         <!--java 工具类库-->
         <hutool.version>5.8.27</hutool.version>
+        <!--jackson-databind-->
+        <jackson-databind.version>2.20.0</jackson-databind.version>
+        <!--jackson-datatype-jsr310-->
+        <jackson-datatype-jsr310.version>2.20.0</jackson-datatype-jsr310.version>
+        <!--jdk 版本-->
+        <java.version>25</java.version>
+        <!--jakarta.servlet-api-->
+        <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
+        <!--加密工具-->
+        <jdk15on.version>1.70</jdk15on.version>
+        <jdk18on.version>1.82</jdk18on.version>
+        <bcprov-ext-jdk18on.version>1.78.1</bcprov-ext-jdk18on.version>
+        <!--junit 测试-->
+        <junit.version>4.13.2</junit.version>
+        <!--poi 导出依赖-->
+        <jxls-core.version>1.0.6</jxls-core.version>
         <!--knife4j-->
         <knife4j.version>4.5.0</knife4j.version>
-        <lombok.version>1.18.32</lombok.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <lombok.version>1.18.42</lombok.version>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
         <!--maven 插件-->
-        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
         <!--Gpg Signature 插件-->
-        <maven-gpg-plugin.version>3.2.5</maven-gpg-plugin.version>
+        <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
         <!-- javadoc插件 -->
-        <maven-javadoc-plugin.version>3.8.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
         <!--maven 源码插件-->
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <!--采用 Annotation Processor 技术，自动生成 java spi 和 Spring boot starter 的配置-->
-        <mica-auto.version>3.1.3</mica-auto.version>
+        <mica-auto.version>3.1.5</mica-auto.version>
         <!--minio 对象存储-->
-        <minio.version>8.5.2</minio.version>
+        <minio.version>8.6.0</minio.version>
         <!--mybatis-plus-->
-        <mybatis-plus.version>3.5.6</mybatis-plus.version>
+        <mybatis-plus.version>3.5.14</mybatis-plus.version>
         <!--mybatis-spring-->
-        <mybatis-spring.version>3.0.3</mybatis-spring.version>
+        <mybatis-spring.version>3.0.5</mybatis-spring.version>
         <!--mybatis-typehandlers-jsr310-->
         <mybatis-typehandlers-jsr310.version>1.0.2</mybatis-typehandlers-jsr310.version>
         <!--mysql-->
-        <mysql-connector-j.version>8.3.0</mysql-connector-j.version>
+        <mysql-connector-j.version>9.4.0</mysql-connector-j.version>
         <!--nacos 客户端-->
-        <nacos-client.version>2.3.2</nacos-client.version>
+        <nacos-client.version>3.1.0</nacos-client.version>
         <!--JWT 解析库-->
-        <nimbus-jose-jwt.version>9.39</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>10.5</nimbus-jose-jwt.version>
         <!--阿里云对象存储-->
-        <oss-alibaba.version>3.16.1</oss-alibaba.version>
+        <oss-alibaba.version>3.18.3</oss-alibaba.version>
         <!--oracle-->
-        <ojdbc8.version>21.9.0.0</ojdbc8.version>
+        <ojdbc.version>23.9.0.25.07</ojdbc.version>
         <!--oracle字符集支持-->
-        <orai18n.version>21.9.0.0</orai18n.version>
+        <orai18n.version>23.9.0.25.07</orai18n.version>
         <!--对中文多音字处理-->
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <!--    postgresql 驱动   -->
-        <postgresql.version>42.7.3</postgresql.version>
+        <postgresql.version>42.7.8</postgresql.version>
         <!--项目打包编码设置-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--基础工具版本-->
+        <project.version>3.5.0-beta.1</project.version>
         <!-- Sentinel规则持久化至Nacos配置 -->
         <sentinel-datasource-nacos.version>1.8.6</sentinel-datasource-nacos.version>
-        <!--基础工具版本-->
-        <project.version>3.1.0-beta.9</project.version>
         <!--skywalking 日志记录-->
-        <skywalking-logback.version>8.14.0</skywalking-logback.version>
-        <!--Spring Context Support cache mail scheduling-->
-        <spring-context-support.version>6.1.6</spring-context-support.version>
+        <skywalking-logback.version>9.5.0</skywalking-logback.version>
+        <!--spring 框架版本依赖-->
+        <spring.version>6.2.11</spring.version>
+        <!--spring boot 版本依赖-->
+        <spring-boot.version>3.5.6</spring-boot.version>
         <!--管理和监视Spring Boot的应用程序-->
-        <spring-boot-admin.version>3.2.3</spring-boot-admin.version>
-        <!--spring boot 版本依赖-->
-        <spring-boot-maven-plugin.version>3.2.5</spring-boot-maven-plugin.version>
-        <!--spring boot 版本依赖-->
-        <spring-boot.version>3.2.5</spring-boot.version>
-        <!--spring-test-->
-        <spring-test.version>6.1.6</spring-test.version>
-        <!--spring-tx-->
-        <spring-tx.version>6.1.6</spring-tx.version>
-        <!--spring-cloud-context-->
-        <spring-cloud-context.version>4.1.2</spring-cloud-context.version>
-        <!--这里加密工具需要-->
-        <spring-security-crypto.version>6.2.4</spring-security-crypto.version>
-        <!--spring-security-rsa-->
-        <spring-security-rsa.version>1.1.2</spring-security-rsa.version>
-        <!--bootstrap 启动器-->
-        <spring-cloud-starter-bootstrap.version>4.1.2</spring-cloud-starter-bootstrap.version>
-        <!-- spring 客户端负载均衡器 -->
-        <spring-cloud-starter-loadbalancer.version>4.1.2</spring-cloud-starter-loadbalancer.version>
-        <!-- SpringCloud Openfeign 服务调用 -->
-        <spring-cloud-starter-openfeign.version>4.1.1</spring-cloud-starter-openfeign.version>
+        <spring-boot-admin.version>3.5.5</spring-boot-admin.version>
         <!--spring cloud 微服务版本依赖-->
-        <spring-cloud.version>2023.0.1</spring-cloud.version>
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <!--微服务（Spring Cloud Parent）版本-->
+        <spring-cloud-build.version>4.3.0</spring-cloud-build.version>
         <!--阿里巴巴版本依赖-->
-        <spring-cloud-alibaba.version>2023.0.1.0</spring-cloud-alibaba.version>
-        <!--Spring web-->
-        <spring-web.version>6.1.6</spring-web.version>
-        <!--spring-webmvc-->
-        <spring-webmvc.version>6.1.6</spring-webmvc.version>
+        <spring-cloud-alibaba.version>2025.0.0.0-preview</spring-cloud-alibaba.version>
+        <!--这里加密工具需要-->
+        <spring-security-crypto.version>6.5.5</spring-security-crypto.version>
         <!--swagger openapi3.0 注解-->
-        <swagger-annotations-jakarta.version>2.2.21</swagger-annotations-jakarta.version>
+        <swagger-annotations-jakarta.version>2.2.38</swagger-annotations-jakarta.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -277,7 +260,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot-maven-plugin.version}</version>
+                    <version>${spring-boot.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -315,7 +298,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot-maven-plugin.version}</version>
+                <version>${spring-boot.version}</version>
                 <configuration>
                     <finalName>${project.build.finalName}</finalName>
                     <!-- spring-boot:run 中文乱码解决 -->

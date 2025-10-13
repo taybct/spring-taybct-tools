@@ -5,13 +5,13 @@
     <parent>
         <groupId>io.github.mangocrisp</groupId>
         <artifactId>spring-taybct-tools</artifactId>
-        <version>3.2.4</version>
+        <version>3.5.0-beta.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.mangocrisp</groupId>
     <artifactId>spring-taybct-tool-security</artifactId>
-    <version>3.2.4</version>
+    <version>3.5.0-beta.1</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
     <description>Security 安全工具</description>
@@ -52,8 +52,8 @@
     </scm>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
     </properties>
 
     <dependencies>
