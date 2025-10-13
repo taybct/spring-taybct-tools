@@ -69,7 +69,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEnt
      * @since 1.0.0
      */
     @Override
-    protected Class<M> currentMapperClass() {
+    public Class<M> getMapperClass() {
         return (Class<M>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseServiceImpl.class, 0);
     }
 
@@ -81,7 +81,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEnt
      * @since 1.0.0
      */
     @Override
-    protected Class<T> currentModelClass() {
+    public  Class<T> getEntityClass() {
         return (Class<T>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseServiceImpl.class, 1);
     }
 

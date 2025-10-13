@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -172,26 +173,29 @@ public class ESQueryUtil {
                 range.forEach(rf -> {
                     RangeQuery.Builder rangeBuilder = QueryBuilders.range();
                     // 你必须得有一个条件才能查询
-                    boolean flat = false;
-                    if (rf.getLt() != null) {
-                        flat = true;
-                        rangeBuilder.lt(JsonData.of(rf.getLt()));
-                    } else if (rf.getLte() != null) {
-                        flat = true;
-                        rangeBuilder.lte(JsonData.of(rf.getLte()));
-                    }
-                    if (rf.getGt() != null) {
-                        flat = true;
-                        rangeBuilder.gt(JsonData.of(rf.getGt()));
-                    }
-                    if (rf.getGte() != null) {
-                        flat = true;
-                        rangeBuilder.gte(JsonData.of(rf.getGte()));
-                    }
-                    if (rf.getTimeZone() != null) {
-                        rangeBuilder.timeZone(rf.getTimeZone());
-                    }
-                    if (flat) {
+                    final AtomicReference<Boolean> flat = new AtomicReference<>(false);
+                    rangeBuilder.untyped(builder -> {
+                        if (rf.getLt() != null) {
+                            flat.set(true);
+                            builder.lt(JsonData.of(rf.getLt()));
+                        } else if (rf.getLte() != null) {
+                            flat.set(true);
+                            builder.lte(JsonData.of(rf.getLte()));
+                        }
+                        if (rf.getGt() != null) {
+                            flat.set(true);
+                            builder.gt(JsonData.of(rf.getGt()));
+                        }
+                        if (rf.getGte() != null) {
+                            flat.set(true);
+                            builder.gte(JsonData.of(rf.getGte()));
+                        }
+                        if (rf.getTimeZone() != null) {
+                            builder.timeZone(rf.getTimeZone());
+                        }
+                        return builder;
+                    });
+                    if (flat.get()) {
                         b.apply(builder -> builder.range(rangeBuilder.build()));
                     }
                 }));
