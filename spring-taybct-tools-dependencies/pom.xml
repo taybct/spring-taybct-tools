@@ -67,7 +67,7 @@
         <!--commons-lang3-->
         <commons-lang3.version>3.19.0</commons-lang3.version>
         <!-- 公共资源池 -->
-        <commons-pool2.version>2.12.0</commons-pool2.version>
+        <commons-pool2.version>2.12.1</commons-pool2.version>
         <!--dom4j-->
         <dom4j.version>2.2.0</dom4j.version>
         <!--阿里巴巴(Druid)德鲁伊连接池-->
@@ -91,7 +91,7 @@
         <!--httpclient5-->
         <httpclient5.version>5.5.1</httpclient5.version>
         <!--java 工具类库-->
-        <hutool.version>5.8.27</hutool.version>
+        <hutool.version>5.8.41</hutool.version>
         <!--jackson-databind-->
         <jackson-databind.version>2.20.0</jackson-databind.version>
         <!--jackson-datatype-jsr310-->
@@ -102,7 +102,7 @@
         <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
         <!--加密工具-->
         <jdk15on.version>1.70</jdk15on.version>
-        <jdk18on.version>1.82</jdk18on.version>
+        <jdk18on.version>1.78.1</jdk18on.version>
         <bcprov-ext-jdk18on.version>1.78.1</bcprov-ext-jdk18on.version>
         <!--junit 测试-->
         <junit.version>4.13.2</junit.version>
@@ -152,7 +152,7 @@
         <!--基础工具版本-->
         <project.version>3.5.0-beta.1</project.version>
         <!-- Sentinel规则持久化至Nacos配置 -->
-        <sentinel-datasource-nacos.version>1.8.6</sentinel-datasource-nacos.version>
+        <sentinel-datasource-nacos.version>1.8.9-preview</sentinel-datasource-nacos.version>
         <!--skywalking 日志记录-->
         <skywalking-logback.version>9.5.0</skywalking-logback.version>
         <!--spring 框架版本依赖-->
@@ -220,6 +220,16 @@
                 <version>${jdk15on.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpg-jdk18on</artifactId>
+                <version>${jdk18on.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcutil-jdk18on</artifactId>
+                <version>${jdk18on.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
