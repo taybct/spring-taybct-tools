@@ -1,17 +1,3 @@
-/*
-pikaへ　　　　　／|
-　　/＼7　　　 ∠＿/
-　 /　│　　 ／　／
-　│　Z ＿,＜　／　　 /`ヽ
-　│　　　　　ヽ　　 /　　〉
-　 Y　　　　　`　 /　　/
-　ｲ●　､　●　　⊂⊃〈　　/
-　()　 へ　　　　|　＼〈
-　　>ｰ ､_　 ィ　 │ ／／
-　 / へ　　 /　ﾉ＜| ＼＼
-　 ヽ_ﾉ　　(_／　 │／／
-　　7　　　　　　　|
- */
 package io.github.mangocrisp.spring.taybct.tool.launch;
 
 import lombok.extern.slf4j.Slf4j;
@@ -55,16 +41,19 @@ public class StartEventListener {
             applicationVersion = "";
         }
         StringBuilder sb = new StringBuilder();
-        sb.append("\33[3m\33[1m\r\n        　　 ＿ ＿");
-        sb.append("\r\n　　　　　／＞　　   フ");
-        sb.append("\r\n　　　　　| 　_　 _ l");
-        sb.append("\r\n 　 　　 ／` ミ＿xノ  ~miao");
-        sb.append("\r\n　　 　 /　　　 　 |");
-        sb.append("\r\n 　　　/　 ヽ　　 ﾉ");
-        sb.append("\r\n　 　 │　　|　|　| ");
-        sb.append("\r\n　／￣|　　 |　|　|");
-        sb.append("\r\n | (￣ヽ＿_ヽ_)__)");
-        sb.append("\r\n 　＼二つ                  ");
+        sb.append("\33[3m\33[1m\r\n pikaへ　　　　　／|");
+        sb.append("\r\n　　/＼7　　　 ∠＿/");
+        sb.append("\r\n　 /　│　　 ／　／");
+        sb.append("\r\n　 │　Z ＿,＜　／　　 /`ヽ");
+        sb.append("\r\n　 │　　　　　ヽ　　 /　　〉");
+        sb.append("\r\n　 Y　　　　　 `　 /　　/");
+        sb.append("\r\n　ｲ●　､　●　　⊂⊃ 〈　　/");
+        sb.append("\r\n　()　 へ　　　　|　＼〈");
+        sb.append("\r\n　　>ｰ ､_　 ィ　 │ ／／");
+        sb.append("\r\n　 / へ　　 /　ﾉ＜| ＼＼");
+        sb.append("\r\n　 ヽ_ﾉ　　(_／　 │／／");
+        sb.append("\r\n　　7　　　　　　　|");
+        sb.append("\r\n   ＞―r￣￣`ｰ―＿/");
         sb.append("\r\n\33[4m 　                     ");
         System.out.format("%s" +
                         "\r\n\33[0m\33[3m\33[1m%n 模块：[\33[0m\33[32;1m%s\33[0m\33[3m\33[1m] 启动完成 " +
