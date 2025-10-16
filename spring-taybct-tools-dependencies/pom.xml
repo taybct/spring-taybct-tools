@@ -167,10 +167,12 @@
         <spring-cloud-build.version>4.3.0</spring-cloud-build.version>
         <!--阿里巴巴版本依赖-->
         <spring-cloud-alibaba.version>2025.0.0.0-preview</spring-cloud-alibaba.version>
+        <!--OpenAPI 3-->
+        <springdoc-openapi.version>2.8.13</springdoc-openapi.version>
         <!--这里加密工具需要-->
         <spring-security-crypto.version>6.5.5</spring-security-crypto.version>
         <!--swagger openapi3.0 注解-->
-        <swagger-annotations-jakarta.version>2.2.38</swagger-annotations-jakarta.version>
+        <swagger-annotations-jakarta.version>2.2.39</swagger-annotations-jakarta.version>
     </properties>
 
     <dependencyManagement>
@@ -427,6 +429,20 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
+            </dependency>
+
+            <!-- springdoc-openapi 核心依赖（包含 OpenAPI 3 规范生成和 Swagger UI） -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+
+            <!-- 如果需要额外的注解支持（可选，通常核心依赖已包含） -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-common</artifactId>
+                <version>${springdoc-openapi.version}</version>
             </dependency>
 
             <!-- Swagger openapi3.0 注解-->
