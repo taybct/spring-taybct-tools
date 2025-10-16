@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Bean;
 public class DocConfig {
 
     // 从配置文件读取应用名称和版本（可在application.yml中配置）
-    @Value("${spring.application.name:应用名称}")
+    @Value("${spring.application.name:应用接口文档}")
     private String applicationName;
 
     @Value("${application.version:v3.5.0}")

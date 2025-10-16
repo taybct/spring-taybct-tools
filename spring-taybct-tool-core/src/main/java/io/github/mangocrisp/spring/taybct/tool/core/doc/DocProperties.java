@@ -30,7 +30,7 @@ public class DocProperties implements Serializable {
     /**
      * 标题
      **/
-    private String title = "应用名称";
+    private String title = "应用接口文档";
 
     /**
      * 描述
