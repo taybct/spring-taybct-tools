@@ -163,6 +163,8 @@
         <spring-cloud-alibaba.version>2025.0.0.0-preview</spring-cloud-alibaba.version>
         <!--微服务（Spring Cloud Parent）版本-->
         <spring-cloud-build.version>4.3.0</spring-cloud-build.version>
+        <!--OpenAPI 3-->
+        <springdoc-openapi.version>2.8.13</springdoc-openapi.version>
         <!--这里加密工具需要-->
         <spring-security-crypto.version>6.5.5</spring-security-crypto.version>
         <!--swagger openapi3.0 注解-->
