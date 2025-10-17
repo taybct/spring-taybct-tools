@@ -105,6 +105,8 @@
         <jxls-core.version>1.0.6</jxls-core.version>
         <!--knife4j-->
         <knife4j.version>4.5.0</knife4j.version>
+        <!--knife4j-fix 修复版本-->
+        <knife4j-fix.version>4.5.0.1</knife4j-fix.version>
         <lombok.version>1.18.42</lombok.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
