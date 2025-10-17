@@ -1,27 +1,60 @@
-swagger:
-  title: "业务模块"
-  description: "管理基础的功能"
-  version: 3.0.0
-# springdoc-openapi项目配置
+# springdoc-openapi 配置
 springdoc:
+  # API文档的基本信息
+  info:
+    #title: 应用接口文档
+    description: 这是应用的API接口文档，提供所有可用接口的详细信息
+    version: v3.5.0
+    contact:
+      name: 开发者
+      email: developer@example.com
+    license:
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+  # Swagger UI 配置
   swagger-ui:
+    # 自定义Swagger UI路径
     path: /swagger-ui.html
+    # 默认展开的操作数量
+    doc-expansion: none
+    # 启用深链接
+    deep-linking: true
+    # 显示请求持续时间
+    display-request-duration: true
     tags-sorter: alpha
     operations-sorter: alpha
+  # API文档的路径匹配规则
   api-docs:
+    # 自定义API文档JSON路径
     path: /v3/api-docs
+    # 启用API文档
     enabled: true
+  show-actuator: true
+  # 扫描的包路径，指定需要生成文档的控制器所在包
+  #packages-to-scan: io.github.mangocrisp.spring.taybct
+  # 需要排除的类
+  #packages-to-exclude: com.example.controller.internal
+  # 需要生成文档的路径匹配
+  #paths-to-match: /**
+  # 需要排除的路径
+  #paths-to-exclude: /error,/actuator/**
+  # 文档分组配置（如果需要多组文档）
   group-configs:
-    - group: 'default'
-      display-name: ${spring.application.name}
-      paths-to-match: '/**'
+    - group: default
       packages-to-scan: io.github.mangocrisp.spring.taybct
-  show-actuator: false
+      paths-to-match: /**
+      display-name: ${springdoc.info.title}
 # knife4j的增强配置，不需要增强可以不配
 knife4j:
   enable: true
   setting:
     # Knife4j默认显示中文(zh-CN),如果开发者想直接显示英文(en-US)，在通过该配置进行设置即可
     language: zh_cn
+    # 开启动态请求参数，true-开启，false-关闭
+    enable-dynamic-parameter: true
+    # 是否开启界面中对某接口的版本控制,如果开启，后端变化后Ui界面会存在小蓝点
+    enable-version: true
+    # 是否在每个Debug调试栏后显示刷新变量按钮,默认不显示
+    enable-reload-cache-parameter: true
   # 开启生产环境屏蔽
   production: false
