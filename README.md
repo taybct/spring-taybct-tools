@@ -6,7 +6,7 @@ Spring TayBct Tools 是一个Spring 业务组件基础集成的工具类库，�
 
 #### 软件架构
 
-- 基于 spring boot 开发，版本和 spring boot 大版本基本同步，例如 spring-taybct 3.2.x -> spring-boot 3.2.x.
+- 基于 spring boot 开发，版本和 spring boot 大版本基本同步，例如 spring-taybct 3.5.x -> spring-boot 3.5.x.
 - 适配一些 spring 相关的基础组件的简单基础集成
 
 #### 安装教程
