@@ -154,7 +154,7 @@
         <!--基础工具版本-->
         <project.version>3.5.0-beta.1</project.version>
         <!-- Sentinel规则持久化至Nacos配置 -->
-        <sentinel-datasource-nacos.version>1.8.9-preview</sentinel-datasource-nacos.version>
+        <sentinel-datasource-nacos.version>1.8.9</sentinel-datasource-nacos.version>
         <!--skywalking 日志记录-->
         <skywalking-logback.version>9.5.0</skywalking-logback.version>
         <!--spring 框架版本依赖-->
@@ -168,7 +168,7 @@
         <!--微服务（Spring Cloud Parent）版本-->
         <spring-cloud-build.version>4.3.0</spring-cloud-build.version>
         <!--阿里巴巴版本依赖-->
-        <spring-cloud-alibaba.version>2025.0.0.0-preview</spring-cloud-alibaba.version>
+        <spring-cloud-alibaba.version>2025.0.0.0</spring-cloud-alibaba.version>
         <!--OpenAPI 3-->
         <springdoc-openapi.version>2.8.13</springdoc-openapi.version>
         <!--这里加密工具需要-->
