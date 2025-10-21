@@ -402,6 +402,28 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- 自动收集项目依赖的许可证信息，并生成 NOTICE 文件 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.7.0</version>
+                <configuration>
+                    <!-- 生成 NOTICE 文件的位置（项目根目录） -->
+                    <outputDirectory>${project.basedir}</outputDirectory>
+                    <!-- 包含直接依赖和间接依赖 -->
+                    <includeTransitiveDependencies>true</includeTransitiveDependencies>
+                    <!-- 排除无需声明的依赖（可选） -->
+                    <excludedGroups>com.yourcompany.internal</excludedGroups>
+                    <includeOrganization>true</includeOrganization>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>aggregate-add-third-party</goal> <!-- 收集依赖信息 -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

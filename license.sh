@@ -1,0 +1,1 @@
+mvn license:aggregate-add-third-party
