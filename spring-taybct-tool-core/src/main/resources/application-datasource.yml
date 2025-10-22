@@ -141,4 +141,4 @@ spring:
         # session统计的最大个数
         session-stat-max-count: 100
         # Spring 监控路径
-      aop-patterns: io.github.mangocrisp.spring.taybct.*.service.*
+      aop-patterns: io.github.taybct.*.service.*

@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.mangocrisp</groupId>
+    <groupId>io.github.taybct</groupId>
     <artifactId>spring-taybct-tools</artifactId>
     <version>3.5.0-beta.1</version>
     <name>Spring TayBct Tools</name>
     <description>Spring TayBct Tools</description>
-    <url>https://github.com/mangocrisp/spring-taybct-tools</url>
+    <url>https://github.com/taybct/spring-taybct-tools</url>
     <packaging>pom</packaging>
 
     <licenses>
@@ -20,8 +20,8 @@
     </licenses>
 
     <organization>
-        <name>io.github.mangocrisp</name>
-        <url>https://github.com/mangocrisp</url>
+        <name>io.github.taybct</name>
+        <url>https://github.com/taybct</url>
     </organization>
 
     <developers>
@@ -34,16 +34,16 @@
                 <role>Project Manager</role>
                 <role>Architect</role>
             </roles>
-            <organization>io.github.mangocrisp</organization>
-            <organizationUrl>https://github.com/mangocrisp</organizationUrl>
+            <organization>io.github.taybct</organization>
+            <organizationUrl>https://github.com/taybct</organizationUrl>
             <timezone>Asia/Shanghai</timezone>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/mangocrisp/spring-taybct-tools.git</connection>
-        <developerConnection>scm:git:https://gitee.com/mangocrisp/spring-taybct-tools.git</developerConnection>
-        <url>https://github.com/mangocrisp/spring-taybct-tools</url>
+        <connection>scm:git:https://github.com/taybct/spring-taybct-tools.git</connection>
+        <developerConnection>scm:git:https://github.com/taybct/spring-taybct-tools.git</developerConnection>
+        <url>https://github.com/taybct/spring-taybct-tools</url>
     </scm>
 
     <properties>
@@ -178,7 +178,7 @@
         <dependencies>
 
             <dependency>
-                <groupId>io.github.mangocrisp</groupId>
+                <groupId>io.github.taybct</groupId>
                 <artifactId>spring-taybct-tools-dependencies</artifactId>
                 <version>${project.version}</version>
                 <type>pom</type>
@@ -414,7 +414,6 @@
                     <includeTransitiveDependencies>true</includeTransitiveDependencies>
                     <!-- 排除无需声明的依赖（可选） -->
                     <excludedGroups>com.yourcompany.internal</excludedGroups>
-                    <includeOrganization>true</includeOrganization>
                 </configuration>
                 <executions>
                     <execution>

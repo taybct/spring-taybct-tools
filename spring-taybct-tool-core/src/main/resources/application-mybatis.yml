@@ -39,12 +39,12 @@ mybatis-plus:
   # Maven 多模块项目的扫描路径需以 classpath*: 开头 （即加载多个 jar 包下的 XML 文件）
   mapper-locations:
     - classpath*:/mapper/**/*.xml # 默认配置的位置
-    - classpath*:io/github/mangocrisp/spring/taybct/**/mapper/*Mapper.xml # 这种就建议是不要，资源就应该写在 resources 下面，丢在 java 类目录下面，其实是挺奇怪的
-    - classpath*:io/github/mangocrisp/spring/taybct/**/mapper/**/*Mapper.xml # 这种就建议是不要，资源就应该写在 resources 下面，丢在 java 类目录下面，其实是挺奇怪的
+    - classpath*:io/github/taybct/**/mapper/*Mapper.xml # 这种就建议是不要，资源就应该写在 resources 下面，丢在 java 类目录下面，其实是挺奇怪的
+    - classpath*:io/github/taybct/**/mapper/**/*Mapper.xml # 这种就建议是不要，资源就应该写在 resources 下面，丢在 java 类目录下面，其实是挺奇怪的
     - classpath*:/mapper/**/mysql/*.xml # 添加了数据库类型的配置这个就需要你丢在不同的文件夹下面
     - classpath*:/mapper/**/oracle/*.xml # 添加了数据库类型的配置这个就需要你丢在不同的文件夹下面
   # 实体扫描，多个package用逗号或者分号分隔
-  type-aliases-package: io.github.mangocrisp.spring.taybct.**.domain
+  type-aliases-package: io.github.taybct.**.domain
   # 通过该属性可指定 MyBatis 的执行器 与 mybatis-config.xml 配置冲突
   #  executor-type: simple
   # MyBatis 配置文件位置

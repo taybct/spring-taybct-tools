@@ -2,19 +2,19 @@ dubbo:
   scan:
     # 需要扫描的包匹配，还可以自己再添加，这是个数组
     base-packages:
-      - io.github.mangocrisp.spring.taybct
+      - io.github.taybct
   #  protocol:
   #    name: dubbo
   #    port: -1
   #    serialization: kryo
-  #    optimizer: io.github.mangocrisp.spring.taybct.tool.cloud.dubbo.serializer.KryoSerializationOptimizerImpl
+  #    optimizer: io.github.taybct.tool.cloud.dubbo.serializer.KryoSerializationOptimizerImpl
   protocols:
     # 传输协议，Dubbo 是支持多种传输协议的，这里默认使用他的 dubbo 协议就好了，更多的，可以去官网看看
     dubbo:
       name: dubbo
       port: -1
       serialization: kryo
-      optimizer: io.github.mangocrisp.spring.taybct.tool.cloud.dubbo.serializer.KryoSerializationOptimizerImpl
+      optimizer: io.github.taybct.tool.cloud.dubbo.serializer.KryoSerializationOptimizerImpl
   # 注册中心配置，这里使用 nacos 作为配置中心，但是这里注意一下，dubbo 启动会创建一些他自己的配置文件到这里来，所以你最好是新建一个专门给 dubbo 的 namespace
   registry:
     address: nacos://${spring.cloud.nacos.discovery.server-addr}?username=nacos&password=nacos
