@@ -31,8 +31,8 @@ taybct:
       # 开启是否？
       enabled: true
       # 配置统一的解码器
-      decrypt-function: io.github.mangocrisp.spring.taybct.tool.core.util.sm.SM4Coder.De
+      decrypt-function: io.github.taybct.tool.core.util.sm.SM4Coder.De
       # 为每个数据源配置解码器
       decrypt-functions:
-        master: io.github.mangocrisp.spring.taybct.tool.core.util.sm.SM4Coder.De
-        slave1: io.github.mangocrisp.spring.taybct.tool.core.util.sm.SM4Coder.De
+        master: io.github.taybct.tool.core.util.sm.SM4Coder.De
+        slave1: io.github.taybct.tool.core.util.sm.SM4Coder.De

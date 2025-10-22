@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  io.github.mangocrisp.spring.taybct.tool.launch.StartEventListener
+  io.github.taybct.tool.launch.StartEventListener

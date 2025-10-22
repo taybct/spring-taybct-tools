@@ -31,7 +31,7 @@ springdoc:
     enabled: true
   show-actuator: true
   # 扫描的包路径，指定需要生成文档的控制器所在包
-  #packages-to-scan: io.github.mangocrisp.spring.taybct
+  #packages-to-scan: io.github.taybct
   # 需要排除的类
   #packages-to-exclude: com.example.controller.internal
   # 需要生成文档的路径匹配
@@ -41,7 +41,7 @@ springdoc:
   # 文档分组配置（如果需要多组文档）
   group-configs:
     - group: default
-      packages-to-scan: io.github.mangocrisp.spring.taybct
+      packages-to-scan: io.github.taybct
       paths-to-match: /**
       display-name: ${springdoc.info.title}
 # knife4j的增强配置，不需要增强可以不配

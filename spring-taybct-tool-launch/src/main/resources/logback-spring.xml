@@ -193,7 +193,7 @@
     <!-- 4. 最终的策略 -->
     <!-- 4.1 开发环境:打印控制台-->
     <!--<springProfile name="dev">
-        <logger name="io.github.mangocrisp.spring.taybct" level="debug"/>
+        <logger name="io.github.taybct" level="debug"/>
     </springProfile>-->
 
     <!-- Spring日志级别控制  -->
@@ -201,7 +201,7 @@
 
     <!--开发环境只打印控制台日志-->
     <springProfile name="dev">
-        <logger name="io.github.mangocrisp.spring.taybct" level="INFO"/>
+        <logger name="io.github.taybct" level="INFO"/>
         <!--系统操作日志-->
         <root level="info">
             <appender-ref ref="ASYNC"/>
@@ -212,7 +212,7 @@
 
     <!--测试环境打印所有日志-->
     <springProfile name="test">
-        <logger name="io.github.mangocrisp.spring.taybct" level="info"/>
+        <logger name="io.github.taybct" level="info"/>
         <!--系统操作日志-->
         <root level="info">
             <appender-ref ref="ASYNC"/>
@@ -227,7 +227,7 @@
 
     <!--生产环境打印所有日志-->
     <springProfile name="prod">
-        <logger name="io.github.mangocrisp.spring.taybct" level="info"/>
+        <logger name="io.github.taybct" level="info"/>
         <!--系统操作日志-->
         <root level="info">
             <appender-ref ref="ASYNC"/>
