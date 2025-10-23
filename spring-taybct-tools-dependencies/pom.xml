@@ -11,7 +11,7 @@
 
     <groupId>io.github.taybct</groupId>
     <artifactId>spring-taybct-tools-dependencies</artifactId>
-    <version>3.5.0-beta.1</version>
+    <version>3.5.0</version>
     <name>Spring TayBct Dependencies</name>
     <description>Spring TayBct Dependencies</description>
     <url>https://github.com/taybct/spring-taybct-tools</url>
@@ -152,7 +152,7 @@
         <!--项目打包编码设置-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!--基础工具版本-->
-        <project.version>3.5.0-beta.1</project.version>
+        <project.version>3.5.0</project.version>
         <!-- Sentinel规则持久化至Nacos配置 -->
         <sentinel-datasource-nacos.version>1.8.9</sentinel-datasource-nacos.version>
         <!--skywalking 日志记录-->

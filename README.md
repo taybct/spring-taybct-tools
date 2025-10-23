@@ -15,9 +15,22 @@ Spring TayBct Tools 是一个Spring 业务组件基础集成的工具类库，�
 
 #### 安装教程
 
-1. mvn clean
-2. mvn install
-3. mvn deploy
+maven 引入依赖
+
+```xml
+<dependencyManagement>
+   <dependencies>
+      <!--工具类依赖版本管理-->
+      <dependency>
+         <groupId>io.github.taybct</groupId>
+         <artifactId>spring-taybct-tools-dependencies</artifactId>
+         <version>${project.version}</version>
+         <type>pom</type>
+         <scope>import</scope>
+      </dependency>
+   </dependencies>
+</dependencyManagement>
+```
 
 #### 使用说明
 
