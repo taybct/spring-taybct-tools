@@ -54,8 +54,6 @@ import java.util.function.BiFunction;
  * @since 1.0.0
  */
 @AutoConfiguration
-// 指定要扫描的Mapper类的包的路径
-@MapperScan({"io.github.taybct.**.mapper"})
 @ConditionalOnClass({GlobalConfig.class, JdbcTemplate.class})
 @EnableConfigurationProperties({DataScopeProperties.class, TenantSupplierProperties.class})
 @Slf4j
