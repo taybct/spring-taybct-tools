@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,8 +53,6 @@ import java.util.function.BiFunction;
  * @since 1.0.0
  */
 @AutoConfiguration
-// 指定要扫描的Mapper类的包的路径
-@MapperScan({"io.github.mangocrisp.spring.taybct.**.mapper"})
 @ConditionalOnClass({GlobalConfig.class, JdbcTemplate.class})
 @EnableConfigurationProperties({DataScopeProperties.class, TenantSupplierProperties.class})
 @Slf4j
