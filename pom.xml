@@ -6,11 +6,20 @@
 
     <groupId>io.github.mangocrisp</groupId>
     <artifactId>spring-taybct-tools</artifactId>
-    <version>3.2.4</version>
+    <version>3.2.5-final</version>
     <name>Spring TayBct Tools</name>
     <description>Spring TayBct Tools</description>
     <url>https://github.com/mangocrisp/spring-taybct-tools</url>
     <packaging>pom</packaging>
+
+    <distributionManagement>
+        <relocation>
+            <groupId>io.github.taybct</groupId>
+            <artifactId>${project.artifactId}</artifactId>
+            <version>3.5.0</version>
+            <message>This project has been relocated to io.github.taybct. Please update your dependencies.</message>
+        </relocation>
+    </distributionManagement>
 
     <licenses>
         <license>

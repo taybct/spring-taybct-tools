@@ -5,17 +5,26 @@
     <parent>
         <groupId>io.github.mangocrisp</groupId>
         <artifactId>spring-taybct-tools</artifactId>
-        <version>3.2.4</version>
+        <version>3.2.5-final</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.mangocrisp</groupId>
     <artifactId>spring-taybct-tool-core</artifactId>
-    <version>3.2.4</version>
+    <version>3.2.5-final</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
     <description>基础模块：工具类、公共配置、系统常量、字典等</description>
     <url>https://github.com/mangocrisp/spring-taybct-tools</url>
+
+<distributionManagement>
+        <relocation>
+            <groupId>io.github.taybct</groupId>
+            <artifactId>${project.artifactId}</artifactId>
+            <version>3.5.0</version>
+            <message>This project has been relocated to io.github.taybct. Please update your dependencies.</message>
+        </relocation>
+    </distributionManagement>
 
     <licenses>
         <license>
