@@ -2,6 +2,7 @@ package io.github.mangocrisp.spring.taybct.tool.core.message.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ZipUtil;
 import io.github.mangocrisp.spring.taybct.tool.core.constant.DateConstants;
 import io.github.mangocrisp.spring.taybct.tool.core.message.*;
@@ -197,7 +198,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                                 .toLocalDate()
                                 .isBefore(historyCondition)
                                 && !file.getName().endsWith(".zip"));
-                if (messageFiles != null) {
+                if (ArrayUtil.isNotEmpty(messageFiles)) {
                     // 把超时的文件压缩起来
                     ZipUtil.zip(FileUtil.file(String.format("%s/%s.zip"
                                     , tempLogFolder.getPath()
