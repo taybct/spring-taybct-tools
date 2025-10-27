@@ -11,7 +11,7 @@
 
     <groupId>io.github.mangocrisp</groupId>
     <artifactId>spring-taybct-tools-dependencies</artifactId>
-    <version>3.2.5-final</version>
+    <version>3.5.0-final</version>
     <name>Spring TayBct Dependencies</name>
     <description>Spring TayBct Dependencies</description>
     <url>https://github.com/mangocrisp/spring-taybct-tools</url>
@@ -123,7 +123,7 @@
         <!--    postgresql 驱动   -->
         <postgresql.version>42.7.3</postgresql.version>
         <!--基础工具版本-->
-        <project.version>3.2.5-final</project.version>
+        <project.version>3.5.0-final</project.version>
         <!--skywalking 日志记录-->
         <skywalking-logback.version>8.14.0</skywalking-logback.version>
         <!--管理和监视Spring Boot的应用程序-->

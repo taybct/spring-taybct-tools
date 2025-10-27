@@ -5,13 +5,13 @@
     <parent>
         <groupId>io.github.mangocrisp</groupId>
         <artifactId>spring-taybct-tools</artifactId>
-        <version>3.2.5-final</version>
+        <version>3.5.0-final</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.mangocrisp</groupId>
     <artifactId>spring-taybct-tool-scheduling</artifactId>
-    <version>3.2.5-final</version>
+    <version>3.5.0-final</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
     <description>任务调度</description>
