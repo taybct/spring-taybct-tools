@@ -563,7 +563,7 @@ public class SM2Coder {
      * @since 1.0.5
      */
     public static String decryptBase64StringByPrivateKey(String encryptStr, String privateKey) throws InvalidCipherTextException, NoSuchAlgorithmException, InvalidKeySpecException {
-        return new String(SM2Coder.decryptByPrivateKey(encryptStr, privateKey));
+        return new String(SM2Coder.decryptByPrivateKey(encryptStr, privateKey), StandardCharsets.UTF_8);
     }
 
     /**

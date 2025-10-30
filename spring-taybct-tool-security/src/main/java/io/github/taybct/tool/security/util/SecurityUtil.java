@@ -7,6 +7,7 @@ import io.github.taybct.tool.core.constant.ISysParamsObtainService;
 import io.github.taybct.tool.core.constant.TokenConstants;
 import io.github.taybct.tool.core.exception.def.BaseException;
 import io.github.taybct.tool.core.result.ResultCode;
+import io.github.taybct.tool.core.util.sm.SM2Coder;
 import io.github.taybct.tool.core.util.sm.SM4Coder;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -40,7 +41,7 @@ public class SecurityUtil implements ISecurityUtil {
                 .map(requestAttributes -> requestAttributes.getRequest().getHeader(TokenConstants.JWT_PAYLOAD_KEY))
                 .map(payload -> {
                     try {
-                        return JSONObject.parseObject(SM4Coder.getSM4().decryptStr(payload, StandardCharsets.UTF_8));
+                        return JSONObject.parseObject(SM2Coder.decryptBase64StringByPrivateKey(payload));
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

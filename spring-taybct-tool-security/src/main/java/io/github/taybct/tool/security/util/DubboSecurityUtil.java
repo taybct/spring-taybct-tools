@@ -9,7 +9,7 @@ import io.github.taybct.tool.core.exception.def.BaseException;
 import io.github.taybct.tool.core.result.ResultCode;
 import io.github.taybct.tool.core.util.ServletUtil;
 import io.github.taybct.tool.core.util.StringUtil;
-import io.github.taybct.tool.core.util.sm.SM4Coder;
+import io.github.taybct.tool.core.util.sm.SM2Coder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -18,7 +18,6 @@ import org.apache.dubbo.rpc.RpcContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.http.HttpStatus;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -56,7 +55,7 @@ public class DubboSecurityUtil implements ISecurityUtil {
         if (StringUtil.isBlank(payload)) {
             throw new BaseException(ResultCode.TOKEN_INVALID_OR_EXPIRED.getMessage(), HttpStatus.UNAUTHORIZED, ResultCode.TOKEN_INVALID_OR_EXPIRED.getCode());
         }
-        return JSONObject.parseObject(SM4Coder.getSM4().decryptStr(payload, StandardCharsets.UTF_8));
+        return JSONObject.parseObject(SM2Coder.decryptBase64StringByPrivateKey(payload));
     }
 
 }
