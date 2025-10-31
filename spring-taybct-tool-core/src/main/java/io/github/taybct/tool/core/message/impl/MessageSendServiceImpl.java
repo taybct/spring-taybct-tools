@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Api 日志发送服务
+ * Api 消息发送服务
  *
  * @author xijieyin <br> 2022/8/5 20:22
  * @since 1.0.0
@@ -42,11 +42,11 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
      * 所有的处理器
      */
     @Getter
-    final ConcurrentHashMap<MessageType, IMessageSendHandler> messageSendHandlerList;
+    final ConcurrentHashMap<MessageType, IMessageSendHandler> messageSendHandlerMap;
 
     @Override
     public void addHandler(IMessageSendHandler handler) {
-        messageSendHandlerList.put(handler.getMessageType(), handler);
+        messageSendHandlerMap.put(handler.getMessageType(), handler);
     }
 
     /**
@@ -70,7 +70,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
             return;
         }
         // 循环所有的处理器
-        messageSendHandlerList.keySet().stream()
+        messageSendHandlerMap.keySet().stream()
                 .filter(type -> type.supports(message.getClass()))
                 .forEach(type -> {
                     // 这里再开个线程，可能会发的时间比较长
@@ -78,25 +78,31 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                         // 防止在写文件时候写一半被删除了
                         sendLock.lock();
                         try {
-                            String folder = messageProperties.getFolder();
-                            File tempLogFolder = new File(folder);
-                            if (!tempLogFolder.exists()) {
-                                tempLogFolder.mkdirs();
-                            }
-                            // 生成一个唯一的 id 用来存成文件到本地
-                            File logFile = new File(String.format("%s/%s%s%s"
-                                    , folder
-                                    , type.prefix()
-                                    , UUID.fastUUID()
-                                    , type.suffix()));
-                            // 消息
-                            FileUtil.writeUtf8String(message.getPayload(), logFile);
-                            log.debug("生成本地日志文件{}", logFile.getPath());
-                            File[] files = tempLogFolder.listFiles();
-                            if (files != null && files.length > messageProperties.getBuffer()) {
-                                // 如果超出了 buff 数量的文件，这时就自动触发一次发消息
-                                sendLock.unlock();
-                                send();
+                            if(message.realTime()){
+                                // 直接发送消息
+                                IMessageSendHandler handler = messageSendHandlerMap.get(type);
+                                handler.send(message.getPayload());
+                            } else {
+                                String folder = messageProperties.getFolder();
+                                File tempLogFolder = new File(folder);
+                                if (!tempLogFolder.exists()) {
+                                    tempLogFolder.mkdirs();
+                                }
+                                // 生成一个唯一的 id 用来存成文件到本地
+                                File logFile = new File(String.format("%s/%s%s%s"
+                                        , folder
+                                        , type.prefix()
+                                        , type.generateName()
+                                        , type.suffix()));
+                                // 消息
+                                FileUtil.writeUtf8String(message.getPayload(), logFile);
+                                log.debug("生成本地消息文件{}", logFile.getPath());
+                                File[] files = tempLogFolder.listFiles();
+                                if (files != null && files.length > messageProperties.getBuffer()) {
+                                    // 如果超出了 buff 数量的文件，这时就自动触发一次发消息
+                                    sendLock.unlock();
+                                    send();
+                                }
                             }
                         } finally {
                             sendLock.unlock();
@@ -111,7 +117,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
             return;
         }
         sendThreadExecutor.execute(() -> {
-            log.debug("日志检查启动");
+            log.debug("消息检查启动");
             try {
                 do {
                     Thread.sleep(messageProperties.getCheckDelay());
@@ -122,7 +128,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
             }
         });
         cleanThreadExecutor.execute(() -> {
-            log.debug("日志清理启动");
+            log.debug("消息清理启动");
             try {
                 do {
                     // 启动就检查
@@ -151,7 +157,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
             String folder = messageProperties.getFolder();
             File tempLogFolder = new File(folder);
             if (tempLogFolder.exists()) {
-                messageSendHandlerList.forEach((messageType, handler) -> {
+                messageSendHandlerMap.forEach((messageType, handler) -> {
                     File[] files = tempLogFolder.listFiles(file -> file.getName().startsWith(messageType.prefix())
                             && file.getName().endsWith(messageType.suffix()));
                     // 将会报错的文件路径
@@ -159,9 +165,9 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                     try {
                         Optional.ofNullable(files).ifPresent(fs -> {
                             for (File file : fs) {
-                                // 读取到日志内容
+                                // 读取到消息内容
                                 String path = file.getPath();
-                                log.debug("检查到日志文件：{}", path);
+                                log.debug("检查到消息文件：{}", path);
                                 errorPath.set(path);
                                 if (handler.send(FileUtil.readUtf8String(file)) && file.exists()) {
                                     file.delete();
@@ -169,8 +175,8 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                             }
                         });
                     } catch (Exception e) {
-                        log.error("发送日志失败！", e);
-                        log.error(String.format("发送日志失败！请手动查看原因！[%s]", errorPath.get()));
+                        log.error("发送消息失败！", e);
+                        log.error(String.format("发送消息失败！请手动查看原因！[%s]", errorPath.get()));
                     }
                 });
             }
