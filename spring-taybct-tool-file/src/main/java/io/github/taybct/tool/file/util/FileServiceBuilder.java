@@ -283,7 +283,7 @@ public class FileServiceBuilder {
      * @return 上传后的文件地址
      * @throws Exception 异常
      */
-    private static String saveFile(String downloadUri, String fileName) throws Exception {
+    public static String saveFile(String downloadUri, String fileName) throws Exception {
         URL url = new URL(downloadUri);
         HttpURLConnection connection = null;
         HttpsURLConnection connections = null;
@@ -314,7 +314,7 @@ public class FileServiceBuilder {
      * @param wordFile 文件
      * @return boolean
      */
-    private static boolean isWordFileEmpty(MultipartFile wordFile) {
+    public static boolean isWordFileEmpty(MultipartFile wordFile) {
         return wordFile == null || wordFile.isEmpty();
     }
 
@@ -323,7 +323,7 @@ public class FileServiceBuilder {
      *
      * @param wordFile 文件
      */
-    private static void checkWordFileEmpty(MultipartFile wordFile) {
+    public static void checkWordFileEmpty(MultipartFile wordFile) {
         if (isWordFileEmpty(wordFile)) {
             throw new FileUploadException("上传文件不能为空");
         }
