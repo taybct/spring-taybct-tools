@@ -17,12 +17,21 @@ public interface Message extends Serializable {
      *
      * @return true:是实时消息
      */
-    default boolean realTime(){
+    default boolean realTime() {
         return false;
     }
 
     /**
-     * 获取数据
+     * 获取原始数据
+     *
+     * @return 原始数据
+     */
+    default Object getOriginalData() {
+        return null;
+    }
+
+    /**
+     * 获取数据（序列化为字符串）
      *
      * @return 消息数据
      */

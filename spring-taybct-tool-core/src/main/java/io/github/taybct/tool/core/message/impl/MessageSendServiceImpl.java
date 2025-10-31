@@ -81,6 +81,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                             if(message.realTime()){
                                 // 直接发送消息
                                 IMessageSendHandler handler = messageSendHandlerMap.get(type);
+                                handler.sendOriginal(message.getOriginalData());
                                 handler.send(message.getPayload());
                             } else {
                                 String folder = messageProperties.getFolder();

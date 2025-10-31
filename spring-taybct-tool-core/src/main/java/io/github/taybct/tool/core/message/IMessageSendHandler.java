@@ -18,6 +18,16 @@ public interface IMessageSendHandler {
     MessageType getMessageType();
 
     /**
+     * 发送原始数据
+     *
+     * @param data 原始数据
+     * @return 是否发送成功
+     */
+    default boolean sendOriginal(Object data) {
+        return false;
+    }
+
+    /**
      * 发送消息
      *
      * @param message 消息
