@@ -1,5 +1,9 @@
 package io.github.taybct.tool.core.message;
 
+import org.springframework.lang.NonNull;
+
+import java.io.Serializable;
+
 /**
  * 现在可以支持任意能够发送消息的工具
  * <br>
@@ -15,6 +19,7 @@ public interface IMessageSendHandler {
      *
      * @return 消息研
      */
+    @NonNull
     MessageType getMessageType();
 
     /**
@@ -23,7 +28,7 @@ public interface IMessageSendHandler {
      * @param data 原始数据
      * @return 是否发送成功
      */
-    default boolean sendOriginal(Object data) {
+    default boolean sendOriginal(Serializable data) {
         return false;
     }
 

@@ -16,6 +16,6 @@ public interface DefaultMessageType {
     /**
      * 接口日志消息
      */
-    MessageType API_LOG = new MessageType(ApiLogDTO.class, "API_LOG-", () -> UUID.fastUUID().toString(true), ".json");
+    MessageType API_LOG = new MessageType(ApiLogDTO.class, "API_LOG-", UUID.fastUUID().toString(true), ".json");
 
 }

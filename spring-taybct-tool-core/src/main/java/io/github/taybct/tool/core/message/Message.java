@@ -17,7 +17,7 @@ public interface Message extends Serializable {
      *
      * @return true:是实时消息
      */
-    default boolean realTime() {
+    default boolean getRealTime() {
         return false;
     }
 
@@ -26,7 +26,7 @@ public interface Message extends Serializable {
      *
      * @return 原始数据
      */
-    default Object getOriginalData() {
+    default Serializable getOriginalData() {
         return null;
     }
 

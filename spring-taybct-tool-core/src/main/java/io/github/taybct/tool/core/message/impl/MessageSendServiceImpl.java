@@ -78,7 +78,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                         // 防止在写文件时候写一半被删除了
                         sendLock.lock();
                         try {
-                            if(message.realTime()){
+                            if(message.getRealTime()){
                                 // 直接发送消息
                                 IMessageSendHandler handler = messageSendHandlerMap.get(type);
                                 handler.sendOriginal(message.getOriginalData());
@@ -93,7 +93,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                                 File logFile = new File(String.format("%s/%s%s%s"
                                         , folder
                                         , type.prefix()
-                                        , type.generateName()
+                                        , type.fileName()
                                         , type.suffix()));
                                 // 消息
                                 FileUtil.writeUtf8String(message.getPayload(), logFile);

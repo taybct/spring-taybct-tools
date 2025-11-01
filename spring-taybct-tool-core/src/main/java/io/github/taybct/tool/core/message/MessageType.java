@@ -10,12 +10,12 @@ import java.util.function.Supplier;
  *
  * @param messageClass 消息类型
  * @param prefix       生成临时文件的前缀
- * @param generateName 生成文件名
+ * @param fileName     生成文件名
  * @param suffix       生成临时文件的后缀
  * @author XiJieYin
  * @since 2024/9/1 00:48
  */
-public record MessageType(Class<? extends Message> messageClass, String prefix, Supplier<String> generateName,
+public record MessageType(Class<? extends Message> messageClass, String prefix, String fileName,
                           String suffix) implements Serializable {
 
     /**

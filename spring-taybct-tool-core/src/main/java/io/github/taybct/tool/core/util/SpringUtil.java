@@ -1,5 +1,6 @@
 package io.github.taybct.tool.core.util;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.aop.framework.AopContext;
@@ -29,6 +30,7 @@ public class SpringUtil implements BeanFactoryPostProcessor, ApplicationContextA
     /**
      * Spring应用上下文环境
      */
+    @Getter
     private static ConfigurableListableBeanFactory beanFactory;
 
     private static ApplicationContext applicationContext;
