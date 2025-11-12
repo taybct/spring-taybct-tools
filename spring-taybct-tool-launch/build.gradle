@@ -1,0 +1,16 @@
+description = "启动模块"
+dependencies {
+
+    // Spring Cloud 启动器 - 核心功能，必须传递
+    api 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+    // Spring 测试框架 - 让用户也能使用测试功能
+    api 'junit:junit'
+    api 'org.springframework:spring-test'
+    api 'org.springframework.boot:spring-boot-test'
+    // SkyWalking 日志 - 作为库的功能一部分传递
+    //api 'org.apache.skywalking:apm-toolkit-logback-1.x'
+
+    // 测试依赖 - 仍然保持 testImplementation（测试不应该传递）
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+}

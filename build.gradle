@@ -1,0 +1,240 @@
+plugins {
+    id 'io.spring.dependency-management'
+}
+
+description = 'Spring TayBct Tools'
+
+// 所有项目的通用配置
+allprojects {it ->
+    group = findProperty('taybct-project.groupId') ?: 'io.github.taybct'
+    version = findProperty('taybct-project.version') ?: '3.5.0'
+
+    repositories {
+        mavenLocal()
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+            name = 'AliyunMaven'
+        }
+        mavenCentral()
+    }
+}
+
+// 所有项目通用配置
+subprojects {subproject ->
+
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    if (!subproject.name.equals("spring-taybct-tools-dependencies")){
+
+        apply plugin: 'java'
+        apply plugin: 'java-library'
+
+        // 依赖管理配置
+        dependencyManagement {
+            imports {
+                mavenBom "io.github.taybct:spring-taybct-tools-dependencies:${findProperty('spring-taybct.version') ?: '3.5.0'}"
+            }
+        }
+
+        // 依赖声明优化
+        dependencies {
+            // 编译时依赖
+            compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+            compileOnly 'org.projectlombok:lombok'
+            compileOnly 'net.dreamlu:mica-auto'
+
+            // 注解处理器
+            annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+            annotationProcessor 'org.projectlombok:lombok'
+            annotationProcessor 'net.dreamlu:mica-auto'
+
+            // Hutool - 作为工具库的一部分传递
+            api 'cn.hutool:hutool-all'
+
+            // Spring 核心依赖 - 确保用户获得完整的 Spring 环境
+            api 'org.springframework:spring-context'
+            api 'org.springframework.boot:spring-boot-starter'
+            api 'org.springframework.boot:spring-boot-autoconfigure'
+        }
+
+        sourceSets {
+            main {
+                resources {
+                    // 第一个资源目录：src/main/resources（排除特定文件）
+                    srcDir 'src/main/resources'
+                    exclude '**/*.jks'
+                    exclude '**/*.cer'
+                    exclude '**/*.key'
+
+                    // 第二个资源目录：src/main/java（只包含配置文件）
+                    srcDir 'src/main/java'
+                    include '**/*.properties'
+                    include '**/*.yml'
+                    include '**/*.xml'
+                    exclude '**/*.java'
+                }
+            }
+        }
+
+        // 源码集配置
+        java {
+            sourceCompatibility = JavaVersion.toVersion(findProperty('maven.compiler.source') ?: '21')
+            targetCompatibility = JavaVersion.toVersion(findProperty('maven.compiler.target') ?: '21')
+            withSourcesJar()
+            withJavadocJar()
+        }
+
+        // 配置 sourcesJar 任务的重复文件处理策略
+        tasks.named('sourcesJar') {
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        }
+
+        // 确保也配置 javadocJar 任务
+        tasks.named('javadocJar') {
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        }
+
+        // 配置资源处理
+        tasks.named('processResources') {
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            exclude '**/*.jks'
+            exclude '**/*.cer'
+            exclude '**/*.key'
+        }
+
+        // 发布到本地的时候可能需要版本检测，这里路过版本检测，同步版本直接覆盖
+        tasks.withType(JavaCompile).configureEach {
+            options.encoding = findProperty('taybct-project.build.sourceEncoding') ?: 'UTF-8'
+        }
+
+        // Javadoc 配置
+        javadoc {
+            options {
+                encoding = 'UTF-8'
+                charSet = 'UTF-8'
+                docEncoding = 'UTF-8'
+                addBooleanOption('Xdoclint:none', true)
+                addBooleanOption('html5', true)
+            }
+        }
+    } else {
+
+        // BOM模块必须使用此插件 [citation:1][citation:8]
+        apply plugin: 'java-platform'
+
+    }
+
+    // 修复版本检查问题
+    tasks.withType(GenerateModuleMetadata).configureEach {
+        suppressedValidationErrors.add('dependencies-without-versions')
+    }
+
+    afterEvaluate {it ->
+        // 发布配置
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    if (!subproject.name.equals("spring-taybct-tools-dependencies")){
+                        // 发布 Jar 包：from components.java 会自动包含主工件和依赖信息 [citation:3]
+                        from components.java
+                    } else {
+                        // 对于java-platform项目，必须使用javaPlatform组件 [citation:8]
+                        from components.javaPlatform
+                    }
+
+                    // GAV坐标
+                    groupId = subproject.group
+                    artifactId = subproject.name
+                    version = subproject.version
+
+                    // POM 配置
+                    pom {
+
+                        name = subproject.name
+
+                        description = subproject.description
+
+                        url = findProperty('taybct-project.url') ?: 'https://github.com/taybct/spring-taybct-tools'
+
+                        scm {
+                            connection = findProperty('taybct-project.scm.connection') ?: 'scm:git:git://github.com/taybct/spring-taybct-tools.git'
+                            developerConnection = findProperty('taybct-project.scm.developerConnection') ?: 'scm:git:ssh://github.com/taybct/spring-taybct-tools.git'
+                            url = findProperty('taybct-project.scm.url') ?: 'https://github.com/taybct/spring-taybct-tools'
+                        }
+
+                        licenses {
+                            license {
+                                name = findProperty('taybct-project.license.name') ?: 'The Apache Software License, Version 2.0'
+                                url = findProperty('taybct-project.license.url') ?: 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                            }
+                        }
+
+                        organization {
+                            name = findProperty('taybct-project.organization.name') ?: 'io.github.taybct'
+                            url = findProperty('taybct-project.organization.url') ?: 'https://github.com/taybct'
+                        }
+
+                        developers {
+                            developer {
+                                id = 'crisp'
+                                name = 'Mango Crisp'
+                                email = '15014633363@163.com'
+                                url = 'https://mangocrisp.github.io'
+                                organization = 'io.github.taybct'
+                                organizationUrl = 'https://github.com/taybct'
+                                timezone = 'Asia/Shanghai'
+                            }
+                        }
+
+                        withXml {
+                            def root = asNode()
+                            def developers = root.get('developers')[0]
+                            def developer1 = developers.get('developer')[0]
+                            def roles1 = developer1.appendNode('roles')
+                            roles1.appendNode('role', 'Architect')
+                            roles1.appendNode('role', 'Developer')
+                        }
+                    }
+                }
+            }
+
+            repositories {
+                maven {
+                    def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                    def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                    url = version.toString().endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+                    credentials {
+                        username = findProperty('ossrhUsername') ?: System.getenv('OSSRH_USERNAME')
+                        password = findProperty('ossrhPassword') ?: System.getenv('OSSRH_PASSWORD')
+                    }
+                }
+            }
+        }
+
+        // 签名配置
+        signing {
+            def keyId = findProperty("gpg.keyId") ?: System.getenv("GPG_KEY_ID")
+            def keyRingFile = findProperty("gpg.secretKeyRingFile") ?: System.getenv("GPG_SECRET_KEY_RING_FILE")
+            def passphrase = findProperty("gpg.passphrase") ?: System.getenv("GPG_PASSPHRASE")
+
+            if (keyRingFile) {
+                def keyFile = new File(keyRingFile as  String)
+                if (keyFile.exists()) {
+                    useInMemoryPgpKeys(keyId as  String, keyFile.text, passphrase as  String)
+                }
+            } else {
+                def key = findProperty("gpg.key") ?: System.getenv("GPG_KEY")
+                useInMemoryPgpKeys(keyId as  String, key as  String, passphrase as  String)
+            }
+
+            required {
+                gradle.taskGraph.hasTask("publish") || gradle.taskGraph.hasTask("publishToMavenLocal")
+            }
+
+            sign publishing.publications.mavenJava
+        }
+    }
+}
