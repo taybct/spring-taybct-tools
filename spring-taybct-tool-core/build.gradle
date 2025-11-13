@@ -1,0 +1,64 @@
+description = "基础模块：工具类、公共配置、系统常量、字典等"
+
+dependencies {
+    // ========== Spring 核心依赖（无optional+scope=compile → api，导出给下游） ==========
+    api 'org.springframework:spring-context-support'
+    api 'org.springframework.boot:spring-boot-starter-aop'
+    api 'org.springframework:spring-web'
+    api 'org.springframework.boot:spring-boot-starter-validation'
+    api 'org.springframework.boot:spring-boot-starter-json'
+    api 'org.springframework:spring-tx'
+    api 'org.springframework.cloud:spring-cloud-context'
+
+    // ========== 公共工具类（无optional+scope=compile → api，导出给下游） ==========
+    api 'org.apache.commons:commons-lang3'
+    api 'org.apache.commons:commons-pool2'
+    api 'org.apache.commons:commons-collections4:4.4' // type=pom不影响导出，核心工具类
+    api 'com.belerweb:pinyin4j'
+    api 'org.apache.httpcomponents.client5:httpclient5'
+    api 'commons-dbutils:commons-dbutils'
+
+    // ========== JSON 处理核心依赖（无optional+scope=compile → api，导出给下游） ==========
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    api 'com.fasterxml.jackson.core:jackson-databind'
+    api 'com.alibaba.fastjson2:fastjson2'
+    api 'io.swagger.core.v3:swagger-annotations-jakarta'
+
+    // ========== 数据库/MyBatis-Plus 核心依赖（无optional+scope=compile → api，导出给下游） ==========
+    api 'com.baomidou:mybatis-plus-extension'
+    api 'com.baomidou:mybatis-plus-annotation'
+    api 'com.baomidou:mybatis-plus-jsqlparser'
+
+    // ========== 加密核心依赖（无optional+scope=compile → api，导出给下游） ==========
+    api 'org.bouncycastle:bcpg-jdk18on'
+    api 'org.bouncycastle:bcprov-jdk18on'
+    api 'org.bouncycastle:bcutil-jdk18on'
+    api 'org.bouncycastle:bcpkix-jdk18on'
+    api 'org.bouncycastle:bcprov-ext-jdk18on'
+
+    // ========== 仅编译时依赖（scope=provided → compileOnly，不打包、不导出） ==========
+    compileOnly 'jakarta.servlet:jakarta.servlet-api' // 容器提供，仅编译需要
+    compileOnly 'org.springframework:spring-webmvc' // scope=provided+optional=true，双重不导出
+    compileOnly 'com.aliyun:dysmsapi20170525:2.0.1' // scope=provided+optional=true
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-mongodb' // scope=provided+optional=true
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-redis' // scope=provided+optional=true
+    compileOnly 'org.springframework.boot:spring-boot-starter-amqp' // scope=provided+optional=true
+    compileOnly 'org.postgresql:postgresql' // scope=provided+optional=true
+    compileOnly 'com.mysql:mysql-connector-j' // scope=provided+optional=true
+    compileOnly 'com.oracle.database.jdbc:ojdbc11' // scope=provided+optional=true
+    compileOnly 'com.oracle.database.nls:orai18n' // scope=provided+optional=true
+    compileOnly 'com.alibaba:druid-spring-boot-3-starter' // scope=provided+optional=true
+    compileOnly 'com.baomidou:dynamic-datasource-spring-boot3-starter' // scope=provided+optional=true
+    compileOnly 'com.baomidou:mybatis-plus-spring-boot3-starter' // scope=provided+optional=true
+    compileOnly 'org.mybatis:mybatis-typehandlers-jsr310' // scope=provided+optional=true
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-elasticsearch' // scope=provided+optional=true
+    compileOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui' // scope=provided+optional=true
+    compileOnly 'com.alibaba:easyexcel' // scope=provided+optional=true
+    compileOnly 'cn.afterturn:easypoi-base' // scope=provided+optional=true
+    compileOnly 'cn.afterturn:easypoi-web' // scope=provided+optional=true
+    compileOnly 'cn.afterturn:easypoi-annotation' // scope=provided+optional=true
+    compileOnly 'net.sf.jxls:jxls-core' // scope=provided+optional=true
+    compileOnly 'org.springframework.boot:spring-boot-starter-reactor-netty' // scope=provided+optional=true
+    compileOnly 'org.springframework.boot:spring-boot-starter-webflux' // scope=provided+optional=true
+    compileOnly 'org.springframework.boot:spring-boot-starter-websocket' // scope=provided+optional=true
+}

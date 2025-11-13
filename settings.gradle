@@ -15,5 +15,7 @@ pluginManagement {
 }
 
 rootProject.name = 'spring-taybct-tools'
-include 'spring-taybct-tool-launch'
-include 'spring-taybct-tools-dependencies'
+include ':spring-taybct-tools-dependencies'
+include ':spring-taybct-tool-core'
+include ':spring-taybct-tool-launch'
+include ':spring-taybct-tool-cloud'

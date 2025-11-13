@@ -128,6 +128,7 @@ public class DataSyncConfig implements Serializable {
      * 其他配置参数
      */
     @Schema(description = "其他配置参数")
+    @Builder.Default
     private JSONObject properties = new JSONObject();
 
 }

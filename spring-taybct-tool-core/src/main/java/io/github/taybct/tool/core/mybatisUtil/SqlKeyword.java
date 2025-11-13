@@ -100,7 +100,7 @@ public class SqlKeyword {
                     } else if (k.endsWith(IN)) {
                         // 这里暂时逗号隔空，后续可以增加类型区分
                         if (v != null) {
-                            qw.in(getColumn(k, IN), v.toString().split(","));
+                            qw.in(getColumn(k, IN), (Object) v.toString().split(","));
                         }
                     } else if (k.endsWith(DATE_GT)) {
                         qw.gt(getColumn(k, DATE_GT), v);

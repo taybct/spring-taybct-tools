@@ -49,6 +49,7 @@ public class DBField implements Serializable {
      * 字段排序
      */
     @Schema(description = "字段排序")
+    @Builder.Default
     private String orderNum = "0";
     /**
      * 格式
@@ -59,21 +60,25 @@ public class DBField implements Serializable {
      * 列宽
      */
     @Schema(description = "列宽")
+    @Builder.Default
     private double width = 25d;
     /**
      * 纵向合并相同单元格
      */
     @Schema(description = "纵向合并相同单元格")
+    @Builder.Default
     private boolean mergeSame = true;
     /**
      * 是否需要合并
      */
     @Schema(description = "是否需要合并")
+    @Builder.Default
     private boolean needMerge = true;
     /**
      * 单元格纵向合并
      */
     @Schema(description = "单元格纵向合并")
+    @Builder.Default
     private boolean mergeVertical = true;
     /**
      * 替换规则，a_1,b_2

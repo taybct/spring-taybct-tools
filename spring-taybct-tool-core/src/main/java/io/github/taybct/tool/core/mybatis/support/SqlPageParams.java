@@ -44,17 +44,20 @@ public class SqlPageParams implements Serializable {
      */
     @Schema(description = "分页页码", example = "0")
     @JsonSerialize(using = ToStringSerializer.class)
+    @Builder.Default
     private Long pageNum = 0L;
     /**
      * 分页大小
      */
     @Schema(description = "分页大小", example = "10")
     @JsonSerialize(using = ToStringSerializer.class)
+    @Builder.Default
     private Long pageSize = 10L;
     /**
      * 是否查询总数
      */
     @Schema(description = "是否查询总数", example = "true")
+    @Builder.Default
     private Boolean countTotal = true;
     /**
      * 按哪些字段排序 逗号隔开字段，空格隔开 asc（正序） 或者 desc（倒序）

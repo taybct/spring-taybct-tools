@@ -34,7 +34,7 @@ subprojects {subproject ->
         // 依赖管理配置
         dependencyManagement {
             imports {
-                mavenBom "io.github.taybct:spring-taybct-tools-dependencies:${findProperty('spring-taybct.version') ?: '3.5.0'}"
+                mavenBom "io.github.taybct:spring-taybct-tools-dependencies:${findProperty('taybct-project.spring-taybct.version') ?: '3.5.0'}"
             }
         }
 
@@ -119,6 +119,13 @@ subprojects {subproject ->
                 addBooleanOption('html5', true)
             }
         }
+
+        tasks.withType(Javadoc).configureEach {
+            options.encoding = 'UTF-8'
+            options.charSet = 'UTF-8'
+            // 若使用中文注释，需额外配置语言
+            options.locale = 'zh_CN'
+        }
     } else {
 
         // BOM模块必须使用此插件 [citation:1][citation:8]
@@ -195,6 +202,33 @@ subprojects {subproject ->
                             def roles1 = developer1.appendNode('roles')
                             roles1.appendNode('role', 'Architect')
                             roles1.appendNode('role', 'Developer')
+
+
+                            if (!subproject.name.equals("spring-taybct-tools-dependencies")){
+
+                                def dependenciesNode = root.dependencies[0] ?: root.appendNode('dependencies')
+
+                                // 修改 compileOnly 依赖的 scope 和 optional
+                                dependenciesNode.dependency.each { dep ->
+                                    def groupId = dep.groupId.text()
+                                    def artifactId = dep.artifactId.text()
+
+                                    // 检查这个依赖是否在 compileOnly 配置中
+                                    def isCompileOnly = configurations.compileOnly.allDependencies.any { d ->
+                                        d.group == groupId && d.name == artifactId
+                                    }
+
+                                    // 检查这个依赖是否在 implementation 配置中
+                                    def isImplementation = configurations.implementation.allDependencies.any { d ->
+                                        d.group == groupId && d.name == artifactId
+                                    }
+
+                                    if (isCompileOnly || isImplementation) {
+                                        dep.scope*.value = 'provided'
+                                        dep.appendNode('optional', 'true')
+                                    }
+                                }
+                            }
                         }
                     }
                 }

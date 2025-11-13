@@ -37,6 +37,7 @@ public class DataSyncResult implements Serializable {
      * 同步结果
      */
     @Schema(description = "同步结果")
+    @Builder.Default
     private boolean ok = false;
     /**
      * 同步时间

@@ -42,6 +42,7 @@ public class WSR<T> implements Serializable {
      * 消息 id
      */
     @Schema(description = "消息 id")
+    @Builder.Default
     private String messageId = IdUtil.randomUUID();
     /**
      * 发送人
@@ -69,26 +70,31 @@ public class WSR<T> implements Serializable {
     @Schema(description = "发送时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Builder.Default
     private LocalDateTime sendTime = LocalDateTime.now();
     /**
      * 状态码
      */
     @Schema(description = "状态码")
+    @Builder.Default
     private String code = ResultCode.OK.getCode();
     /**
      * 消息
      */
     @Schema(description = "消息")
+    @Builder.Default
     private String message = ResultCode.OK.getMessage();
     /**
      * 消息标题
      */
     @Schema(description = "消息标题")
+    @Builder.Default
     private String title = "消息通知";
     /**
      * 消息主题
      */
     @Schema(description = "消息主题")
+    @Builder.Default
     private String topic = MessageTopic.SIMPLE_MESSAGE;
     /**
      * 消息类型（子类型）
@@ -110,6 +116,7 @@ public class WSR<T> implements Serializable {
      * 额外的数据
      */
     @Schema(description = "额外数据")
+    @Builder.Default
     private JSONObject meta = new JSONObject();
 
     /**

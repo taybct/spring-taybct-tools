@@ -2,9 +2,144 @@ description = "Spring TayBct Dependencies"
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:${findProperty('spring-boot.version') ?: '3.5.6'}"
+        // Apache Dubbo
+        mavenBom "org.apache.dubbo:dubbo-bom:${findProperty('taybct-project.dubbo.version') ?: '3.3.5'}"
+        // Alibaba Cloud
+        mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${findProperty('taybct-project.spring-cloud-alibaba.version') ?: '2025.0.0.0'}"
+        // Spring Cloud
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${findProperty('taybct-project.spring-cloud.version') ?: '2025.0.0'}"
+        // Spring Boot
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${findProperty('taybct-project.spring-boot.version') ?: '3.5.6'}"
     }
     dependencies {
+        // Bouncycastle 相关
+        if (project.hasProperty('taybct-project.jdk15on.version')) dependency "org.bouncycastle:bcprov-jdk15on:${findProperty('taybct-project.jdk15on.version')}"
+        // Bouncycastle 相关（用 dependency 声明版本，供其他模块继承）
+        if (project.hasProperty('taybct-project.jdk15on.version')) dependency "org.bouncycastle:bcpkix-jdk15on:${findProperty('taybct-project.jdk15on.version')}"
+        if (project.hasProperty('taybct-project.jdk15on.version')) dependency "org.bouncycastle:bcprov-ext-jdk15on:${findProperty('taybct-project.jdk15on.version')}"
+        if (project.hasProperty('taybct-project.jdk18on.version')) dependency "org.bouncycastle:bcpg-jdk18on:${findProperty('taybct-project.jdk18on.version')}"
+        if (project.hasProperty('taybct-project.jdk18on.version')) dependency "org.bouncycastle:bcutil-jdk18on:${findProperty('taybct-project.jdk18on.version')}"
+        if (project.hasProperty('taybct-project.jdk18on.version')) dependency "org.bouncycastle:bcprov-jdk18on:${findProperty('taybct-project.jdk18on.version')}"
+        if (project.hasProperty('taybct-project.jdk18on.version')) dependency "org.bouncycastle:bcpkix-jdk18on:${findProperty('taybct-project.jdk18on.version')}"
+        if (project.hasProperty('taybct-project.bcprov-ext-jdk18on.version')) dependency "org.bouncycastle:bcprov-ext-jdk18on:${findProperty('taybct-project.bcprov-ext-jdk18on.version')}"
 
+        // 公共基础类
+        if (project.hasProperty('taybct-project.commons-lang3.version')) dependency "org.apache.commons:commons-lang3:${findProperty('taybct-project.commons-lang3.version')}"
+
+        // Feign
+        if (project.hasProperty('taybct-project.feign-httpclient.version')) dependency "io.github.openfeign:feign-httpclient:${findProperty('taybct-project.feign-httpclient.version')}"
+
+        // HttpClient 5
+        if (project.hasProperty('taybct-project.httpclient5.version')) dependency "org.apache.httpcomponents.client5:httpclient5:${findProperty('taybct-project.httpclient5.version')}"
+
+        // 工具类库
+        if (project.hasProperty('taybct-project.hutool.version')) dependency "cn.hutool:hutool-all:${findProperty('taybct-project.hutool.version')}"
+
+        // Jackson
+        if (project.hasProperty('taybct-project.jackson-databind.version')) dependency "com.fasterxml.jackson.core:jackson-databind:${findProperty('taybct-project.jackson-databind.version')}"
+        if (project.hasProperty('taybct-project.jackson-datatype-jsr310.version')) dependency "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${findProperty('taybct-project.jackson-datatype-jsr310.version')}"
+
+        // Jakarta Servlet API
+        if (project.hasProperty('taybct-project.jakarta.servlet-api.version')) dependency "jakarta.servlet:jakarta.servlet-api:${findProperty('taybct-project.jakarta.servlet-api.version')}"
+
+        // Mica Auto
+        if (project.hasProperty('taybct-project.mica-auto.version')) dependency "net.dreamlu:mica-auto:${findProperty('taybct-project.mica-auto.version')}"
+
+        // Fastjson2
+        if (project.hasProperty('taybct-project.fastjson2.version')) dependency "com.alibaba.fastjson2:fastjson2:${findProperty('taybct-project.fastjson2.version')}"
+
+        // Spring 相关
+        if (project.hasProperty('taybct-project.spring.version')) dependency "org.springframework:spring-context-support:${findProperty('taybct-project.spring.version')}"
+        if (project.hasProperty('taybct-project.spring.version')) dependency "org.springframework:spring-test:${findProperty('taybct-project.spring.version')}"
+        if (project.hasProperty('taybct-project.spring.version')) dependency "org.springframework:spring-tx:${findProperty('taybct-project.spring.version')}"
+        if (project.hasProperty('taybct-project.spring.version')) dependency "org.springframework:spring-web:${findProperty('taybct-project.spring.version')}"
+        if (project.hasProperty('taybct-project.spring.version')) dependency "org.springframework:spring-webmvc:${findProperty('taybct-project.spring.version')}"
+
+        // Spring Boot Admin
+        if (project.hasProperty('taybct-project.spring-boot-admin.version')) dependency "de.codecentric:spring-boot-admin-starter-client:${findProperty('taybct-project.spring-boot-admin.version')}"
+        if (project.hasProperty('taybct-project.spring-boot-admin.version')) dependency "de.codecentric:spring-boot-admin-starter-server:${findProperty('taybct-project.spring-boot-admin.version')}"
+        if (project.hasProperty('taybct-project.spring-boot-admin.version')) dependency "de.codecentric:spring-boot-admin-server-ui:${findProperty('taybct-project.spring-boot-admin.version')}"
+
+        // Spring Cloud 相关
+        if (project.hasProperty('taybct-project.spring-cloud-build.version')) dependency "org.springframework.cloud:spring-cloud-context:${findProperty('taybct-project.spring-cloud-build.version')}"
+        if (project.hasProperty('taybct-project.spring-cloud-build.version')) dependency "org.springframework.cloud:spring-cloud-starter-bootstrap:${findProperty('taybct-project.spring-cloud-build.version')}"
+        if (project.hasProperty('taybct-project.spring-cloud-build.version')) dependency "org.springframework.cloud:spring-cloud-starter-loadbalancer:${findProperty('taybct-project.spring-cloud-build.version')}"
+        if (project.hasProperty('taybct-project.spring-cloud-build.version')) dependency "org.springframework.cloud:spring-cloud-starter-openfeign:${findProperty('taybct-project.spring-cloud-build.version')}"
+
+        // Spring Security
+        if (project.hasProperty('taybct-project.spring-security-crypto.version')) dependency "org.springframework.security:spring-security-crypto:${findProperty('taybct-project.spring-security-crypto.version')}"
+
+        // Knife4j
+        if (project.hasProperty('taybct-project.knife4j.version')) dependency "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:${findProperty('taybct-project.knife4j.version')}"
+        if (project.hasProperty('taybct-project.knife4j-fix.version')) dependency "io.github.mangocrisp:knife4j-openapi3-jakarta-spring-boot-starter:${findProperty('taybct-project.knife4j-fix.version')}"
+        if (project.hasProperty('taybct-project.knife4j.version')) dependency "com.github.xiaoymin:knife4j-gateway-spring-boot-starter:${findProperty('taybct-project.knife4j.version')}"
+
+        // Lombok
+        if (project.hasProperty('taybct-project.lombok.version')) dependency "org.projectlombok:lombok:${findProperty('taybct-project.lombok.version')}"
+
+        // Springdoc OpenAPI
+        if (project.hasProperty('taybct-project.springdoc-openapi.version')) dependency "org.springdoc:springdoc-openapi-starter-webmvc-ui:${findProperty('taybct-project.springdoc-openapi.version')}"
+        if (project.hasProperty('taybct-project.springdoc-openapi.version')) dependency "org.springdoc:springdoc-openapi-starter-common:${findProperty('taybct-project.springdoc-openapi.version')}"
+        if (project.hasProperty('taybct-project.swagger-annotations-jakarta.version')) dependency "io.swagger.core.v3:swagger-annotations-jakarta:${findProperty('taybct-project.swagger-annotations-jakarta.version')}"
+
+        // 存储相关
+        if (project.hasProperty('taybct-project.oss-alibaba.version')) dependency "com.aliyun.oss:aliyun-sdk-oss:${findProperty('taybct-project.oss-alibaba.version')}"
+        if (project.hasProperty('taybct-project.fastdfs-client.version')) dependency "com.github.tobato:fastdfs-client:${findProperty('taybct-project.fastdfs-client.version')}"
+        if (project.hasProperty('taybct-project.minio.version')) dependency "io.minio:minio:${findProperty('taybct-project.minio.version')}"
+
+        // MyBatis 相关
+        if (project.hasProperty('taybct-project.mybatis-plus.version')) dependency "com.baomidou:mybatis-plus-spring-boot3-starter:${findProperty('taybct-project.mybatis-plus.version')}"
+        if (project.hasProperty('taybct-project.mybatis-plus.version')) dependency "com.baomidou:mybatis-plus-extension:${findProperty('taybct-project.mybatis-plus.version')}"
+        if (project.hasProperty('taybct-project.mybatis-plus.version')) dependency "com.baomidou:mybatis-plus-annotation:${findProperty('taybct-project.mybatis-plus.version')}"
+        if (project.hasProperty('taybct-project.mybatis-plus.version')) dependency "com.baomidou:mybatis-plus-jsqlparser:${findProperty('taybct-project.mybatis-plus.version')}"
+        if (project.hasProperty('taybct-project.mybatis-typehandlers-jsr310.version')) dependency "org.mybatis:mybatis-typehandlers-jsr310:${findProperty('taybct-project.mybatis-typehandlers-jsr310.version')}"
+        if (project.hasProperty('taybct-project.mybatis-spring.version')) dependency "org.mybatis:mybatis-spring:${findProperty('taybct-project.mybatis-spring.version')}"
+
+        // 数据库相关
+        if (project.hasProperty('taybct-project.mysql-connector-j.version')) dependency "com.mysql:mysql-connector-j:${findProperty('taybct-project.mysql-connector-j.version')}"
+        if (project.hasProperty('taybct-project.dynamic-datasource.version')) dependency "com.baomidou:dynamic-datasource-spring-boot3-starter:${findProperty('taybct-project.dynamic-datasource.version')}"
+        if (project.hasProperty('taybct-project.druid.version')) dependency "com.alibaba:druid-spring-boot-3-starter:${findProperty('taybct-project.druid.version')}"
+        if (project.hasProperty('taybct-project.commons-dbutils.version')) dependency "commons-dbutils:commons-dbutils:${findProperty('taybct-project.commons-dbutils.version')}"
+        if (project.hasProperty('taybct-project.ojdbc.version')) dependency "com.oracle.database.jdbc:ojdbc11:${findProperty('taybct-project.ojdbc.version')}"
+        if (project.hasProperty('taybct-project.orai18n.version')) dependency "com.oracle.database.nls:orai18n:${findProperty('taybct-project.orai18n.version')}"
+        if (project.hasProperty('taybct-project.postgresql.version')) dependency "org.postgresql:postgresql:${findProperty('taybct-project.postgresql.version')}"
+
+        // 工具类
+        if (project.hasProperty('taybct-project.pinyin4j.version')) dependency "com.belerweb:pinyin4j:${findProperty('taybct-project.pinyin4j.version')}"
+        if (project.hasProperty('taybct-project.commons-fileupload.version')) dependency "commons-fileupload:commons-fileupload:${findProperty('taybct-project.commons-fileupload.version')}"
+        if (project.hasProperty('taybct-project.commons-io.version')) dependency "commons-io:commons-io:${findProperty('taybct-project.commons-io.version')}"
+        if (project.hasProperty('taybct-project.commons-pool2.version')) dependency "org.apache.commons:commons-pool2:${findProperty('taybct-project.commons-pool2.version')}"
+        if (project.hasProperty('taybct-project.commons-httpclient.version')) dependency "commons-httpclient:commons-httpclient:${findProperty('taybct-project.commons-httpclient.version')}"
+        if (project.hasProperty('taybct-project.dom4j.version')) dependency "org.dom4j:dom4j:${findProperty('taybct-project.dom4j.version')}"
+        if (project.hasProperty('taybct-project.jxls-core.version')) dependency "net.sf.jxls:jxls-core:${findProperty('taybct-project.jxls-core.version')}"
+
+        // 监控/日志
+        if (project.hasProperty('taybct-project.skywalking-logback.version')) dependency "org.apache.skywalking:apm-toolkit-logback-1.x:${findProperty('taybct-project.skywalking-logback.version')}"
+
+        // 微服务相关
+        if (project.hasProperty('taybct-project.sentinel-datasource-nacos.version')) dependency "com.alibaba.csp:sentinel-datasource-nacos:${findProperty('taybct-project.sentinel-datasource-nacos.version')}"
+        if (project.hasProperty('taybct-project.nacos-client.version')) dependency "com.alibaba.nacos:nacos-client:${findProperty('taybct-project.nacos-client.version')}"
+
+        // 安全相关
+        if (project.hasProperty('taybct-project.nimbus-jose-jwt.version')) dependency "com.nimbusds:nimbus-jose-jwt:${findProperty('taybct-project.nimbus-jose-jwt.version')}"
+
+        // Excel 相关
+        if (project.hasProperty('taybct-project.easyexcel.version')) dependency "com.alibaba:easyexcel:${findProperty('taybct-project.easyexcel.version')}"
+        if (project.hasProperty('taybct-project.easypoi.version')) dependency "cn.afterturn:easypoi-base:${findProperty('taybct-project.easypoi.version')}"
+        if (project.hasProperty('taybct-project.easypoi.version')) dependency "cn.afterturn:easypoi-web:${findProperty('taybct-project.easypoi.version')}"
+        if (project.hasProperty('taybct-project.easypoi.version')) dependency "cn.afterturn:easypoi-annotation:${findProperty('taybct-project.easypoi.version')}"
+
+        // 单元测试
+        if (project.hasProperty('taybct-project.junit.version')) dependency "junit:junit:${findProperty('taybct-project.junit.version')}"
+
+        // 自定义公共模块
+        dependency "io.github.taybct:spring-taybct-tool-core:${project.version}"
+        dependency "io.github.taybct:spring-taybct-tool-cloud:${project.version}"
+        dependency "io.github.taybct:spring-taybct-tool-launch:${project.version}"
+        dependency "io.github.taybct:spring-taybct-tool-file:${project.version}"
+        dependency "io.github.taybct:spring-taybct-tool-security:${project.version}"
+        dependency "io.github.taybct:spring-taybct-tool-wechat:${project.version}"
+        dependency "io.github.taybct:spring-taybct-tool-scheduling:${project.version}"
+        dependency "io.github.taybct:spring-taybct-tool-pki:${project.version}"
     }
 }

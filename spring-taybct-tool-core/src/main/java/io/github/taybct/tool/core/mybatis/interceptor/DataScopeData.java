@@ -24,80 +24,95 @@ public class DataScopeData {
     /**
      * 用户权限表，例如，数据权限体系是使用部门，那第，这个表就是用户和部门的关联表，例如：sys_user_dept
      */
+    @Builder.Default
     private String userScopeTable = "";
 
     /**
      * 权限字段，按什么过滤权限，也就是 用户权限表里面的某个字段来关联权限，例如，sys_user_dept 表里面的 user_id，是按用户来关联过滤数据权限
      */
+    @Builder.Default
     private String userScopeField = "";
 
     /**
      * 用户权限表用于关联部门 表的字段名，例如：sys_user_dept 表里面的 dept_id
      */
+    @Builder.Default
     private String userScopeDeptId = "";
 
 
     /**
      * 角色权限表，按角色过滤权限的权限关联表，例如：sys_role_dept
      */
+    @Builder.Default
     private String roleScopeTable = "";
 
     /**
      * 角色权限表权限字段，按什么过滤权限，也就是 角色权限表里面的某个字段来关联权限，例如，sys_role_dept 表里面的 role_id，是按用户来关联过滤数据权限
      */
+    @Builder.Default
     private String roleScopeField = "";
 
     /**
      * 角色权限表用于关联部门 表的字段名，例如：sys_role_dept 表里面的 dept_id
      */
+    @Builder.Default
     private String roleScopeDeptId = "";
 
     /**
      * 角色表，因为一个用户可能是有多个角色的，所以，需要按角色 code 的集合来过滤，就得查询角色表，例如：sys_role
      */
+    @Builder.Default
     private String roleTable = "";
 
     /**
      * 角色表的主键，用来关联，例如：id
      */
+    @Builder.Default
     private String roleField = "";
 
     /**
      * 角色 code，例如：code
      */
+    @Builder.Default
     private String roleCode = "";
 
     /**
      * 部门表 指定部门信息表，这个主要是为了获取上下级关系，例如：sys_dept
      */
+    @Builder.Default
     private String deptTable = "";
 
     /**
      * 部门 表用来关联权限表的主键字段，例如：id
      */
+    @Builder.Default
     private String deptId = "";
 
     /**
      * 部门 表的用于存储所有父级部门的id的字段，例如：pid_all
      */
+    @Builder.Default
     private String deptPidAll = "";
 
     /**
      * 如果是一对多的数据权限，这里需要指定需要过滤的表用于关联权限的关联表名，例如：sys_user_dept ，用来关联用户有多个部门
      * <br> type 为 {@linkplain DataScopeType#MULTI MULTI} 时必填
      */
+    @Builder.Default
     private String multiTable = "";
 
     /**
      * 一对多的数据权限的关联表用于关联需要过滤表的字段，例如 sys_user_dept 表里面的 user_id
      * <br> type 为 {@linkplain DataScopeType#MULTI MULTI} 时必填
      */
+    @Builder.Default
     private String multiFiled = "";
 
     /**
      * 一对多的数据权限的关联表用于关联部门 表的字段，例如 sys_user_dept 表里面的 dept_id
      * <br> type 为 {@linkplain DataScopeType#MULTI MULTI} 时必填
      */
+    @Builder.Default
     private String multiDeptId = "";
 
     /**
@@ -114,6 +129,7 @@ public class DataScopeData {
      * 如果是自定义 mapper.xml 写 sql ，这里要加入过滤数据权限条件的 sql 的字段，可以把这个 sql 加入到自定义的 sql where 条件里面，但是，注意，一般是使用一个
      * {@code and exists(${sql})} 关联起来
      */
+    @Builder.Default
     private String sqlField = "";
 
     /**
@@ -121,6 +137,7 @@ public class DataScopeData {
      *
      * @see DataScopeFilterType
      */
+    @Builder.Default
     private DataScopeFilterType filterType = DataScopeFilterType.USER;
 
     /**
@@ -128,46 +145,55 @@ public class DataScopeData {
      *
      * @see DataScopeType
      */
+    @Builder.Default
     private DataScopeType type = DataScopeType.SINGLE;
 
     /**
      * 部门表 是否是逻辑删除的
      */
+    @Builder.Default
     private boolean logicDelete = false;
 
     /**
      * 逻辑删除字段
      */
+    @Builder.Default
     private String logicField = "";
 
     /**
      * 逻辑删除的未删除状态
      */
+    @Builder.Default
     private String notDeletedStatus = "";
 
     /**
      * 数据库类型，目前仅支持 {@linkplain DbType#POSTGRE_SQL POSTGRE_SQL} | {@linkplain DbType#MYSQL MYSQL} | {@linkplain DbType#ORACLE ORACLE}
      */
+    @Builder.Default
     private DbType dbtype = DbType.POSTGRE_SQL;
 
     /**
      * 是否包含查询权限子集
      */
+    @Builder.Default
     private boolean includeChildren = true;
 
     /**
      * 是否包含查询权限父级，即，把父级也一起返回
      */
+    @Builder.Default
     private boolean includeParents = false;
 
     /**
      * 判断是否要进行数据权限过滤
      */
+    @Builder.Default
     private Class<? extends DataScopeCondition> dataScopeCondition = DefaultDataScopeCondition.class;
 
     /**
      * 自定义过滤规则
      */
+    @Builder.Default
     private Class<? extends DataScopeCustom> custom = DefaultDataScopeCustom.class;
 
     /**
@@ -177,6 +203,7 @@ public class DataScopeData {
      * <br>
      * 默认不允许，也就是必须要存在数据权限的配置才给通过
      */
+    @Builder.Default
     private DataScopeGetNotDealType notExistDealType = DataScopeGetNotDealType.FORBID;
 
     /**

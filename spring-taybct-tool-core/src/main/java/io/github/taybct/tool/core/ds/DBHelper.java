@@ -336,14 +336,6 @@ public class DBHelper {
         this.conn = conn;
     }
 
-
-    @Override
-    protected void finalize() throws Throwable {
-        // TODO Auto-generated method stub
-        close();
-        super.finalize();
-    }
-
     /**
      * 测试
      */

@@ -1,0 +1,43 @@
+description = "微服务模块"
+
+dependencies {
+    // ========== 基础核心依赖（无 optional/provided → api 导出） ==========
+    // 自定义基础模块
+    api project(':spring-taybct-tool-core')
+
+    // Nacos 客户端（解决 Dubbo 兼容问题，核心依赖）
+    api 'com.alibaba.nacos:nacos-client'
+
+
+    // ========== Spring Cloud 微服务核心依赖（无 optional/provided → api 导出） ==========
+    // OpenFeign 服务调用
+    api 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    api 'io.github.openfeign:feign-httpclient'
+
+    // 客户端负载均衡
+    api 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+
+    // Nacos 服务发现
+    api 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+
+    // Nacos 配置中心
+    api 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
+
+    // Sentinel 熔断限流
+    api 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
+
+    // Sentinel 规则持久化到 Nacos
+    api 'com.alibaba.csp:sentinel-datasource-nacos'
+
+
+    // ========== 可选依赖（optional=true 或 scope=provided → compileOnly，不导出） ==========
+    compileOnly 'jakarta.servlet:jakarta.servlet-api' // 容器提供，仅编译需要
+    // Actuator 端点暴露（可选，运行时可由下游自行引入）
+    compileOnly 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Spring Boot Admin 客户端（可选）
+    compileOnly 'de.codecentric:spring-boot-admin-starter-client'
+
+    // Dubbo 依赖（按需引入，可选）
+    compileOnly 'org.apache.dubbo:dubbo-spring-boot-starter'
+}
