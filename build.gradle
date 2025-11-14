@@ -7,7 +7,7 @@ description = 'Spring TayBct Tools'
 // 所有项目的通用配置
 allprojects {it ->
     group = findProperty('taybct-project.groupId') ?: 'io.github.taybct'
-    version = findProperty('taybct-project.version') ?: '3.5.0'
+    version = findProperty('taybct-project.version')
 
     repositories {
         mavenLocal()
