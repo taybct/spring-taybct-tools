@@ -26,7 +26,7 @@ subprojects {subproject ->
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
 
-    if (!subproject.name.equals("spring-taybct-tools-dependencies")){
+    if (subproject.name != "spring-taybct-tools-dependencies"){
 
         apply plugin: 'java'
         apply plugin: 'java-library'
@@ -147,7 +147,7 @@ subprojects {subproject ->
         publishing {
             publications {
                 mavenJava(MavenPublication) {
-                    if (!subproject.name.equals("spring-taybct-tools-dependencies")){
+                    if (subproject.name != "spring-taybct-tools-dependencies"){
                         // 发布 Jar 包：from components.java 会自动包含主工件和依赖信息 [citation:3]
                         from components.java
                     } else {
