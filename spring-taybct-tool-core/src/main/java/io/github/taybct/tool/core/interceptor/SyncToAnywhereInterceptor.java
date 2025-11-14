@@ -12,11 +12,13 @@ import io.github.taybct.tool.core.mybatis.support.SqlPageParams;
 import io.github.taybct.tool.core.mybatis.util.MybatisOptional;
 import io.github.taybct.tool.core.util.BeanUtil;
 import io.github.taybct.tool.core.util.SpringUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.task.TaskExecutor;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -24,8 +26,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -37,12 +37,14 @@ import java.util.stream.Collectors;
  * @since 2025/1/13 16:06
  */
 @Slf4j
+@RequiredArgsConstructor
 public class SyncToAnywhereInterceptor implements MethodInterceptor {
 
-    static final ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+    final TaskExecutor taskExecutor;
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
+
         Class<?> returnType = invocation.getMethod().getReturnType();
         if (ObjectUtil.isEmpty(invocation.getArguments()) && returnType.equals(Void.class)) {
             // 如果没有参数而且返回类型是空，那就没必要做记录了
@@ -89,7 +91,7 @@ public class SyncToAnywhereInterceptor implements MethodInterceptor {
                     Class<?>[] convert = annotation.convert();
                     if (annotation.executeAsync()) {
                         // 直接异步执行
-                        cachedThreadPool.execute(() -> execute(handler, convert, type, argList));
+                        taskExecutor.execute(() -> execute(handler, convert, type, argList));
                     } else {
                         execute(handler, convert, type, argList);
                     }

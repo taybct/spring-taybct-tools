@@ -1,16 +1,22 @@
 description = "启动模块"
 dependencies {
+    // 之前的依赖保持不变，此处省略...
 
-    // Spring Cloud 启动器 - 核心功能，必须传递
-    api 'org.springframework.cloud:spring-cloud-starter-bootstrap'
-    // Spring 测试框架 - 让用户也能使用测试功能
-    api 'junit:junit'
-    api 'org.springframework:spring-test'
-    api 'org.springframework.boot:spring-boot-test'
-    // SkyWalking 日志 - 作为库的功能一部分传递
-    //api 'org.apache.skywalking:apm-toolkit-logback-1.x'
+    // bootstrap 启动器
+    api("org.springframework.cloud:spring-cloud-starter-bootstrap:${findProperty('taybct-project.spring-cloud-build.version')}")
 
-    // 测试依赖 - 仍然保持 testImplementation（测试不应该传递）
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // spring test（scope=test 对应 testImplementation）
+    testImplementation("org.springframework.boot:spring-boot-starter-test:${findProperty('taybct-project.spring-boot.version')}")
 
+    // junit（测试依赖，用 testImplementation）
+    testImplementation("junit:junit:${findProperty('taybct-project.junit.version')}")
+
+    // spring-test（scope=compile 对应 api）
+    api("org.springframework:spring-test:${findProperty('taybct-project.spring.version')}")
+
+    // spring-boot-test（默认scope，用 api）
+    api("org.springframework.boot:spring-boot-test:${findProperty('taybct-project.spring-boot.version')}")
+
+    // skywalking 日志记录
+    api("org.apache.skywalking:apm-toolkit-logback-1.x:${findProperty('taybct-project.skywalking-logback.version')}")
 }

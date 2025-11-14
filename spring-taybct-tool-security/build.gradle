@@ -1,0 +1,23 @@
+description = "Security 安全工具"
+
+dependencies {
+    // 公共基础模块（内部模块，使用项目依赖）
+    api project(':spring-taybct-tool-core')  // 替换为实际内部模块路径
+
+    // spring web（排除tomcat依赖）
+    api("org.springframework.boot:spring-boot-starter-web:${findProperty('taybct-project.spring-boot.version')}") {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+
+    // 排除Tomcat依赖 使用 undertow
+    api "org.springframework.boot:spring-boot-starter-undertow:${findProperty('taybct-project.spring-boot.version')}"
+
+    // JWT库
+    api "com.nimbusds:nimbus-jose-jwt:${findProperty('taybct-project.nimbus-jose-jwt.version')}"
+
+    // 加密工具需要的spring-security-crypto
+    api "org.springframework.security:spring-security-crypto:${findProperty('taybct-project.spring-security-crypto.version')}"
+
+    // dubbo（optional=true + scope=provided 对应 compileOnly）
+    compileOnly "org.apache.dubbo:dubbo-spring-boot-starter:${findProperty('taybct-project.dubbo.version')}"
+}

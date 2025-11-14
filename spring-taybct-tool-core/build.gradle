@@ -1,64 +1,132 @@
 description = "基础模块：工具类、公共配置、系统常量、字典等"
 
 dependencies {
-    // ========== Spring 核心依赖（无optional+scope=compile → api，导出给下游） ==========
-    api 'org.springframework:spring-context-support'
-    api 'org.springframework.boot:spring-boot-starter-aop'
-    api 'org.springframework:spring-web'
-    api 'org.springframework.boot:spring-boot-starter-validation'
-    api 'org.springframework.boot:spring-boot-starter-json'
-    api 'org.springframework:spring-tx'
-    api 'org.springframework.cloud:spring-cloud-context'
+    // Spring Context Support cache mail scheduling
+    api "org.springframework:spring-context-support:${findProperty('taybct-project.spring.version')}"
 
-    // ========== 公共工具类（无optional+scope=compile → api，导出给下游） ==========
-    api 'org.apache.commons:commons-lang3'
-    api 'org.apache.commons:commons-pool2'
-    api 'org.apache.commons:commons-collections4:4.4' // type=pom不影响导出，核心工具类
-    api 'com.belerweb:pinyin4j'
-    api 'org.apache.httpcomponents.client5:httpclient5'
-    api 'commons-dbutils:commons-dbutils'
+    //aop 切面
+    api "org.springframework.boot:spring-boot-starter-aop:${findProperty('taybct-project.spring-boot.version')}"
 
-    // ========== JSON 处理核心依赖（无optional+scope=compile → api，导出给下游） ==========
-    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    api 'com.fasterxml.jackson.core:jackson-databind'
-    api 'com.alibaba.fastjson2:fastjson2'
-    api 'io.swagger.core.v3:swagger-annotations-jakarta'
+    //Spring web
+    api "org.springframework:spring-web:${findProperty('taybct-project.spring.version')}"
 
-    // ========== 数据库/MyBatis-Plus 核心依赖（无optional+scope=compile → api，导出给下游） ==========
-    api 'com.baomidou:mybatis-plus-extension'
-    api 'com.baomidou:mybatis-plus-annotation'
-    api 'com.baomidou:mybatis-plus-jsqlparser'
+    //validation
+    api "org.springframework.boot:spring-boot-starter-validation:${findProperty('taybct-project.spring-boot.version')}"
 
-    // ========== 加密核心依赖（无optional+scope=compile → api，导出给下游） ==========
-    api 'org.bouncycastle:bcpg-jdk18on'
-    api 'org.bouncycastle:bcprov-jdk18on'
-    api 'org.bouncycastle:bcutil-jdk18on'
-    api 'org.bouncycastle:bcpkix-jdk18on'
-    api 'org.bouncycastle:bcprov-ext-jdk18on'
+    //jakarta.servlet-api
+    api "jakarta.servlet:jakarta.servlet-api:${findProperty('taybct-project.jakarta.servlet-api.version')}"
 
-    // ========== 仅编译时依赖（scope=provided → compileOnly，不打包、不导出） ==========
-    compileOnly 'jakarta.servlet:jakarta.servlet-api' // 容器提供，仅编译需要
-    compileOnly 'org.springframework:spring-webmvc' // scope=provided+optional=true，双重不导出
-    compileOnly 'com.aliyun:dysmsapi20170525:2.0.1' // scope=provided+optional=true
-    compileOnly 'org.springframework.boot:spring-boot-starter-data-mongodb' // scope=provided+optional=true
-    compileOnly 'org.springframework.boot:spring-boot-starter-data-redis' // scope=provided+optional=true
-    compileOnly 'org.springframework.boot:spring-boot-starter-amqp' // scope=provided+optional=true
-    compileOnly 'org.postgresql:postgresql' // scope=provided+optional=true
-    compileOnly 'com.mysql:mysql-connector-j' // scope=provided+optional=true
-    compileOnly 'com.oracle.database.jdbc:ojdbc11' // scope=provided+optional=true
-    compileOnly 'com.oracle.database.nls:orai18n' // scope=provided+optional=true
-    compileOnly 'com.alibaba:druid-spring-boot-3-starter' // scope=provided+optional=true
-    compileOnly 'com.baomidou:dynamic-datasource-spring-boot3-starter' // scope=provided+optional=true
-    compileOnly 'com.baomidou:mybatis-plus-spring-boot3-starter' // scope=provided+optional=true
-    compileOnly 'org.mybatis:mybatis-typehandlers-jsr310' // scope=provided+optional=true
-    compileOnly 'org.springframework.boot:spring-boot-starter-data-elasticsearch' // scope=provided+optional=true
-    compileOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui' // scope=provided+optional=true
-    compileOnly 'com.alibaba:easyexcel' // scope=provided+optional=true
-    compileOnly 'cn.afterturn:easypoi-base' // scope=provided+optional=true
-    compileOnly 'cn.afterturn:easypoi-web' // scope=provided+optional=true
-    compileOnly 'cn.afterturn:easypoi-annotation' // scope=provided+optional=true
-    compileOnly 'net.sf.jxls:jxls-core' // scope=provided+optional=true
-    compileOnly 'org.springframework.boot:spring-boot-starter-reactor-netty' // scope=provided+optional=true
-    compileOnly 'org.springframework.boot:spring-boot-starter-webflux' // scope=provided+optional=true
-    compileOnly 'org.springframework.boot:spring-boot-starter-websocket' // scope=provided+optional=true
+    //公共基础类
+    api "org.apache.commons:commons-lang3:${findProperty('taybct-project.commons-lang3.version')}"
+
+    // 公共资源池
+    api "org.apache.commons:commons-pool2:${findProperty('taybct-project.commons-pool2.version')}"
+
+    // Collection 增强Java集合框架
+    api "org.apache.commons:commons-collections4:${findProperty('taybct-project.commons-collections4.version')}"
+
+    //使Jackson和Mybatis支持JSR310标准
+    api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${findProperty('taybct-project.jackson-datatype-jsr310.version')}"
+
+    // Jackson
+    api "com.fasterxml.jackson.core:jackson-databind:${findProperty('taybct-project.jackson-databind.version')}"
+
+    // Alibaba Fastjson
+    api "com.alibaba.fastjson2:fastjson2:${findProperty('taybct-project.fastjson2.version')}"
+
+    api "org.springframework.boot:spring-boot-starter-json:${findProperty('taybct-project.spring-boot.version')}"
+
+    //swagger 注解 openapi 3
+    api "io.swagger.core.v3:swagger-annotations-jakarta:${findProperty('taybct-project.swagger-annotations-jakarta.version')}"
+
+    //对中文多音字处理
+    api "com.belerweb:pinyin4j:${findProperty('taybct-project.pinyin4j.version')}"
+
+    api "org.apache.httpcomponents.client5:httpclient5:${findProperty('taybct-project.httpclient5.version')}"
+
+    api "org.springframework:spring-tx:${findProperty('taybct-project.spring.version')}"
+
+    api "org.springframework.cloud:spring-cloud-context:${findProperty('taybct-project.spring-cloud-build.version')}"
+
+    //mvc 配置
+    compileOnly "org.springframework:spring-webmvc:${findProperty('taybct-project.spring.version')}"
+
+    //阿里云短信接入
+    compileOnly "com.aliyun:dysmsapi20170525:${findProperty('taybct-project.dysmsapi.version')}"
+
+    //mongodb
+    compileOnly "org.springframework.boot:spring-boot-starter-data-mongodb:${findProperty('taybct-project.spring-boot.version')}"
+
+    //Redis
+    compileOnly "org.springframework.boot:spring-boot-starter-data-redis:${findProperty('taybct-project.spring-boot.version')}"
+
+    //rabbit-mq
+    compileOnly "org.springframework.boot:spring-boot-starter-amqp:${findProperty('taybct-project.spring-boot.version')}"
+
+    //    postgresql 驱动
+    compileOnly "org.postgresql:postgresql:${findProperty('taybct-project.postgresql.version')}"
+
+    // Mysql 驱动
+    compileOnly "com.mysql:mysql-connector-j:${findProperty('taybct-project.mysql-connector-j.version')}"
+
+    //oracle驱动
+    compileOnly "com.oracle.database.jdbc:ojdbc11:${findProperty('taybct-project.ojdbc.version')}"
+
+    //oracle字符集支持
+    compileOnly "com.oracle.database.nls:orai18n:${findProperty('taybct-project.orai18n.version')}"
+
+    // Druid 连接池
+    compileOnly "com.alibaba:druid-spring-boot-3-starter:${findProperty('taybct-project.druid.version')}"
+
+    // Dynamic DataSource 多数据源
+    compileOnly "com.baomidou:dynamic-datasource-spring-boot3-starter:${findProperty('taybct-project.dynamic-datasource.version')}"
+
+    // commons-dbutils jdbc 工具类
+    api "commons-dbutils:commons-dbutils:${findProperty('taybct-project.commons-dbutils.version')}"
+
+    // mybatis-plus 依赖配置
+    api "com.baomidou:mybatis-plus-extension:${findProperty('taybct-project.mybatis-plus.version')}"
+
+    api "com.baomidou:mybatis-plus-annotation:${findProperty('taybct-project.mybatis-plus.version')}"
+
+    // mybatis-plus jsqlparser 依赖配置
+    api "com.baomidou:mybatis-plus-jsqlparser:${findProperty('taybct-project.mybatis-plus.version')}"
+
+    compileOnly "com.baomidou:mybatis-plus-spring-boot3-starter:${findProperty('taybct-project.mybatis-plus.version')}"
+
+    //mybatis-typehandlers-jsr310
+    compileOnly "org.mybatis:mybatis-typehandlers-jsr310:${findProperty('taybct-project.mybatis-typehandlers-jsr310.version')}"
+
+    //es 配置
+    compileOnly "org.springframework.boot:spring-boot-starter-data-elasticsearch:${findProperty('taybct-project.spring-boot.version')}"
+
+    // springdoc-openapi 核心依赖（包含 OpenAPI 3 规范生成和 Swagger UI）
+    compileOnly "org.springdoc:springdoc-openapi-starter-webmvc-ui:${findProperty('taybct-project.springdoc-openapi.version')}"
+
+    //国密加密需要使用到的加密工具 Bouncy Castle
+    api "org.bouncycastle:bcpg-jdk18on:${findProperty('taybct-project.jdk18on.version')}"
+    api "org.bouncycastle:bcprov-jdk18on:${findProperty('taybct-project.jdk18on.version')}"
+    api "org.bouncycastle:bcutil-jdk18on:${findProperty('taybct-project.jdk18on.version')}"
+    api "org.bouncycastle:bcpkix-jdk18on:${findProperty('taybct-project.jdk18on.version')}"
+    api "org.bouncycastle:bcprov-ext-jdk18on:${findProperty('taybct-project.bcprov-ext-jdk18on.version')}"
+
+    //easyexcel poi 操作导入导出 excel
+    compileOnly "com.alibaba:easyexcel:${findProperty('taybct-project.easyexcel.version')}"
+
+    // easypoi的支持
+    compileOnly "cn.afterturn:easypoi-base:${findProperty('taybct-project.easypoi.version')}"
+    compileOnly "cn.afterturn:easypoi-web:${findProperty('taybct-project.easypoi.version')}"
+    compileOnly "cn.afterturn:easypoi-annotation:${findProperty('taybct-project.easypoi.version')}"
+
+    //excel模板导出
+    compileOnly "net.sf.jxls:jxls-core:${findProperty('taybct-project.jxls-core.version')}"
+
+    // 确保包含 Netty 服务器
+    compileOnly "org.springframework.boot:spring-boot-starter-reactor-netty:${findProperty('taybct-project.spring-boot.version')}"
+
+    //webflux
+    compileOnly "org.springframework.boot:spring-boot-starter-webflux:${findProperty('taybct-project.spring-boot.version')}"
+
+    //mvc websocket
+    compileOnly "org.springframework.boot:spring-boot-starter-websocket:${findProperty('taybct-project.spring-boot.version')}"
 }

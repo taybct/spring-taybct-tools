@@ -1,0 +1,26 @@
+description = "微信工具操作"
+
+dependencies {
+    // 基础模块（内部模块，使用项目依赖）
+    api project(':spring-taybct-tool-core')  // 替换为实际内部模块路径
+
+    // web（排除tomcat依赖）
+    api("org.springframework.boot:spring-boot-starter-web:${findProperty('taybct-project.spring-boot.version')}") {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+
+    // 排除Tomcat依赖 使用 undertow
+    api "org.springframework.boot:spring-boot-starter-undertow:${findProperty('taybct-project.spring-boot.version')}"
+
+    // httpclient
+    api "org.apache.httpcomponents.client5:httpclient5:${findProperty('taybct-project.httpclient5.version')}"
+
+    // commons-io
+    api "commons-io:commons-io:${findProperty('taybct-project.commons-io.version')}"
+
+    // Redis
+    api "org.springframework.boot:spring-boot-starter-data-redis:${findProperty('taybct-project.spring-boot.version')}"
+
+    // thymeleaf 模板引擎
+    api "org.springframework.boot:spring-boot-starter-thymeleaf:${findProperty('taybct-project.spring-boot.version')}"
+}

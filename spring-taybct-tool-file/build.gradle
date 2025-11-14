@@ -1,0 +1,36 @@
+description = "对象存储工具"
+
+dependencies {
+    // 基础模块（内部模块，使用项目依赖）
+    api project(':spring-taybct-tool-core')  // 替换为实际的内部模块路径
+
+    // io常用工具类
+    api "commons-io:commons-io:${findProperty('taybct-project.commons-io.version')}"
+
+    // 文件上传工具类
+    api "commons-fileupload:commons-fileupload:${findProperty('taybct-project.commons-fileupload.version')}"
+
+    // 阿里云对象存储
+    api "com.aliyun.oss:aliyun-sdk-oss:${findProperty('taybct-project.oss-alibaba.version')}"
+
+    // Alibaba Fastjson
+    api "com.alibaba.fastjson2:fastjson2:${findProperty('taybct-project.fastjson2.version')}"
+
+    // FastDFS 文件存储
+    api("com.github.tobato:fastdfs-client:${findProperty('taybct-project.fastdfs-client.version')}") {
+        exclude group: 'org.hibernate', module: 'hibernate-validator'
+    }
+
+    // Minio
+    api("io.minio:minio:${findProperty('taybct-project.minio.version')}") {
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+    }
+
+    // Spring web
+    api("org.springframework.boot:spring-boot-starter-web:${findProperty('taybct-project.spring-boot.version')}") {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+
+    // 排除Tomcat依赖 使用 undertow
+    api "org.springframework.boot:spring-boot-starter-undertow:${findProperty('taybct-project.spring-boot.version')}"
+}

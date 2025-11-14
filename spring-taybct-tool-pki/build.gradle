@@ -1,0 +1,18 @@
+description = "pki 登录"
+
+dependencies {
+    // 公共基础模块（内部模块，使用项目依赖）
+    api project(':spring-taybct-tool-core')  // 替换为实际内部模块路径
+
+    // spring-boot-starter-webflux（optional=true + scope=provided 对应 compileOnly）
+    compileOnly "org.springframework.boot:spring-boot-starter-webflux:${findProperty('taybct-project.spring-boot.version')}"
+
+    // commons-httpclient（无特殊scope，用api）
+    api "commons-httpclient:commons-httpclient:${findProperty('taybct-project.commons-httpclient.version')}"
+
+    // dom4j（无特殊scope，用api）
+    api "org.dom4j:dom4j:${findProperty('taybct-project.dom4j.version')}"
+
+    // Redis（optional=true + scope=provided 对应 compileOnly）
+    compileOnly "org.springframework.boot:spring-boot-starter-data-redis:${findProperty('taybct-project.spring-boot.version')}"
+}

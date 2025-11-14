@@ -54,9 +54,9 @@ subprojects {subproject ->
             api 'cn.hutool:hutool-all'
 
             // Spring 核心依赖 - 确保用户获得完整的 Spring 环境
-            api 'org.springframework:spring-context'
-            api 'org.springframework.boot:spring-boot-starter'
-            api 'org.springframework.boot:spring-boot-autoconfigure'
+            //api 'org.springframework:spring-context'
+            //api 'org.springframework.boot:spring-boot-starter'
+            //api 'org.springframework.boot:spring-boot-autoconfigure'
         }
 
         sourceSets {
@@ -64,6 +64,9 @@ subprojects {subproject ->
                 resources {
                     // 第一个资源目录：src/main/resources（排除特定文件）
                     srcDir 'src/main/resources'
+                    include 'META-INF/dubbo/org.apache.dubbo.rpc.Filter'
+                    include 'banner.txt'
+                    include 'static/**'
                     exclude '**/*.jks'
                     exclude '**/*.cer'
                     exclude '**/*.key'
@@ -104,9 +107,10 @@ subprojects {subproject ->
             exclude '**/*.key'
         }
 
-        // 发布到本地的时候可能需要版本检测，这里路过版本检测，同步版本直接覆盖
+        // 打包设置
         tasks.withType(JavaCompile).configureEach {
             options.encoding = findProperty('taybct-project.build.sourceEncoding') ?: 'UTF-8'
+            options.compilerArgs.add("-parameters")
         }
 
         // Javadoc 配置
@@ -202,33 +206,6 @@ subprojects {subproject ->
                             def roles1 = developer1.appendNode('roles')
                             roles1.appendNode('role', 'Architect')
                             roles1.appendNode('role', 'Developer')
-
-
-                            if (!subproject.name.equals("spring-taybct-tools-dependencies")){
-
-                                def dependenciesNode = root.dependencies[0] ?: root.appendNode('dependencies')
-
-                                // 修改 compileOnly 依赖的 scope 和 optional
-                                dependenciesNode.dependency.each { dep ->
-                                    def groupId = dep.groupId.text()
-                                    def artifactId = dep.artifactId.text()
-
-                                    // 检查这个依赖是否在 compileOnly 配置中
-                                    def isCompileOnly = configurations.compileOnly.allDependencies.any { d ->
-                                        d.group == groupId && d.name == artifactId
-                                    }
-
-                                    // 检查这个依赖是否在 implementation 配置中
-                                    def isImplementation = configurations.implementation.allDependencies.any { d ->
-                                        d.group == groupId && d.name == artifactId
-                                    }
-
-                                    if (isCompileOnly || isImplementation) {
-                                        dep.scope*.value = 'provided'
-                                        dep.appendNode('optional', 'true')
-                                    }
-                                }
-                            }
                         }
                     }
                 }

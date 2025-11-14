@@ -1,43 +1,37 @@
 description = "微服务模块"
 
 dependencies {
-    // ========== 基础核心依赖（无 optional/provided → api 导出） ==========
-    // 自定义基础模块
+    // 基础模块（内部模块，使用项目依赖）
     api project(':spring-taybct-tool-core')
 
-    // Nacos 客户端（解决 Dubbo 兼容问题，核心依赖）
-    api 'com.alibaba.nacos:nacos-client'
+    // SpringCloud Openfeign 服务调用
+    api "org.springframework.cloud:spring-cloud-starter-openfeign:${findProperty('taybct-project.spring-cloud-build.version')}"
+    api "io.github.openfeign:feign-httpclient:${findProperty('taybct-project.feign-httpclient.version')}"
 
+    // spring 客户端负载均衡器
+    api "org.springframework.cloud:spring-cloud-starter-loadbalancer:${findProperty('taybct-project.spring-cloud-build.version')}"
 
-    // ========== Spring Cloud 微服务核心依赖（无 optional/provided → api 导出） ==========
-    // OpenFeign 服务调用
-    api 'org.springframework.cloud:spring-cloud-starter-openfeign'
-    api 'io.github.openfeign:feign-httpclient'
+    // SpringCloud Alibaba Nacos
+    api "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery:${findProperty('taybct-project.spring-cloud-alibaba.version')}"
 
-    // 客户端负载均衡
-    api 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+    // SpringCloud Alibaba Nacos Config
+    api "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config:${findProperty('taybct-project.spring-cloud-alibaba.version')}"
 
-    // Nacos 服务发现
-    api 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+    // SpringCloud Alibaba Sentinel
+    api "com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel:${findProperty('taybct-project.spring-cloud-alibaba.version')}"
 
-    // Nacos 配置中心
-    api 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
+    // Sentinel规则持久化至Nacos配置
+    api "com.alibaba.csp:sentinel-datasource-nacos:${findProperty('taybct-project.sentinel-datasource-nacos.version')}"
 
-    // Sentinel 熔断限流
-    api 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
+    // SpringBoot Actuator 端点通过 JMX 和HTTP 公开暴露给外界访问
+    compileOnly "org.springframework.boot:spring-boot-starter-actuator:${findProperty('taybct-project.spring-boot.version')}"
 
-    // Sentinel 规则持久化到 Nacos
-    api 'com.alibaba.csp:sentinel-datasource-nacos'
+    // SpringBoot Admin Client 客户端
+    compileOnly "de.codecentric:spring-boot-admin-starter-client:${findProperty('taybct-project.spring-boot-admin.version')}"
 
+    //如果要使用 dubbo 就引入 这个依赖
+    compileOnly "org.apache.dubbo:dubbo-spring-boot-starter:${findProperty('taybct-project.dubbo.version')}"
 
-    // ========== 可选依赖（optional=true 或 scope=provided → compileOnly，不导出） ==========
-    compileOnly 'jakarta.servlet:jakarta.servlet-api' // 容器提供，仅编译需要
-    // Actuator 端点暴露（可选，运行时可由下游自行引入）
-    compileOnly 'org.springframework.boot:spring-boot-starter-actuator'
-
-    // Spring Boot Admin 客户端（可选）
-    compileOnly 'de.codecentric:spring-boot-admin-starter-client'
-
-    // Dubbo 依赖（按需引入，可选）
-    compileOnly 'org.apache.dubbo:dubbo-spring-boot-starter'
+    //alibaba 框架依赖管理里面的 nacos client 不是最新的会影响 dubbo
+    api "com.alibaba.nacos:nacos-client:${findProperty('taybct-project.nacos-client.version')}"
 }

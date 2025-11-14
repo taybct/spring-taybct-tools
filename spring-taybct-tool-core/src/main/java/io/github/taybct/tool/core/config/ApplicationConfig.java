@@ -26,11 +26,14 @@ import io.github.taybct.tool.core.util.sm.SM2Coder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import java.text.SimpleDateFormat;
@@ -178,8 +181,17 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public DefaultPointcutAdvisor syncToAnywhereAdvisor() {
-        SyncToAnywhereInterceptor methodInterceptor = new SyncToAnywhereInterceptor();
+    @ConditionalOnMissingBean(name = "syncToAnywhereTaskExecutor")
+    public TaskExecutor syncToAnywhereTaskExecutor() {
+        SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor("syncToAnywhereTask");
+        //executor.setConcurrencyLimit(100); // 最大并发 100 个平台线程
+        executor.setVirtualThreads(false); // 是否启用虚拟线程模式（兼容 jdk 21 以下版本，如果能明确使用 jdk 21 可以设置 true 打开虚拟线程）
+        return executor;
+    }
+
+    @Bean
+    public DefaultPointcutAdvisor syncToAnywhereAdvisor(@Qualifier("syncToAnywhereTaskExecutor") TaskExecutor syncToAnywhereTaskExecutor) {
+        SyncToAnywhereInterceptor methodInterceptor = new SyncToAnywhereInterceptor(syncToAnywhereTaskExecutor);
         // 匹配一个切点，这里使用注解
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         pointcut.setExpression("@annotation(io.github.taybct.tool.core.annotation.SyncToAnywhere)");

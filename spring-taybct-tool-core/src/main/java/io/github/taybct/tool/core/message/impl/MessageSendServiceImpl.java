@@ -1,7 +1,6 @@
 package io.github.taybct.tool.core.message.impl;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ZipUtil;
 import io.github.taybct.tool.core.constant.DateConstants;
@@ -11,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.task.TaskExecutor;
 
 import java.io.File;
 import java.time.Instant;
@@ -20,8 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -58,11 +56,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
      */
     private final ReentrantLock cleanLock = new ReentrantLock();
 
-    ExecutorService sendThreadExecutor = Executors.newSingleThreadExecutor();
-
-    ExecutorService cleanThreadExecutor = Executors.newSingleThreadExecutor();
-
-    ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+    final TaskExecutor taskExecutor;
 
     @Override
     public void send(Message message) {
@@ -74,7 +68,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                 .filter(type -> type.supports(message.getClass()))
                 .forEach(type -> {
                     // 这里再开个线程，可能会发的时间比较长
-                    cachedThreadPool.execute(() -> {
+                    taskExecutor.execute(() -> {
                         // 防止在写文件时候写一半被删除了
                         sendLock.lock();
                         try {
@@ -117,7 +111,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
         if (!messageProperties.getEnable()) {
             return;
         }
-        sendThreadExecutor.execute(() -> {
+        taskExecutor.execute(() -> {
             log.debug("消息检查启动");
             try {
                 do {
@@ -128,7 +122,7 @@ public class MessageSendServiceImpl implements IMessageSendService, ApplicationR
                 throw new RuntimeException(e);
             }
         });
-        cleanThreadExecutor.execute(() -> {
+        taskExecutor.execute(() -> {
             log.debug("消息清理启动");
             try {
                 do {
