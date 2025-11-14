@@ -31,6 +31,10 @@ public class ScheduledProperties implements Serializable {
      */
     private String threadNamePrefix = "Scheduler-";
     /**
+     * 是否开启虚拟线程（兼容 jdk 21 以下版本）
+     */
+    private boolean virtualThreads = false;
+    /**
      * 关闭程序，等待任务完成
      */
     private Boolean waitForTasksToCompleteOnShutdown = true;

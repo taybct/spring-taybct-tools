@@ -37,6 +37,7 @@ public class ScheduledTaskConfig {
     public ThreadPoolTaskScheduler threadPoolTaskScheduler(ScheduledProperties scheduledProperties) {
         log.debug("创建定时任务调度线程池 start");
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setVirtualThreads(scheduledProperties.isVirtualThreads());
         threadPoolTaskScheduler.setPoolSize(scheduledProperties.getPoolSize());
         threadPoolTaskScheduler.setThreadNamePrefix(scheduledProperties.getThreadNamePrefix());
         threadPoolTaskScheduler.setWaitForTasksToCompleteOnShutdown(scheduledProperties.getWaitForTasksToCompleteOnShutdown());
