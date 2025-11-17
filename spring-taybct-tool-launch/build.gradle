@@ -6,10 +6,10 @@ dependencies {
     api("org.springframework.cloud:spring-cloud-starter-bootstrap:${findProperty('taybct-project.spring-cloud-build.version')}")
 
     // spring test（scope=test 对应 testImplementation）
-    testImplementation("org.springframework.boot:spring-boot-starter-test:${findProperty('taybct-project.spring-boot.version')}")
+    api("org.springframework.boot:spring-boot-starter-test:${findProperty('taybct-project.spring-boot.version')}")
 
     // junit（测试依赖，用 testImplementation）
-    testImplementation("junit:junit:${findProperty('taybct-project.junit.version')}")
+    api("junit:junit:${findProperty('taybct-project.junit.version')}")
 
     // spring-test（scope=compile 对应 api）
     api("org.springframework:spring-test:${findProperty('taybct-project.spring.version')}")
