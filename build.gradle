@@ -1,5 +1,7 @@
 plugins {
+    id 'base'
     id 'io.spring.dependency-management'
+    id 'com.gradleup.nmcp.aggregation' version '1.2.1'
 }
 
 description = 'Spring TayBct Tools'
@@ -11,10 +13,10 @@ allprojects {it ->
 
     repositories {
         mavenLocal()
-        maven {
-            url 'https://maven.aliyun.com/repository/public'
-            name = 'AliyunMaven'
-        }
+//        maven {
+//            url 'https://maven.aliyun.com/repository/public'
+//            name = 'AliyunMaven'
+//        }
         mavenCentral()
     }
 }
@@ -25,6 +27,7 @@ subprojects {subproject ->
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
+    apply plugin: 'com.gradleup.nmcp.aggregation'
 
     if (subproject.name != "spring-taybct-tools-dependencies"){
 
@@ -211,18 +214,25 @@ subprojects {subproject ->
                 }
             }
 
+//            repositories {
+//                maven {
+//                    def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+//                    def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+//                    url = version.toString().endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+//
+//                    credentials {
+//                        username = findProperty('ossrhUsername') ?: System.getenv('OSSRH_USERNAME')
+//                        password = findProperty('ossrhPassword') ?: System.getenv('OSSRH_PASSWORD')
+//                    }
+//                }
+//            }
+
             repositories {
                 maven {
-                    def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                    def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-                    url = version.toString().endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-
-                    credentials {
-                        username = findProperty('ossrhUsername') ?: System.getenv('OSSRH_USERNAME')
-                        password = findProperty('ossrhPassword') ?: System.getenv('OSSRH_PASSWORD')
-                    }
+                    url = layout.buildDirectory.dir('staging-deploy')
                 }
             }
+
         }
 
         // 签名配置

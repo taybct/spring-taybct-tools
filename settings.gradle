@@ -2,12 +2,12 @@ pluginManagement {
     repositories {
         // Maven本地仓库
         mavenLocal()
-        // 阿里云Gradle插件仓库（用于下载Gradle插件）
-        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
-        // Spring 插件仓库
-        maven { url 'https://repo.spring.io/plugins-release/' }
         // Gradle 插件官方仓库（必须添加，否则可能找不到插件）
         gradlePluginPortal()
+        // 阿里云Gradle插件仓库（用于下载Gradle插件）
+        //maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        // Spring 插件仓库
+        maven { url 'https://repo.spring.io/plugins-release/' }
     }
     plugins {
         id 'io.spring.dependency-management' version getProperty('taybct-project.io.spring.dependency-management.version') as String
