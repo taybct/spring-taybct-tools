@@ -1,4 +1,4 @@
-description = "Security 安全工具"
+description = "Security Tools"
 
 dependencies {
     // 公共基础模块（内部模块，使用项目依赖）

@@ -1,4 +1,4 @@
-description = "基础模块：工具类、公共配置、系统常量、字典等"
+description = "Basic modules: utility classes, common configurations, system constants, dictionaries, etc."
 
 dependencies {
     // Spring Context Support cache mail scheduling

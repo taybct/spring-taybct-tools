@@ -1,7 +1,7 @@
 plugins {
     id 'base'
     id 'io.spring.dependency-management'
-    id 'com.gradleup.nmcp.aggregation' version '1.2.1'
+    id 'org.jreleaser' version '1.20.0'
 }
 
 description = 'Spring TayBct Tools'
@@ -13,10 +13,10 @@ allprojects {it ->
 
     repositories {
         mavenLocal()
-//        maven {
-//            url 'https://maven.aliyun.com/repository/public'
-//            name = 'AliyunMaven'
-//        }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+            name = 'AliyunMaven'
+        }
         mavenCentral()
     }
 }
@@ -27,7 +27,7 @@ subprojects {subproject ->
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
-    apply plugin: 'com.gradleup.nmcp.aggregation'
+    apply plugin: 'org.jreleaser'
 
     if (subproject.name != "spring-taybct-tools-dependencies"){
 
@@ -54,7 +54,7 @@ subprojects {subproject ->
             annotationProcessor 'net.dreamlu:mica-auto'
 
             // Hutool - 作为工具库的一部分传递
-            api 'cn.hutool:hutool-all'
+            api "cn.hutool:hutool-all:${findProperty('taybct-project.hutool.version')}"
 
             // Spring 核心依赖 - 确保用户获得完整的 Spring 环境
             //api 'org.springframework:spring-context'
@@ -145,51 +145,44 @@ subprojects {subproject ->
         suppressedValidationErrors.add('dependencies-without-versions')
     }
 
-    afterEvaluate {it ->
+
+    afterEvaluate { it ->
         // 发布配置
         publishing {
             publications {
-                mavenJava(MavenPublication) {
-                    if (subproject.name != "spring-taybct-tools-dependencies"){
+                maven(MavenPublication) {
+                    if (subproject.name != "spring-taybct-tools-dependencies") {
                         // 发布 Jar 包：from components.java 会自动包含主工件和依赖信息 [citation:3]
                         from components.java
                     } else {
                         // 对于java-platform项目，必须使用javaPlatform组件 [citation:8]
                         from components.javaPlatform
                     }
-
                     // GAV坐标
                     groupId = subproject.group
                     artifactId = subproject.name
-                    version = subproject.version
-
+                    description = subproject.description
                     // POM 配置
                     pom {
-
                         name = subproject.name
-
                         description = subproject.description
-
                         url = findProperty('taybct-project.url') ?: 'https://github.com/taybct/spring-taybct-tools'
-
+                        inceptionYear = '2024'
                         scm {
                             connection = findProperty('taybct-project.scm.connection') ?: 'scm:git:git://github.com/taybct/spring-taybct-tools.git'
                             developerConnection = findProperty('taybct-project.scm.developerConnection') ?: 'scm:git:ssh://github.com/taybct/spring-taybct-tools.git'
                             url = findProperty('taybct-project.scm.url') ?: 'https://github.com/taybct/spring-taybct-tools'
                         }
-
                         licenses {
                             license {
                                 name = findProperty('taybct-project.license.name') ?: 'The Apache Software License, Version 2.0'
                                 url = findProperty('taybct-project.license.url') ?: 'https://www.apache.org/licenses/LICENSE-2.0.txt'
                             }
                         }
-
                         organization {
                             name = findProperty('taybct-project.organization.name') ?: 'io.github.taybct'
                             url = findProperty('taybct-project.organization.url') ?: 'https://github.com/taybct'
                         }
-
                         developers {
                             developer {
                                 id = 'crisp'
@@ -201,7 +194,6 @@ subprojects {subproject ->
                                 timezone = 'Asia/Shanghai'
                             }
                         }
-
                         withXml {
                             def root = asNode()
                             def developers = root.get('developers')[0]
@@ -242,20 +234,77 @@ subprojects {subproject ->
             def passphrase = findProperty("gpg.passphrase") ?: System.getenv("GPG_PASSPHRASE")
 
             if (keyRingFile) {
-                def keyFile = new File(keyRingFile as  String)
+                def keyFile = new File(keyRingFile as String)
                 if (keyFile.exists()) {
-                    useInMemoryPgpKeys(keyId as  String, keyFile.text, passphrase as  String)
+                    useInMemoryPgpKeys(keyId as String, keyFile.text, passphrase as String)
                 }
             } else {
                 def key = findProperty("gpg.key") ?: System.getenv("GPG_KEY")
-                useInMemoryPgpKeys(keyId as  String, key as  String, passphrase as  String)
+                useInMemoryPgpKeys(keyId as String, key as String, passphrase as String)
             }
 
             required {
                 gradle.taskGraph.hasTask("publish") || gradle.taskGraph.hasTask("publishToMavenLocal")
             }
 
-            sign publishing.publications.mavenJava
+            sign publishing.publications.maven
+        }
+    }
+
+    jreleaser {
+        gitRootSearch = true
+        signing {
+            active = 'ALWAYS'
+            armored = true
+        }
+        release {
+            github { // GitHub 发布提供者配置
+                repoOwner = 'mangocrisp' // 例如：octocat
+                commitAuthor {
+                    name = "Mango Crisp"
+                    email = "15014633363@163.com"
+                }
+            }
+        }
+        deploy {
+            maven {
+                mavenCentral {
+                    sonatype {
+                        active = 'ALWAYS'
+                        url = 'https://central.sonatype.com/api/v1/publisher'
+                        stagingRepository('build/staging-deploy')
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+jreleaser {
+    gitRootSearch = true
+    signing {
+        active = 'ALWAYS'
+        armored = true
+    }
+    release {
+        github { // GitHub 发布提供者配置
+            repoOwner = 'mangocrisp' // 例如：octocat
+            commitAuthor {
+                name = "Mango Crisp"
+                email = "15014633363@163.com"
+            }
+        }
+    }
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepository('build/staging-deploy')
+                }
+            }
         }
     }
 }

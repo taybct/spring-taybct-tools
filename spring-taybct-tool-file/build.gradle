@@ -1,4 +1,4 @@
-description = "对象存储工具"
+description = "Object Storage Tool"
 
 dependencies {
     // 基础模块（内部模块，使用项目依赖）

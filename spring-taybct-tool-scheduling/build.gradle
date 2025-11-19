@@ -1,4 +1,4 @@
-description = "任务调度"
+description = "Task Scheduling"
 
 dependencies {
     // 公共基础模块（内部模块，使用项目依赖）

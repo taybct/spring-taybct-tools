@@ -1,4 +1,4 @@
-description = "启动模块"
+description = "Startup Module"
 dependencies {
     // 之前的依赖保持不变，此处省略...
 

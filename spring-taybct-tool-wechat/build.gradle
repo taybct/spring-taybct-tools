@@ -1,4 +1,4 @@
-description = "微信工具操作"
+description = "WeChat tool operation"
 
 dependencies {
     // 基础模块（内部模块，使用项目依赖）
