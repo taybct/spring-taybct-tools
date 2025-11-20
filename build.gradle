@@ -67,20 +67,20 @@ subprojects {subproject ->
             main {
                 resources {
                     // 第一个资源目录：src/main/resources（排除特定文件）
-                    srcDir 'src/main/resources'
-                    include 'META-INF/dubbo/org.apache.dubbo.rpc.Filter'
-                    include 'banner.txt'
-                    include 'static/**'
-                    exclude '**/*.jks'
-                    exclude '**/*.cer'
-                    exclude '**/*.key'
-
-                    // 第二个资源目录：src/main/java（只包含配置文件）
-                    srcDir 'src/main/java'
-                    include '**/*.properties'
-                    include '**/*.yml'
-                    include '**/*.xml'
-                    exclude '**/*.java'
+//                    srcDir 'src/main/resources'
+//                    include 'META-INF/dubbo/org.apache.dubbo.rpc.Filter'
+//                    include 'banner.txt'
+//                    include 'static/**'
+//                    exclude '**/*.jks'
+//                    exclude '**/*.cer'
+//                    exclude '**/*.key'
+//
+//                    // 第二个资源目录：src/main/java（只包含配置文件）
+//                    srcDir 'src/main/java'
+//                    include '**/*.properties'
+//                    include '**/*.yml'
+//                    include '**/*.xml'
+//                    exclude '**/*.java'
                 }
             }
         }
@@ -93,14 +93,18 @@ subprojects {subproject ->
             withJavadocJar()
         }
 
+        jar {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        }
+
         // 配置 sourcesJar 任务的重复文件处理策略
         tasks.named('sourcesJar') {
-            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         }
 
         // 确保也配置 javadocJar 任务
         tasks.named('javadocJar') {
-            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         }
 
         // 配置资源处理
