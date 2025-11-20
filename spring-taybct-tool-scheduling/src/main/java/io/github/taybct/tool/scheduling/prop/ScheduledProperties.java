@@ -3,6 +3,7 @@ package io.github.taybct.tool.scheduling.prop;
 import io.github.taybct.tool.core.constant.PropertiesPrefixConstants;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.system.JavaVersion;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.io.Serial;
@@ -33,7 +34,7 @@ public class ScheduledProperties implements Serializable {
     /**
      * 是否开启虚拟线程（兼容 jdk 21 以下版本）
      */
-    private boolean virtualThreads = false;
+    private boolean virtualThreads = JavaVersion.getJavaVersion().isEqualOrNewerThan(JavaVersion.TWENTY_ONE);
     /**
      * 关闭程序，等待任务完成
      */

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.system.JavaVersion;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
@@ -28,7 +29,7 @@ public class MessageConfig {
     public TaskExecutor apiLogSendServiceTaskExecutor() {
         SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor("apiLogSendServiceTask");
         //executor.setConcurrencyLimit(100); // 最大并发 100 个平台线程
-        executor.setVirtualThreads(false); // 是否启用虚拟线程模式（兼容 jdk 21 以下版本，如果能明确使用 jdk 21 可以设置 true 打开虚拟线程）
+        executor.setVirtualThreads(JavaVersion.getJavaVersion().isEqualOrNewerThan(JavaVersion.TWENTY_ONE)); // 是否启用虚拟线程模式（兼容 jdk 21 以下版本，如果能明确使用 jdk 21 可以设置 true 打开虚拟线程）
         return executor;
     }
 
