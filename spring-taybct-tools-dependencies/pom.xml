@@ -105,7 +105,7 @@
         <jdk18on.version>1.78.1</jdk18on.version>
         <bcprov-ext-jdk18on.version>1.78.1</bcprov-ext-jdk18on.version>
         <!--junit 测试-->
-        <junit.version>4.13.2</junit.version>
+        <junit.version>5.13.4</junit.version>
         <!--poi 导出依赖-->
         <jxls-core.version>1.0.6</jxls-core.version>
         <!--knife4j-->
@@ -642,8 +642,8 @@
 
             <!--单元测试-->
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
                 <version>${junit.version}</version>
             </dependency>
 

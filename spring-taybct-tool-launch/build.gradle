@@ -9,7 +9,7 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-test:${findProperty('taybct-project.spring-boot.version')}")
 
     // junit（测试依赖，用 testImplementation）
-    api("junit:junit:${findProperty('taybct-project.junit.version')}")
+    api("org.junit.jupiter:junit-jupiter-api:${findProperty('taybct-project.junit.version')}")
 
     // spring-test（scope=compile 对应 api）
     api("org.springframework:spring-test:${findProperty('taybct-project.spring.version')}")

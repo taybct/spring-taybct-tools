@@ -38,7 +38,7 @@ subprojects {subproject ->
         // 依赖管理配置
         dependencyManagement {
             imports {
-                mavenBom "io.github.taybct:spring-taybct-tools-dependencies:${findProperty('taybct-project.spring-taybct.version')}"
+                mavenBom "io.github.taybct:spring-taybct-tools-dependencies:${findProperty('taybct-project.spring-taybct-tools.version')}"
             }
         }
 
