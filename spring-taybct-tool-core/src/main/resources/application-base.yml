@@ -16,6 +16,10 @@ server:
     # 配置支持压缩的 MIME TYPE
     mime-types: text/html,text/xml,text/plain,application/xml,application/json
 spring:
+  threads:
+    virtual:
+      # Spring Boot 会自动检测到 JDK 21+ 将应用中所有的异步任务（@Async）和定时任务（@Scheduled）切换到使用虚拟线程执行
+      enabled: true
   servlet:
     multipart:
       max-file-size: 100MB
