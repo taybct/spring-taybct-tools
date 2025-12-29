@@ -38,6 +38,18 @@
             <organizationUrl>https://github.com/taybct</organizationUrl>
             <timezone>Asia/Shanghai</timezone>
         </developer>
+        <developer>
+            <id>xijieyin</id>
+            <name>XiJie Yin</name>
+            <email>150145633663@163.com</email>
+            <url>https://gitee.com/xijieyin</url>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organization>io.github.taybct</organization>
+            <organizationUrl>https://github.com/taybct</organizationUrl>
+            <timezone>Asia/Shanghai</timezone>
+        </developer>
     </developers>
 
     <scm>
