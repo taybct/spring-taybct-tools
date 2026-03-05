@@ -118,6 +118,9 @@ public class FileServiceBuilder {
         if (type.equalsIgnoreCase(FileManageType.MIN_IO.getKey())) {
             return FileManageType.MIN_IO;
         }
+        if (type.equalsIgnoreCase(FileManageType.RUST_FS.getKey())) {
+            return FileManageType.RUST_FS;
+        }
         if (fileConfig.getClazz() != null) {
             return new FileManageType(type, fileConfig.getClazz());
         }

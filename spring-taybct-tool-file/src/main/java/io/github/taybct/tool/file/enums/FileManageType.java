@@ -1,10 +1,7 @@
 package io.github.taybct.tool.file.enums;
 
 import io.github.taybct.tool.file.service.IFileService;
-import io.github.taybct.tool.file.service.impl.FileServiceFastDFSImpl;
-import io.github.taybct.tool.file.service.impl.FileServiceLocalImpl;
-import io.github.taybct.tool.file.service.impl.FileServiceMinioImpl;
-import io.github.taybct.tool.file.service.impl.FileServiceOSSImpl;
+import io.github.taybct.tool.file.service.impl.*;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -41,6 +38,10 @@ public final class FileManageType implements Serializable {
      * MinIO 对象存储
      */
     public static final FileManageType MIN_IO = new FileManageType("minio", FileServiceMinioImpl.class);
+    /**
+     * RustFS 对象存储
+     */
+    public static final FileManageType RUST_FS = new FileManageType("rustfs", FileServiceRustFSImpl.class);
 
     public FileManageType(String key, Class<? extends IFileService> implClass) {
         this.key = key;
@@ -54,6 +55,7 @@ public final class FileManageType implements Serializable {
             case "oss" -> OSS.implClass;
             case "fdfs" -> FAST_DFS.implClass;
             case "minio" -> MIN_IO.implClass;
+            case "rustfs" -> RUST_FS.implClass;
             default -> throw new IllegalStateException("Unexpected value: " + key);
         };
     }

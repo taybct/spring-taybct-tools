@@ -4,7 +4,7 @@ springdoc:
   info:
     title: 应用接口文档
     description: 这是应用的API接口文档，提供所有可用接口的详细信息
-    version: v3.5.0
+    version: v3.5.2
     contact:
       name: 开发者
       email: developer@example.com
