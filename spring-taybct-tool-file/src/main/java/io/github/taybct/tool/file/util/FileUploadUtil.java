@@ -3,10 +3,7 @@ package io.github.taybct.tool.file.util;
 import com.alibaba.fastjson2.JSONArray;
 import io.github.taybct.tool.core.exception.def.BaseException;
 import io.github.taybct.tool.core.result.ResultCode;
-import io.github.taybct.tool.file.config.FileConfig;
-import io.github.taybct.tool.file.config.LocalConfig;
-import io.github.taybct.tool.file.config.MinioConfig;
-import io.github.taybct.tool.file.config.OSSConfig;
+import io.github.taybct.tool.file.config.*;
 import io.github.taybct.tool.file.exception.FileUploadException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +30,8 @@ import java.util.UUID;
 @EnableConfigurationProperties({LocalConfig.class
         , MinioConfig.class
         , OSSConfig.class
-        , FileConfig.class})
+        , FileConfig.class
+        , RustFSConfig.class})
 public class FileUploadUtil {
 
     private static LocalConfig localConfig;

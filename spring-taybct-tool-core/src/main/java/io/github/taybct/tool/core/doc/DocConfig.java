@@ -29,7 +29,7 @@ public class DocConfig {
     @Value("${spring.application.name:应用接口文档}")
     private String applicationName;
 
-    @Value("${application.version:v3.5.0}")
+    @Value("${application.version:v3.5.2}")
     private String applicationVersion;
 
     @Bean
