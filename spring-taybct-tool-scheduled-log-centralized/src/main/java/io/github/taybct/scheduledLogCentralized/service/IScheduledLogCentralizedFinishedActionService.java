@@ -9,7 +9,7 @@ public interface IScheduledLogCentralizedFinishedActionService {
     /**
      * 插入的消息如果是调用成功需要做什么
      */
-    default void atferSuccessed(ScheduledLogCentralized scheduledLogCentralized){
+    default void afterSuccessed(ScheduledLogCentralized scheduledLogCentralized){
         if (isSuccess(scheduledLogCentralized)) {
 
         }
@@ -17,7 +17,7 @@ public interface IScheduledLogCentralizedFinishedActionService {
     /**
      * 插入的消息如果是调用成功需要做什么
      */
-    default void atferSuccessedCollections(Collection<ScheduledLogCentralized> scheduledLogCentralizeds){
+    default void afterSuccessedCollections(Collection<ScheduledLogCentralized> scheduledLogCentralizeds){
         if (isSuccess(scheduledLogCentralizeds)) {
 
         }
