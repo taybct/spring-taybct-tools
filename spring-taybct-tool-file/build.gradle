@@ -26,6 +26,9 @@ dependencies {
         exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
     }
 
+    // rustfs 文件系统
+    api "software.amazon.awssdk:s3:${findProperty('taybct-project.s3.version')}"
+
     // Spring web
     api("org.springframework.boot:spring-boot-starter-web:${findProperty('taybct-project.spring-boot.version')}") {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'

@@ -232,6 +232,7 @@ public abstract class AbstractWebSocketServer implements IWebSocketServer<Sessio
      * @param message 消息
      * @param session session
      */
+    @Override
     public <E> void send(WSR<E> message, Session session) {
         if (message.getBytes() != null) {
             session.getAsyncRemote().sendBinary(ByteBuffer.wrap(message.getBytes()));

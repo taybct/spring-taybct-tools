@@ -40,7 +40,7 @@ public class DocProperties implements Serializable {
     /**
      * 版本
      **/
-    private String version = "v3.5.0";
+    private String version = "v3.5.2";
 
     /**
      * 联系人信息

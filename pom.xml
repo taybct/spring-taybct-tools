@@ -6,7 +6,7 @@
 
     <groupId>io.github.taybct</groupId>
     <artifactId>spring-taybct-tools</artifactId>
-    <version>3.5.1.1</version>
+    <version>3.5.2</version>
     <name>Spring TayBct Tools</name>
     <description>Spring TayBct Tools</description>
     <url>https://github.com/taybct/spring-taybct-tools</url>
@@ -33,6 +33,18 @@
             <roles>
                 <role>Project Manager</role>
                 <role>Architect</role>
+            </roles>
+            <organization>io.github.taybct</organization>
+            <organizationUrl>https://github.com/taybct</organizationUrl>
+            <timezone>Asia/Shanghai</timezone>
+        </developer>
+        <developer>
+            <id>xijieyin</id>
+            <name>XiJie Yin</name>
+            <email>150145633663@163.com</email>
+            <url>https://gitee.com/xijieyin</url>
+            <roles>
+                <role>Developer</role>
             </roles>
             <organization>io.github.taybct</organization>
             <organizationUrl>https://github.com/taybct</organizationUrl>
@@ -148,7 +160,7 @@
         <!--项目打包编码设置-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!--基础工具版本-->
-        <project.version>3.5.1.1</project.version>
+        <project.version>3.5.2</project.version>
         <!-- Sentinel规则持久化至Nacos配置 -->
         <sentinel-datasource-nacos.version>1.8.9</sentinel-datasource-nacos.version>
         <!--skywalking 日志记录-->
