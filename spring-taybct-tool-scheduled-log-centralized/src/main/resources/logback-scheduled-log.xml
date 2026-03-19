@@ -1,0 +1,14 @@
+<included>
+
+    <!-- ============================= -->
+    <!-- 1. Scheduled 日志捕获 Appender -->
+    <!-- ============================= -->
+
+    <appender name="SCHEDULED_CAPTURE"
+              class="io.github.taybct.scheduledLogCentralized.context.ScheduledLogCaptureAppender"/>
+
+    <!--  引入了本xml后，会自动追加插入下面  -->
+    <root level="info">
+        <appender-ref ref="SCHEDULED_CAPTURE"/>
+    </root>
+</included>

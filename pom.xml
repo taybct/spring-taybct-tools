@@ -229,6 +229,7 @@
         <module>spring-taybct-tool-core</module>
         <module>spring-taybct-tool-cloud</module>
         <module>spring-taybct-tool-pki</module>
+        <module>spring-taybct-tool-scheduled-log-centralized</module>
     </modules>
 
     <build>

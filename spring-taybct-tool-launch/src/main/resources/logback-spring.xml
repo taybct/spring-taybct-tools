@@ -6,6 +6,7 @@
 <!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
 <configuration scan="true" scanPeriod="60 seconds">
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="logback-scheduled-log.xml"/>
     <!--从spring里面拿到应用名-->
     <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
     <!--配置日志路径-->
@@ -56,6 +57,10 @@
             <!--日志文档保留天数-->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
+        <!--   过滤掉已经在定时任务日志管理中的日志     -->
+        <filter class="io.github.taybct.tool.core.filter.MdcAbsentFilter">
+            <key>scheduledRunId</key>
+        </filter>
         <!-- 此日志文档只记录debug级别的 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <!-- 过滤的级别 -->
@@ -86,6 +91,10 @@
             <!--日志文档保留天数-->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
+        <!--   过滤掉已经在定时任务日志管理中的日志     -->
+        <filter class="io.github.taybct.tool.core.filter.MdcAbsentFilter">
+            <key>scheduledRunId</key>
+        </filter>
         <!-- 此日志文档只记录info级别的 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
@@ -112,6 +121,10 @@
             <!--日志文档保留天数-->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
+        <!--   过滤掉已经在定时任务日志管理中的日志     -->
+        <filter class="io.github.taybct.tool.core.filter.MdcAbsentFilter">
+            <key>scheduledRunId</key>
+        </filter>
         <!-- 此日志文档只记录warn级别的 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
@@ -138,6 +151,10 @@
             <!--日志文档保留天数-->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
+        <!--   过滤掉已经在定时任务日志管理中的日志     -->
+        <filter class="io.github.taybct.tool.core.filter.MdcAbsentFilter">
+            <key>scheduledRunId</key>
+        </filter>
         <!-- 此日志文档只记录ERROR级别的 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
@@ -148,6 +165,10 @@
 
     <!--异步打印-->
     <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!--   过滤掉已经在定时任务日志管理中的日志     -->
+        <filter class="io.github.taybct.tool.core.filter.MdcAbsentFilter">
+            <key>scheduledRunId</key>
+        </filter>
         <discardingThreshold>0</discardingThreshold>
         <queueSize>1024</queueSize>
         <neverBlock>true</neverBlock>
