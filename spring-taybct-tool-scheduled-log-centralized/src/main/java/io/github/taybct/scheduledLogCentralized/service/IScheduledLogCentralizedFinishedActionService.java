@@ -27,7 +27,7 @@ public interface IScheduledLogCentralizedFinishedActionService {
      * //插入的消息如果是调用失败需要做什么
      * @param scheduledLogCentralized
      */
-    default void atferFailed(ScheduledLogCentralized scheduledLogCentralized) {
+    default void afterFailed(ScheduledLogCentralized scheduledLogCentralized) {
         if (isFail(scheduledLogCentralized)) {
 
         }
@@ -37,7 +37,7 @@ public interface IScheduledLogCentralizedFinishedActionService {
      * //插入的消息如果是调用失败需要做什么
      * @param scheduledLogCentralizeds
      */
-    default void atferFailedCollections(Collection<ScheduledLogCentralized> scheduledLogCentralizeds) {
+    default void afterFailedCollections(Collection<ScheduledLogCentralized> scheduledLogCentralizeds) {
         if (isFail(scheduledLogCentralizeds)) {
 
         }
