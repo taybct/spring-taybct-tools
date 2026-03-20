@@ -43,6 +43,11 @@
             <organizationUrl>https://github.com/taybct</organizationUrl>
             <timezone>Asia/Shanghai</timezone>
         </developer>
+        <developer>
+            <id>GTL</id>
+            <name>GTLscarlet</name>
+            <email>gtl.scralet@qq.com</email>
+        </developer>
     </developers>
 
     <scm>
