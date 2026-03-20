@@ -1,0 +1,11 @@
+description = "定时任务控制台日志管理模块"
+
+dependencies {
+    // 公共基础模块（内部模块，使用项目依赖）
+    api project(':spring-taybct-tool-core')  // 替换为实际内部模块路径
+
+    // SpringCloud Openfeign 服务调用
+    compileOnly "org.springframework.cloud:spring-cloud-starter-openfeign:${findProperty('taybct-project.spring-cloud-build.version')}"
+    compileOnly "io.github.openfeign:feign-httpclient:${findProperty('taybct-project.feign-httpclient.version')}"
+    compileOnly "org.apache.dubbo:dubbo-spring-boot-starter:${findProperty('taybct-project.dubbo.version')}"
+}

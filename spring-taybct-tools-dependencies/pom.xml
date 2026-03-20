@@ -718,6 +718,12 @@
                 <artifactId>spring-taybct-tool-pki</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <!--定时任务控制台日志管理模块-->
+            <dependency>
+                <groupId>io.github.taybct</groupId>
+                <artifactId>spring-taybct-tool-scheduled-log-centralized</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
