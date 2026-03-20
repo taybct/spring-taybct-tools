@@ -4,9 +4,12 @@ import io.github.taybct.scheduledLogCentralized.config.ScheduledLogContant;
 import io.github.taybct.scheduledLogCentralized.context.ScheduledRunContext;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.common.extension.Activate;
+import org.apache.dubbo.config.ConfigCenterConfig;
 import org.apache.dubbo.rpc.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 
 @Activate(group = CommonConstants.CONSUMER)
+@ConditionalOnClass(ConfigCenterConfig.class)
 public class ScheduledDubboConsumerFilter implements Filter {
 
     @Override

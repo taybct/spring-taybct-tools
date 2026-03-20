@@ -8,10 +8,13 @@ import io.github.taybct.tool.core.util.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.common.extension.Activate;
+import org.apache.dubbo.config.ConfigCenterConfig;
 import org.apache.dubbo.rpc.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 
 @Activate(group = CommonConstants.PROVIDER)
 @Slf4j
+@ConditionalOnClass(ConfigCenterConfig.class)
 public class ScheduledDubboProviderFilter implements Filter {
 
     @Override

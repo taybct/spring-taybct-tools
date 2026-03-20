@@ -5,10 +5,13 @@ import feign.RequestTemplate;
 import io.github.taybct.scheduledLogCentralized.config.ScheduledLogContant;
 import io.github.taybct.scheduledLogCentralized.context.ScheduledRunContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@ConditionalOnClass({FallbackFactory.class})
 public class ScheduledFeignInterceptor implements RequestInterceptor {
 
     @Override
