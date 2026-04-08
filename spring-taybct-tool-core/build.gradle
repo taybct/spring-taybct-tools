@@ -25,6 +25,9 @@ dependencies {
     // Collection 增强Java集合框架
     api "org.apache.commons:commons-collections4:${findProperty('taybct-project.commons-collections4.version')}"
 
+    // Reflections 库
+    api "org.reflections:reflections:${findProperty('taybct-project.reflections.version')}"
+
     //使Jackson和Mybatis支持JSR310标准
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${findProperty('taybct-project.jackson-datatype-jsr310.version')}"
 

@@ -43,39 +43,39 @@ public abstract class RedisScheduledTaskJob extends AbstractScheduledTaskJob {
         String ip = NetUtil.getLocalhost().getHostAddress();
         String hostName = NetUtil.getLocalhost().getHostName();
         String port = env.getProperty("server.port", "8080");
-        String taskKey = CacheConstants.Scheduled.PREFIX + key;
+        String cacheKey = CacheConstants.Scheduled.PREFIX + getTaskConfig().getUniKey() + ":" + getTaskConfig().getTaskKey();
         String serve = String.format("%s[%s]:%s", ip, hostName, port);
         // 未来的秒数
-        long l = Objects.requireNonNull(CronExpression.parse(cron).next(LocalDateTime.now()))
+        long l = Objects.requireNonNull(CronExpression.parse(getTaskConfig().getCron()).next(LocalDateTime.now()))
                 .toEpochSecond(ZoneOffset.of("+8"));
         // 当前的
         long i = l - LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"));
-        if (Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(taskKey, serve, i, TimeUnit.SECONDS))) {
+        if (Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(cacheKey, serve, i, TimeUnit.SECONDS))) {
             try {
                 super.run();
             } finally {
                 // 未来的秒数
-                l = Objects.requireNonNull(CronExpression.parse(cron).next(LocalDateTime.now()))
+                l = Objects.requireNonNull(CronExpression.parse(getTaskConfig().getCron()).next(LocalDateTime.now()))
                         .toEpochSecond(ZoneOffset.of("+8"));
                 // 当前的
                 i = l - LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"));
                 // 这里留个阈值,剩余比这个值少也就没有设置的必要了
                 if (i <= getMinCacheTime()) {
-                    redisTemplate.delete(taskKey);
+                    redisTemplate.delete(cacheKey);
                 } else {
                     if (i - getMinCacheTime() > 0) {
-                        redisTemplate.opsForValue().set(taskKey
+                        redisTemplate.opsForValue().set(cacheKey
                                 , serve
                                 , i - getMinCacheTime(), TimeUnit.SECONDS);
                     }
                 }
             }
         } else {
-            String s = redisTemplate.opsForValue().get(taskKey);
-            log.warn("当前任务[{}]已经在服务[{}]启动!", key, s);
-            if (Optional.ofNullable(redisTemplate.getExpire(taskKey, TimeUnit.SECONDS)).orElse(0L) < 0L) {
+            String s = redisTemplate.opsForValue().get(cacheKey);
+            log.warn("当前任务[{}]已经在服务[{}]启动!", (getTaskConfig().getUniKey() + ":" + getTaskConfig().getTaskKey()), s);
+            if (Optional.of(redisTemplate.getExpire(cacheKey, TimeUnit.SECONDS)).orElse(0L) < 0L) {
                 // 可能会生成一些 -1 的异常数据，这里如果发现了，可以及时删除
-                redisTemplate.delete(taskKey);
+                redisTemplate.delete(cacheKey);
             }
         }
     }

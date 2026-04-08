@@ -68,6 +68,8 @@
         <commons-lang3.version>3.19.0</commons-lang3.version>
         <!-- 公共资源池 -->
         <commons-pool2.version>2.12.1</commons-pool2.version>
+        <!-- Reflections 库 -->
+        <reflections.version>0.10.2</reflections.version>
         <!--dom4j-->
         <dom4j.version>2.2.0</dom4j.version>
         <!--阿里巴巴(Druid)德鲁伊连接池-->
@@ -590,6 +592,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-pool2</artifactId>
                 <version>${commons-pool2.version}</version>
+            </dependency>
+            <!-- Reflections 库 -->
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
             </dependency>
             <!--    postgresql 驱动   -->
             <dependency>

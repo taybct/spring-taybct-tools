@@ -1,5 +1,7 @@
 package io.github.taybct.tool.scheduling.job;
 
+import io.github.taybct.tool.scheduling.prop.ScheduledTaskBean;
+
 import java.util.Map;
 
 /**
@@ -11,26 +13,11 @@ import java.util.Map;
 public interface IScheduledTaskJob extends Runnable {
 
     /**
-     * 初始化 key
-     */
-    void setKey(String taskKey);
-
-    /**
-     * 设置 cron 表达式
+     * 配置任务属性
      *
-     * @param cron cron 表达式
+     * @param taskBean 任务属性
      */
-    void setCron(String cron);
-
-    /**
-     * 初始化任务描述
-     */
-    void setDescription(String description);
-
-    /**
-     * 初始化属性配置
-     */
-    void setParams(Map<String, Object> params);
+    void config(ScheduledTaskBean taskBean);
 
     /**
      * 这个 run 需要用户自己支写逻辑

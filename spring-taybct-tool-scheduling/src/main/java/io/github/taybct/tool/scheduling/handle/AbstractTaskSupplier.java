@@ -1,7 +1,7 @@
 package io.github.taybct.tool.scheduling.handle;
 
 import io.github.taybct.tool.core.annotation.Scheduler;
-import io.github.taybct.tool.core.util.SpringUtil;
+import io.github.taybct.tool.core.util.AnnotationScanner;
 import io.github.taybct.tool.core.util.StringUtil;
 import io.github.taybct.tool.scheduling.job.IScheduledTaskJob;
 import io.github.taybct.tool.scheduling.prop.ScheduledProperties;
@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -22,35 +21,36 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class AbstractTaskSupplier implements ITaskSupplier {
 
-    @Override
-    public Map<String, IScheduledTaskJob> configTaskJob() {
-        return Optional.ofNullable(SpringUtil.getContext()).map(context -> {
-            Map<String, IScheduledTaskJob> concurrentHashMap = new HashMap<>();
-            context.getBeansWithAnnotation(Scheduler.class)
-                    .forEach((k, v) -> {
-                        if (IScheduledTaskJob.class.isAssignableFrom(v.getClass())) {
-                            Scheduler annotation = v.getClass().getAnnotation(Scheduler.class);
-                            String taskName = k;
-                            if (StringUtil.isNotEmpty(annotation.value())) {
-                                taskName = annotation.value();
-                            }
-                            concurrentHashMap.put(taskName, (IScheduledTaskJob) v);
-                        }
-                    });
-            return concurrentHashMap;
-        }).orElseGet(ConcurrentHashMap::new);
-    }
-
     @Autowired
     protected ScheduledProperties scheduledProperties;
 
     @Override
-    public ScheduledTaskBean getByKey(String taskKey) {
-        return scheduledProperties.getTasks().get(taskKey);
+    public Map<String, Class<? extends IScheduledTaskJob>> configTaskJob() {
+        Map<String, Class<? extends IScheduledTaskJob>> concurrentHashMap = new HashMap<>();
+        scheduledProperties.getPackagesToScan().forEach(packageName -> {
+            List<? extends Class<?>> classes = AnnotationScanner.scanWithSpring(packageName, Scheduler.class);
+            classes.forEach(clazz -> {
+                if (IScheduledTaskJob.class.isAssignableFrom(clazz)) {
+                    Scheduler annotation = clazz.getAnnotation(Scheduler.class);
+                    String taskName = StringUtil.underlineToHump(clazz.getName());
+                    if (StringUtil.isNotEmpty(annotation.value())) {
+                        taskName = annotation.value();
+                    }
+                    concurrentHashMap.put(taskName, (Class<? extends IScheduledTaskJob>) clazz);
+                }
+            });
+        });
+        return concurrentHashMap;
+    }
+
+    @Override
+    public ScheduledTaskBean getByUniKey(String uniKey) {
+        return scheduledProperties.getTasks().get(uniKey);
     }
 
     @Override
     public List<ScheduledTaskBean> getAllTask() {
+        scheduledProperties.getTasks().forEach((k, v) -> v.setUniKey(k));
         return scheduledProperties.getTasks().values().stream().
                 sorted(Comparator.comparingInt(ScheduledTaskBean::getSort)).collect(Collectors.toList());
     }

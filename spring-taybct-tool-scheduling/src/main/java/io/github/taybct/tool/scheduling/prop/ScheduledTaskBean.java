@@ -24,7 +24,12 @@ public class ScheduledTaskBean implements Serializable {
     private static final long serialVersionUID = 536536468628021961L;
 
     /**
-     * 任务key值 唯一
+     * 唯一标识
+     */
+    private String uniKey;
+    /**
+     * 任务 key 值用于找到被 @Scheduler 注解的类
+     * @see io.github.taybct.tool.core.annotation.Scheduler
      */
     private String taskKey;
     /**

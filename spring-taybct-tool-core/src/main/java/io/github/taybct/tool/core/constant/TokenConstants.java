@@ -72,4 +72,14 @@ public interface TokenConstants {
      */
     String CREDENTIALS = "credentials";
 
+    /**
+     * 在此时间之前都无效
+     */
+    String NBF = "nbf";
+
+    /**
+     * 创建时间
+     */
+    String IAT = "iat";
+
 }

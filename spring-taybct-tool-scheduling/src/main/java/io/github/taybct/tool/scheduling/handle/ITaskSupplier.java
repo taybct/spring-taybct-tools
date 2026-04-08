@@ -2,7 +2,6 @@ package io.github.taybct.tool.scheduling.handle;
 
 import io.github.taybct.tool.scheduling.job.IScheduledTaskJob;
 import io.github.taybct.tool.scheduling.prop.ScheduledTaskBean;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,14 +20,14 @@ public interface ITaskSupplier {
      * key :任务key
      * value : 执行接口实现
      */
-    default Map<String, IScheduledTaskJob> configTaskJob() {
+    default Map<String, Class<? extends IScheduledTaskJob>> configTaskJob() {
         return Collections.emptyMap();
     }
 
     /**
-     * 根据key 获取 任务信息
+     * 根据 任务唯一标识 获取 任务信息
      */
-    default ScheduledTaskBean getByKey(@Param("taskKey") String taskKey) {
+    default ScheduledTaskBean getByUniKey(String uniKey) {
         return null;
     }
 
