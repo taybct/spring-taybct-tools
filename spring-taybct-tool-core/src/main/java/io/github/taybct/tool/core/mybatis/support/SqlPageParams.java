@@ -109,7 +109,13 @@ public class SqlPageParams implements Serializable {
     public LinkedHashSet<String> safeOrderBySql(Stream<String> stream) {
         // 把 ;,(,) 替换掉，防止 sql 注入
         // 把结果丢到一个 Set 里面去去重
-        return stream.map(s -> s.replaceAll(";", "")
+        return stream
+                .peek(s -> {
+                    if (s.contains(";") || s.contains("(") || s.contains(")") || s.contains("=")) {
+                        throw new RuntimeException("分页参数错误");
+                    }
+                })
+                .map(s -> s.replaceAll(";", "")
                         .replaceAll("\\(", "")
                         .replaceAll("\\)", ""))
                 .map(StringUtil::humpToUnderline)
