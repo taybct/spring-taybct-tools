@@ -11,7 +11,7 @@ public class CacheConstants {
     /**
      * 系统前缀
      */
-    public static final String SYSTEM_PREFIX = "tb:";
+    public static final String SYSTEM_PREFIX = java.lang.System.getProperty(AppConstants.CACHE_PREFIX_CONFIG_KEY, "tb:");
 
     /**
      * 系统模块相关的缓存

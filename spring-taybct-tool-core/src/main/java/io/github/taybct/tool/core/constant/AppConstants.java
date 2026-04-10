@@ -13,6 +13,11 @@ public interface AppConstants {
     String BASE_PACKAGES = "io.github.taybct";
 
     /**
+     * 缓存前缀配置项
+     */
+    String CACHE_PREFIX_CONFIG_KEY = "taybct.cache.prefix";
+
+    /**
      * 开发环境
      */
     String DEV_CODE = "dev";
