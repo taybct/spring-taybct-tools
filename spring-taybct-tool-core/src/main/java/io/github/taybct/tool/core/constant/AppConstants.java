@@ -18,6 +18,11 @@ public interface AppConstants {
     String CACHE_PREFIX_CONFIG_KEY = "taybct.cache.prefix";
 
     /**
+     * 缓存前缀配置项
+     */
+    String CACHE_PREFIX_CONFIG_ENV_KEY = "taybct_cache_prefix";
+
+    /**
      * 开发环境
      */
     String DEV_CODE = "dev";

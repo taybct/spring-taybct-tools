@@ -11,13 +11,22 @@ public class CacheConstants {
     /**
      * 系统前缀
      */
-    public static final String SYSTEM_PREFIX = java.lang.System.getProperty(AppConstants.CACHE_PREFIX_CONFIG_KEY, "tb:");
+    public static String getSystemPrefix(){
+        String property = java.lang.System.getProperty(AppConstants.CACHE_PREFIX_CONFIG_KEY);
+        if (property == null) {
+            property = java.lang.System.getenv(AppConstants.CACHE_PREFIX_CONFIG_ENV_KEY);
+        }
+        if (property == null) {
+            property = "tb:";
+        }
+        return property;
+    };
 
     /**
      * 系统模块相关的缓存
      */
     public interface System {
-        String PREFIX = SYSTEM_PREFIX + "sys:";
+        String PREFIX = getSystemPrefix() + "sys:";
         /**
          * 系统参数
          */
@@ -48,7 +57,7 @@ public class CacheConstants {
         /**
          * 前缀
          */
-        String PREFIX = SYSTEM_PREFIX + "tsk:";
+        String PREFIX = getSystemPrefix() + "tsk:";
     }
 
 }
