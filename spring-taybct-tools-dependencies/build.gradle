@@ -86,6 +86,7 @@ dependencyManagement {
         if (project.hasProperty('taybct-project.oss-alibaba.version')) dependency "com.aliyun.oss:aliyun-sdk-oss:${findProperty('taybct-project.oss-alibaba.version')}"
         if (project.hasProperty('taybct-project.fastdfs-client.version')) dependency "com.github.tobato:fastdfs-client:${findProperty('taybct-project.fastdfs-client.version')}"
         if (project.hasProperty('taybct-project.minio.version')) dependency "io.minio:minio:${findProperty('taybct-project.minio.version')}"
+        if (project.hasProperty('taybct-project.s3.version')) dependency "software.amazon.awssdk:s3:${findProperty('taybct-project.s3.version')}"
 
         // MyBatis 相关
         if (project.hasProperty('taybct-project.mybatis-plus.version')) dependency "com.baomidou:mybatis-plus-spring-boot3-starter:${findProperty('taybct-project.mybatis-plus.version')}"
@@ -112,6 +113,7 @@ dependencyManagement {
         if (project.hasProperty('taybct-project.commons-httpclient.version')) dependency "commons-httpclient:commons-httpclient:${findProperty('taybct-project.commons-httpclient.version')}"
         if (project.hasProperty('taybct-project.dom4j.version')) dependency "org.dom4j:dom4j:${findProperty('taybct-project.dom4j.version')}"
         if (project.hasProperty('taybct-project.jxls-core.version')) dependency "net.sf.jxls:jxls-core:${findProperty('taybct-project.jxls-core.version')}"
+        if (project.hasProperty('taybct-project.reflections.version')) dependency "org.reflections:reflections:${findProperty('taybct-project.reflections.version')}"
 
         // 监控/日志
         if (project.hasProperty('taybct-project.skywalking-logback.version')) dependency "org.apache.skywalking:apm-toolkit-logback-1.x:${findProperty('taybct-project.skywalking-logback.version')}"
@@ -141,5 +143,6 @@ dependencyManagement {
         dependency "io.github.taybct:spring-taybct-tool-wechat:${project.version}"
         dependency "io.github.taybct:spring-taybct-tool-scheduling:${project.version}"
         dependency "io.github.taybct:spring-taybct-tool-pki:${project.version}"
+        dependency "io.github.taybct:spring-taybct-tool-scheduled-log-centralized:${project.version}"
     }
 }

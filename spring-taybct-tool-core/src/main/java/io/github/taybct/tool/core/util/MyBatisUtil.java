@@ -229,6 +229,9 @@ public class MyBatisUtil {
         if (StringUtil.isEmpty(orderStr)) {
             return null;
         }
+        if(orderStr.contains(";") || orderStr.contains("(") || orderStr.contains(")") || orderStr.contains("=")){
+            throw new RuntimeException("分页参数错误");
+        }
         String[] fields =
                 // 把 ;,(,) 替换掉，防止 sql 注入
                 orderStr.replaceAll(";", "")

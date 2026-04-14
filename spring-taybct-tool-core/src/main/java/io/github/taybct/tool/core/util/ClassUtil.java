@@ -101,4 +101,37 @@ public class ClassUtil extends org.springframework.util.ClassUtils {
                 .orElse(AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getBeanType(), annotationType));
     }
 
+    /**
+     * 创建实例
+     *
+     * @param clazz 类
+     * @param <E>   泛型标记
+     * @return 实例
+     */
+    public static <E> E createInstance(Class<E> clazz){
+        try {
+            var cons = clazz.getDeclaredConstructor();
+            cons.setAccessible(true);
+            return cons.newInstance();
+        } catch (ReflectiveOperationException e) {
+            // JDK 21 可以统一捕获反射异常
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 创建实例
+     *
+     * @param clazz 类
+     * @param <E>   泛型标记
+     * @return 创建的实例
+     */
+    public static <E> E createInstanceWithSpring(Class<E> clazz){
+        if (SpringUtil.getContext() != null) {
+            return SpringUtil.getContext().getAutowireCapableBeanFactory()
+                    .createBean(clazz);
+        }
+        return createInstance(clazz);
+    }
+
 }

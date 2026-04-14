@@ -1,6 +1,7 @@
 package io.github.taybct.tool.scheduling.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import io.github.taybct.tool.core.util.ClassUtil;
 import io.github.taybct.tool.scheduling.handle.ITaskSupplier;
 import io.github.taybct.tool.scheduling.job.IScheduledTaskJob;
 import io.github.taybct.tool.scheduling.prop.ScheduledTaskBean;
@@ -39,11 +40,11 @@ public class SchedulingTaskServiceImpl implements ISchedulingService {
      * key :任务 key
      * value:任务实现
      */
-    final Map<String, IScheduledTaskJob> scheduledTaskJobMap;
+    final Map<String, Class<? extends IScheduledTaskJob>> scheduledTaskJobMap;
     /**
      * 存放已经启动的任务map
      */
-    private final Map<String, ScheduledFuture> scheduledFutureMap = new ConcurrentHashMap<>();
+    private final Map<String, ScheduledFuture<?>> scheduledFutureMap = new ConcurrentHashMap<>();
 
     /**
      * 可重入锁
@@ -70,10 +71,10 @@ public class SchedulingTaskServiceImpl implements ISchedulingService {
 
     @Override
     public boolean tryOnce(String taskKey, Map<String, Object> params) {
-        Optional.ofNullable(scheduledTaskJobMap.get(taskKey)).ifPresent(scheduledTaskJob -> {
+        Optional.ofNullable(scheduledTaskJobMap.get(taskKey)).ifPresent(scheduledTaskJobClass -> {
             log.debug(">>>>>> 尝试执行一次任务 [ {} ] ", taskKey);
             try {
-                scheduledTaskJob.run(params);
+                ClassUtil.createInstanceWithSpring(scheduledTaskJobClass).run(params);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -82,57 +83,62 @@ public class SchedulingTaskServiceImpl implements ISchedulingService {
     }
 
     @Override
-    public Boolean start(String taskKey) {
-        log.debug(">>>>>> 启动任务 {} 开始 >>>>>>", taskKey);
+    public Boolean start(String uniKey) {
+        log.debug(">>>>>> 启动任务 {} 开始 >>>>>>", uniKey);
         //添加锁放一个线程启动，防止多人启动多次
         log.debug(">>>>>> 添加任务启动锁完毕");
         // 加锁
         lock.lock();
         try {
             //校验是否已经启动
-            if (this.isStart(taskKey)) {
+            if (this.isStart(uniKey)) {
                 log.warn(">>>>>> 当前任务已经启动，无需重复启动！");
                 return false;
             }
+            //
+            ScheduledTaskBean taskJob = taskSupplier.getByUniKey(uniKey);
+            if (taskJob == null) {
+                return false;
+            }
             //校验任务是否存在
-            if (!scheduledTaskJobMap.containsKey(taskKey)) {
+            if (!scheduledTaskJobMap.containsKey(taskJob.getTaskKey())) {
                 return false;
             }
             //根据key获取任务配置信息
             //启动任务
-            Optional.ofNullable(taskSupplier.getByKey(taskKey)).ifPresent(this::doStartTask);
+            this.doStartTask(taskJob);
         } finally {
             // 释放锁
             lock.unlock();
             log.debug(">>>>>> 释放任务启动锁完毕");
         }
-        log.debug(">>>>>> 启动任务 {} 结束 >>>>>>", taskKey);
+        log.debug(">>>>>> 启动任务 {} 结束 >>>>>>", uniKey);
         return true;
     }
 
     @Override
-    public Boolean stop(String taskKey) {
-        log.debug(">>>>>> 进入停止任务 {}  >>>>>>", taskKey);
+    public Boolean stop(String uniKey) {
+        log.debug(">>>>>> 进入停止任务 {}  >>>>>>", uniKey);
         //当前任务实例是否存在
-        boolean taskStartFlag = scheduledFutureMap.containsKey(taskKey);
+        boolean taskStartFlag = scheduledFutureMap.containsKey(uniKey);
         log.debug(">>>>>> 当前任务实例是否存在 {}", taskStartFlag);
         if (taskStartFlag) {
             //获取任务实例
-            ScheduledFuture scheduledFuture = scheduledFutureMap.get(taskKey);
+            ScheduledFuture scheduledFuture = scheduledFutureMap.get(uniKey);
             //关闭实例
             scheduledFuture.cancel(true);
         }
-        log.debug(">>>>>> 结束停止任务 {}  >>>>>>", taskKey);
+        log.debug(">>>>>> 结束停止任务 {}  >>>>>>", uniKey);
         return taskStartFlag;
     }
 
     @Override
-    public Boolean restart(String taskKey) {
-        log.debug(">>>>>> 进入重启任务 {}  >>>>>>", taskKey);
+    public Boolean restart(String uniKey) {
+        log.debug(">>>>>> 进入重启任务 {}  >>>>>>", uniKey);
         //先停止
-        this.stop(taskKey);
+        this.stop(uniKey);
         //再启动
-        return this.start(taskKey);
+        return this.start(uniKey);
     }
 
     @Override
@@ -143,9 +149,9 @@ public class SchedulingTaskServiceImpl implements ISchedulingService {
         }
         for (ScheduledTaskBean scheduledTask : scheduledTaskBeanList) {
             //任务 key
-            String taskKey = scheduledTask.getTaskKey();
+            String uniKey = scheduledTask.getUniKey();
             //校验是否已经启动
-            if (this.isStart(taskKey)) {
+            if (this.isStart(uniKey)) {
                 continue;
             }
             //启动任务
@@ -158,10 +164,10 @@ public class SchedulingTaskServiceImpl implements ISchedulingService {
      * 任务是否已经启动
      */
     @Override
-    public Boolean isStart(String taskKey) {
+    public Boolean isStart(String uniKey) {
         //校验是否已经启动
-        if (scheduledFutureMap.containsKey(taskKey)) {
-            return !scheduledFutureMap.get(taskKey).isCancelled();
+        if (scheduledFutureMap.containsKey(uniKey)) {
+            return !scheduledFutureMap.get(uniKey).isCancelled();
         }
         return false;
     }
@@ -172,24 +178,24 @@ public class SchedulingTaskServiceImpl implements ISchedulingService {
     private void doStartTask(ScheduledTaskBean scheduledTask) {
         //任务key
         String taskKey = scheduledTask.getTaskKey();
+        //任务唯一标识
+        String uniKey = scheduledTask.getUniKey();
         //定时表达式
         String taskCron = scheduledTask.getCron();
         //获取需要定时调度的接口
-        Optional.ofNullable(scheduledTaskJobMap.get(taskKey)).ifPresent(scheduledTaskJob -> {
+        Optional.ofNullable(scheduledTaskJobMap.get(taskKey)).ifPresent(scheduledTaskJobClass -> {
             log.debug(">>>>>> 任务 [ {} ] ,cron={}", scheduledTask.getDescription(), taskCron);
+            IScheduledTaskJob scheduledTaskJob = ClassUtil.createInstanceWithSpring(scheduledTaskJobClass);
             // 配置任务属性配置
-            scheduledTaskJob.setParams(scheduledTask.getParams());
-            scheduledTaskJob.setKey(taskKey);
-            scheduledTaskJob.setCron(taskCron);
-            scheduledTaskJob.setDescription(scheduledTask.getDescription());
+            scheduledTaskJob.config(scheduledTask);
 
-            ScheduledFuture scheduledFuture = threadPoolTaskScheduler.schedule(scheduledTaskJob,
+            ScheduledFuture<?> scheduledFuture = threadPoolTaskScheduler.schedule(scheduledTaskJob,
                     triggerContext -> {
                         CronTrigger cronTrigger = new CronTrigger(taskCron);
                         return cronTrigger.nextExecution(triggerContext);
                     });
             //将启动的任务放入 map
-            scheduledFutureMap.put(taskKey, scheduledFuture);
+            scheduledFutureMap.put(uniKey, scheduledFuture);
         });
     }
 }

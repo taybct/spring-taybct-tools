@@ -3,12 +3,11 @@ package io.github.taybct.tool.scheduling.job;
 import com.alibaba.fastjson2.JSONObject;
 import io.github.taybct.tool.core.enums.OperateStatus;
 import io.github.taybct.tool.core.util.StringUtil;
-import lombok.Setter;
+import io.github.taybct.tool.scheduling.prop.ScheduledTaskBean;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -20,28 +19,14 @@ import java.util.function.Consumer;
 @Slf4j
 public abstract class AbstractScheduledTaskJob implements IScheduledTaskJob {
 
-    /**
-     * 任务 key
-     */
-    @Setter
-    protected String key;
-    /**
-     * cron 表达式
-     */
-    @Setter
-    protected String cron;
+    @Getter
+    protected ScheduledTaskBean taskConfig;
 
-    /**
-     * 任务描述
-     */
-    @Setter
-    protected String description;
+    @Override
+    public void config(ScheduledTaskBean taskBean) {
+        this.taskConfig = taskBean;
+    }
 
-    /**
-     * 初始化参数
-     */
-    @Setter
-    protected Map<String, Object> params = new HashMap<>();
     /**
      * 日记记录开始时间
      */
@@ -75,17 +60,17 @@ public abstract class AbstractScheduledTaskJob implements IScheduledTaskJob {
             startRecord(getLogRecorder());
         }
         try {
-            log.debug(">>>>>> 任务 [{}] 开始 >>>>>> ", this.description);
-            this.run(this.params);
-            log.debug(">>>>>> 任务 [{}] 结束 >>>>>> ", this.description);
+            log.debug(">>>>>> 任务 [{}] 开始 >>>>>> ", this.taskConfig.getDescription());
+            this.run(this.taskConfig.getParams());
+            log.debug(">>>>>> 任务 [{}] 结束 >>>>>> ", this.taskConfig.getDescription());
             if (getLogRecorder() != null) {
-                stopRecord(OperateStatus.SUCCESS.intCode(), String.format("任务 [%s] 执行完毕", this.description));
+                stopRecord(OperateStatus.SUCCESS.intCode(), String.format("任务 [%s] 执行完毕", this.taskConfig.getDescription()));
             }
         } catch (Exception e) {
-            log.error(">>>>>> 任务 [{}] 异常 >>>>>> ", this.description);
+            log.error(">>>>>> 任务 [{}] 异常 >>>>>> ", this.taskConfig.getDescription());
             log.error("\r\n", e);
             if (getLogRecorder() != null) {
-                stopRecord(OperateStatus.FAILED.intCode(), String.format("任务 [%s] 执行完毕", this.description), e.getMessage());
+                stopRecord(OperateStatus.FAILED.intCode(), String.format("任务 [%s] 执行完毕", this.taskConfig.getDescription()), e.getMessage());
             }
         }
     }
@@ -129,9 +114,10 @@ public abstract class AbstractScheduledTaskJob implements IScheduledTaskJob {
         this.stopTime = LocalDateTime.now();
         log.debug(">>>>>> 日志记录结束 {}  >>>>>>", this.stopTime);
         JSONObject logRecord = new JSONObject();
-        logRecord.put("taskKey", this.key);
-        logRecord.put("description", this.description);
-        logRecord.put("params", this.params);
+        logRecord.put("taskKey", this.taskConfig.getTaskKey());
+        logRecord.put("uniKey", this.taskConfig.getUniKey());
+        logRecord.put("description", this.taskConfig.getDescription());
+        logRecord.put("params", this.taskConfig.getParams());
         logRecord.put("status", status);
         logRecord.put("message", message);
         if (StringUtil.isNotEmpty(exceptionInfo)) {

@@ -75,6 +75,8 @@
         <commons-lang3.version>3.19.0</commons-lang3.version>
         <!-- 公共资源池 -->
         <commons-pool2.version>2.12.1</commons-pool2.version>
+        <!-- Reflections 库 -->
+        <reflections.version>0.10.2</reflections.version>
         <!--dom4j-->
         <dom4j.version>2.2.0</dom4j.version>
         <!--阿里巴巴(Druid)德鲁伊连接池-->
@@ -161,6 +163,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!--基础工具版本-->
         <project.version>3.5.2</project.version>
+        <!--rustfs 文件系统-->
+        <s3.version>2.25.27</s3.version>
         <!-- Sentinel规则持久化至Nacos配置 -->
         <sentinel-datasource-nacos.version>1.8.9</sentinel-datasource-nacos.version>
         <!--skywalking 日志记录-->

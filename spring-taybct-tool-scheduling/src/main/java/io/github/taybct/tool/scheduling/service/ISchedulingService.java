@@ -28,19 +28,19 @@ public interface ISchedulingService {
     boolean tryOnce(String taskKey, Map<String, Object> params);
 
     /**
-     * 根据任务key 启动任务
+     * 根据 唯一标识 启动任务
      */
-    Boolean start(String taskKey);
+    Boolean start(String uniKey);
 
     /**
-     * 根据任务key 停止任务
+     * 根据 唯一标识 停止任务
      */
-    Boolean stop(String taskKey);
+    Boolean stop(String uniKey);
 
     /**
-     * 根据任务key 重启任务
+     * 根据 唯一标识 重启任务
      */
-    Boolean restart(String taskKey);
+    Boolean restart(String uniKey);
 
     /**
      * 程序启动时初始化  启动所有正常状态的任务
@@ -50,8 +50,8 @@ public interface ISchedulingService {
     /**
      * 检查任务是否已经启动
      *
-     * @param taskKey 任务 key
+     * @param uniKey 唯一标识
      */
-    Boolean isStart(String taskKey);
+    Boolean isStart(String uniKey);
 
 }
