@@ -49,6 +49,6 @@ public class PKIProp implements Serializable {
     /**
      * 缓存前缀
      */
-    private String oauthCachePrefix = CacheConstants.SYSTEM_PREFIX + "oauth:";
+    private String oauthCachePrefix = CacheConstants.getSystemPrefix() + "oauth:";
 
 }
