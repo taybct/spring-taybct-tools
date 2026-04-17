@@ -6,14 +6,14 @@
     <parent>
         <groupId>io.github.taybct</groupId>
         <artifactId>spring-taybct-tools</artifactId>
-        <version>3.5.2</version>
+        <version>3.5.2.1</version>
     </parent>
 
     <artifactId>spring-taybct-tool-scheduled-log-centralized</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
     <description>定时任务控制台日志管理模块</description>
-    <version>3.5.2</version>
+    <version>3.5.2.1</version>
     <url>https://github.com/taybct/spring-taybct-tools</url>
 
     <licenses>

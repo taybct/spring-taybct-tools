@@ -8,6 +8,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,7 +48,7 @@ public class ScheduledProperties implements Serializable {
     /**
      * 扫描包，用于扫描任务类
      */
-    private List<String> packagesToScan;
+    private List<String> packagesToScan = new ArrayList<>();
     /**
      * 任务配置，key 为唯一标识，用于配置文件里面表示一个任务，value 为任务配置信息，如果是数据库任务，这个 key 应该是任务的 id，而非任务 key
      */
