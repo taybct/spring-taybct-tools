@@ -2,7 +2,7 @@ scheduled-log-centralized:
   #是否开启定时任务日志管理
   enabled: false
   #一共有：ALL(全管理),WHITE_LIST,BLACK_LIST,NONE(不管理)，默认为WHITE_LIST
-  module: BLACK_LIST
+  module: WHITE_LIST
   #module值为WHITE_LIST时，进行日志管理的接口列表
   logCollectionWhiteList:
     - /demo/testSchedule2
