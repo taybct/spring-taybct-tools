@@ -1,6 +1,8 @@
 package io.github.taybct.tool.core.bean.controller;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -11,7 +13,6 @@ import io.github.taybct.tool.core.bean.UpdateModel;
 import io.github.taybct.tool.core.constant.OperateType;
 import io.github.taybct.tool.core.exception.def.BaseException;
 import io.github.taybct.tool.core.mybatis.support.SqlPageParams;
-import io.github.taybct.tool.core.mybatisUtil.Condition;
 import io.github.taybct.tool.core.result.R;
 import io.github.taybct.tool.core.util.BeanUtil;
 import io.github.taybct.tool.core.util.MyBatisUtil;
@@ -87,7 +88,7 @@ public interface ModelConvertibleController<T
      * @since 1.0.2
      */
     default Wrapper<T> customizeQueryWrapper(Map<String, Object> params) {
-        return MyBatisUtil.genQueryWrapper(params, getEntityClass());
+        return SqlPageParams.of(params).allowedSort(getEntityClass()).genQueryWrapper(JSONObject.parseObject(JSONObject.toJSONString(params)).toJavaObject(getEntityClass()));
     }
 
     /**
@@ -113,7 +114,7 @@ public interface ModelConvertibleController<T
      * @since 1.0.2
      */
     default IPage<T> customizeQueryPage(Map<String, Object> params) {
-        return MyBatisUtil.genPage(params);
+        return SqlPageParams.of(params).allowedSort(getEntityClass()).genPage();
     }
 
     /**
@@ -138,7 +139,8 @@ public interface ModelConvertibleController<T
     @WebLog
     //@GetMapping("list")
     default R<? extends List<? extends T>> list(@RequestParam(required = false) Map<String, Object> params) {
-        Page<T> page = (Page<T>) customizeQueryPage(params);
+        SqlPageParams sqlPageParams = SqlPageParams.of(params).allowedSort(getEntityClass());
+        Page<T> page = sqlPageParams.genPage();
         // 这里不查询页数
         page.setSearchCount(false);
         return R.data(getBaseService().page(page, customizeQueryWrapper(params)).getRecords());
@@ -148,7 +150,7 @@ public interface ModelConvertibleController<T
      * 获取列表信息
      *
      * @param dto           {@literal 请求参数}
-     * @param SqlPageParams SQL 查询参数
+     * @param sqlPageParams SQL 查询参数
      * @return {@code R<List < ? extends T>>}
      * @author xijieyin <br> 2022/8/4 18:34
      * @since 1.0.0
@@ -156,11 +158,11 @@ public interface ModelConvertibleController<T
     @Operation(summary = "获取列表")
     @WebLog
     //@PostMapping("list")
-    default R<? extends List<? extends T>> list(@RequestBody QM dto, SqlPageParams SqlPageParams) {
-        Page<T> page = (Page<T>) customizeQueryPage(SqlPageParams);
+    default R<? extends List<? extends T>> list(@RequestBody QM dto, SqlPageParams sqlPageParams) {
+        Page<T> page = (Page<T>) customizeQueryPage(sqlPageParams);
         // 这里不查询页数
         page.setSearchCount(false);
-        return R.data(getBaseService().page(page, customizeQueryWrapper(dto.bean(), SqlPageParams)).getRecords());
+        return R.data(getBaseService().page(page, customizeQueryWrapper(dto.bean(), sqlPageParams)).getRecords());
     }
 
     /**
@@ -190,14 +192,14 @@ public interface ModelConvertibleController<T
     @WebLog
     //@PostMapping("total")
     default R<Long> total(@RequestBody QM dto) {
-        return R.data(getBaseService().count(MyBatisUtil.genQueryWrapper(dto.bean(), null)));
+        return R.data(getBaseService().count(new QueryWrapper<>(dto.bean())));
     }
 
     /**
      * 获取分页
      *
      * @param dto           {@literal 请求参数}
-     * @param SqlPageParams {@literal 分页参数}
+     * @param sqlPageParams {@literal 分页参数}
      * @return {@code R<IPage < ? extends T>>}
      * @author xijieyin <br> 2022/8/4 18:36
      * @since 1.0.0
@@ -205,8 +207,8 @@ public interface ModelConvertibleController<T
     @Operation(summary = "获取分页")
     @WebLog
     //@PostMapping("page")
-    default R<? extends IPage<? extends T>> page(@RequestBody QM dto, SqlPageParams SqlPageParams) {
-        return R.data(getBaseService().page(customizeQueryPage(SqlPageParams), customizeQueryWrapper(dto.bean(), SqlPageParams)));
+    default R<? extends IPage<? extends T>> page(@RequestBody QM dto, SqlPageParams sqlPageParams) {
+        return R.data(getBaseService().page(customizeQueryPage(sqlPageParams), customizeQueryWrapper(dto.bean(), sqlPageParams)));
     }
 
     /**
@@ -218,7 +220,7 @@ public interface ModelConvertibleController<T
     @WebLog
     //@RequestMapping(value = "listPage", method = {RequestMethod.GET, RequestMethod.POST})
     default R<? extends IPage<? extends T>> listPage(@RequestParam(required = false) Map<String, Object> params) {
-        return R.data(getBaseService().page(Condition.getPage(params), Condition.getQueryWrapper(params, getEntityClass())));
+        return R.data(getBaseService().page(customizeQueryPage(params), customizeQueryWrapper(params)));
     }
 
     /**

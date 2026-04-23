@@ -16,6 +16,10 @@ public interface PageRequestConstants {
      */
     String PAGE_SIZE = "pageSize";
     /**
+     * 是否需要统计总数
+     */
+    String COUNT_TOTAL = "countTotal";
+    /**
      * 按哪些字段排序 逗号隔开字段，空格隔开 asc（正序） 或者 desc（倒序） 例如: <br>
      * name asc,time desc,score,
      */

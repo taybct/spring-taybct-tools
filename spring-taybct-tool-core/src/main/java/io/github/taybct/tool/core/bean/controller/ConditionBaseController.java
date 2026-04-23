@@ -9,7 +9,6 @@ import io.github.taybct.tool.core.result.R;
 import io.github.taybct.tool.core.util.BeanUtil;
 import io.github.taybct.tool.core.util.SpringUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
@@ -36,7 +35,7 @@ public interface ConditionBaseController<T extends BaseEntity
      * @author jopson <br> 2024-05-17 14:51:00
      */
     @Operation(summary = "获取分页")
-    @RequestMapping("listPage")
+    //@RequestMapping("listPage")
     @WebLog
     default R<IPage<? extends T>> listPage(@RequestParam(required = false) Map<String, Object> params) {
         return R.data(getBaseService().page(Condition.getPage(params), Condition.getQueryWrapper(params, getEntityClass())));

@@ -18,6 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "SQL 查询参数")
+@Deprecated(since = "3.5.3")
 public class SqlQueryParams implements Serializable {
     @Serial
     private static final long serialVersionUID = 810998982004714052L;
