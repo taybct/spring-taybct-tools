@@ -6,7 +6,7 @@
 
     <groupId>io.github.taybct</groupId>
     <artifactId>spring-taybct-tools</artifactId>
-    <version>3.5.2</version>
+    <version>3.5.2.1</version>
     <name>Spring TayBct Tools</name>
     <description>Spring TayBct Tools</description>
     <url>https://github.com/taybct/spring-taybct-tools</url>
@@ -162,7 +162,7 @@
         <!--项目打包编码设置-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!--基础工具版本-->
-        <project.version>3.5.2</project.version>
+        <project.version>3.5.2.1</project.version>
         <!--rustfs 文件系统-->
         <s3.version>2.25.27</s3.version>
         <!-- Sentinel规则持久化至Nacos配置 -->

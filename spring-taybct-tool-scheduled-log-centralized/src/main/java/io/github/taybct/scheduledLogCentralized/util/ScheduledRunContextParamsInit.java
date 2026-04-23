@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduledRunContextParamsInit {
 
-    public ScheduledRunContextParamsInit(ObjectProvider<ScheduledLogProperties> provider) {
+    public ScheduledRunContextParamsInit(ObjectProvider<ScheduledLogProperties> provider,
+                                         ScheduledLogProperties scheduledLogProperties) {
         ScheduledRunContext.setProvider(provider);
+        RedisScheduledJobTemplate.setscheduledLogProperties(scheduledLogProperties);
     }
 }
