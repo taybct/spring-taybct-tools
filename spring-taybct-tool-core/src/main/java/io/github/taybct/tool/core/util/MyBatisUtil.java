@@ -75,6 +75,7 @@ public class MyBatisUtil {
      * @author xijieyin <br> 2022/8/5 18:42
      * @since 1.0.0
      */
+    @Deprecated(since = "3.5.3")
     public static <T> Page<T> genPage(Map<String, Object> params) {
         return genPage(params, false);
     }
@@ -89,6 +90,7 @@ public class MyBatisUtil {
      * @author xijieyin <br> 2022/8/5 18:42
      * @since 3.1.0
      */
+    @Deprecated(since = "3.5.3")
     public static <T> Page<T> genPage(Map<String, Object> params, boolean clearQueryParams) {
         Page<T> page = genPage(new SqlQueryParams(Convert.toLong(params.get(PageRequestConstants.PAGE_NUM))
                 , Convert.toLong(params.get(PageRequestConstants.PAGE_SIZE))
@@ -107,6 +109,7 @@ public class MyBatisUtil {
      * @author xijieyin
      * @since 2.3.0
      */
+    @Deprecated(since = "3.5.3")
     public static <T> Page<T> genPage(SqlQueryParams pageParams) {
         Assert.notNull(pageParams, "请求参数不能为空");
         Page<T> page = new Page<>();
@@ -137,6 +140,7 @@ public class MyBatisUtil {
      * @author xijieyin <br> 2022/8/5 18:43
      * @since 1.0.0
      */
+    @Deprecated(since = "3.5.3")
     public static <T> Wrapper<T> genQueryWrapper(Map<String, Object> params, Class<T> clazz) {
         return genQueryWrapper(JSONObject.parseObject(JSONObject.toJSONString(params)).toJavaObject(clazz)
                 , new SqlQueryParams(Convert.toLong(params.get(PageRequestConstants.PAGE_NUM))
@@ -151,6 +155,7 @@ public class MyBatisUtil {
      * @author xijieyin
      * @since 2.3.0
      */
+    @Deprecated(since = "3.5.3")
     public static <T> Wrapper<T> genQueryWrapper(T dto, SqlQueryParams pageParams) {
         // 排序字段逗号隔开了
         QueryWrapper<T> wrapper = new QueryWrapper<>(dto);
@@ -201,6 +206,7 @@ public class MyBatisUtil {
      * @author xijieyin
      * @since 2.3.0
      */
+    @Deprecated(since = "3.5.3")
     public static String getPageOrder(SqlQueryParams pageParams) {
         return getPageOrder(pageParams.getPageOrder());
     }
@@ -348,7 +354,9 @@ public class MyBatisUtil {
             if (params instanceof MapperMethod.ParamMap) {
                 for (Object o : ((Map) params).values()) {
                     if (o != null && !BeanUtils.isSimpleValueType(o.getClass())) {
-                        if (checkTableFieldDefault(o)) return true;
+                        if (checkTableFieldDefault(o)) {
+                            return true;
+                        }
                     }
                 }
                 return false;

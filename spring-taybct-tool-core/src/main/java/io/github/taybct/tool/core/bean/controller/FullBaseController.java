@@ -9,6 +9,7 @@ import io.github.taybct.tool.core.bean.ITypeConvert;
 import io.github.taybct.tool.core.bean.service.IBaseService;
 import io.github.taybct.tool.core.constant.OperateType;
 import io.github.taybct.tool.core.constant.PageRequestConstants;
+import io.github.taybct.tool.core.mybatis.support.SqlPageParams;
 import io.github.taybct.tool.core.request.SqlQueryParams;
 import io.github.taybct.tool.core.result.R;
 import io.github.taybct.tool.core.util.BeanUtil;
@@ -99,7 +100,7 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "获取列表")
-    @GetMapping("list")
+    //@GetMapping("list")
     @WebLog
     default R<List<? extends T>> list(@RequestParam(required = false) Map<String, Object> params) {
         return R.data(getBaseService().customizeList(params));
@@ -115,10 +116,27 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "获取列表")
-    @PostMapping("list")
+    //@PostMapping("list")
     @WebLog
+    @Deprecated(since = "3.5.3")
     default R<List<? extends T>> list(@RequestBody Q dto, SqlQueryParams sqlQueryParams) {
         return R.data(getBaseService().customizeList(dto, sqlQueryParams));
+    }
+
+    /**
+     * 获取列表信息
+     *
+     * @param dto            {@literal 请求参数}
+     * @param sqlPageParams SQL 分页参数
+     * @return {@code R<List < ? extends T>>}
+     * @author xijieyin <br> 2026/4/21 17:54
+     * @since 3.5.3
+     */
+    @Operation(summary = "获取列表")
+    //@PostMapping("list")
+    @WebLog
+    default R<List<? extends T>> list(@RequestBody Q dto, SqlPageParams sqlPageParams) {
+        return R.data(getBaseService().customizeList(dto, sqlPageParams));
     }
 
     /**
@@ -130,7 +148,7 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "获取分页")
-    @GetMapping("page")
+    //@GetMapping("page")
     @WebLog
     default R<IPage<? extends T>> page(@RequestParam(required = false) Map<String, Object> params) {
         return R.data(getBaseService().customizePage(params));
@@ -146,10 +164,27 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "获取分页")
-    @PostMapping("page")
+    //@PostMapping("page")
     @WebLog
+    @Deprecated(since = "3.5.3")
     default R<IPage<? extends T>> page(@RequestBody Q dto, SqlQueryParams sqlQueryParams) {
         return R.data(getBaseService().customizePage(dto, sqlQueryParams));
+    }
+
+    /**
+     * 获取分页
+     *
+     * @param dto            {@literal 请求参数}
+     * @param sqlPageParams {@literal 分页参数}
+     * @return {@code R<IPage < ? extends T>>}
+     * @author xijieyin <br> 2026/4/21 17:54
+     * @since 3.5.3
+     */
+    @Operation(summary = "获取分页")
+    //@PostMapping("page")
+    @WebLog
+    default R<IPage<? extends T>> page(@RequestBody Q dto, SqlPageParams sqlPageParams) {
+        return R.data(getBaseService().customizePage(dto, sqlPageParams));
     }
 
     /**
@@ -161,7 +196,7 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "新增对象")
-    @PostMapping
+    //@PostMapping
     @WebLog
     @ApiLog(title = "新增对象", description = "新增一条记录，并且在新增成功后返回这个新增的对象，这个对象会带着生成的 id 一起返回", type = OperateType.INSERT)
     default R<? extends T> add(@Valid @NotNull @RequestBody A domain) {
@@ -177,7 +212,7 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "批量保存对象")
-    @PostMapping("batch")
+    //@PostMapping("batch")
     @WebLog
     @ApiLog(title = "批量保存对象", description = "批量保存对象，并且在新增成功后一起返回", type = OperateType.INSERT, isSaveRequestData = false, isSaveResultData = false)
     default R<Collection<? extends T>> saveBatch(@Valid @NotNull @RequestBody Collection<A> domains) {
@@ -193,10 +228,10 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "根据 id 查看详情")
-    @GetMapping("{id}")
+    //@GetMapping("{id}")
     @WebLog
     default R<? extends T> detail(@NotNull @PathVariable P id) {
-        return R.data(getBaseService().customizeGetById(id));
+        return R.data(getBaseService().getById(id));
     }
 
     /**
@@ -208,7 +243,7 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "根据 id 更新全部字段")
-    @PutMapping
+    //@PutMapping
     @WebLog
     @ApiLog(title = "根据 id 更新全部字段", description = "根据 id 更新全部字段", type = OperateType.UPDATE)
     default R<? extends T> updateAllField(@Valid @NotNull @RequestBody U domain) {
@@ -224,7 +259,7 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "根据 id 批量更新全部字段")
-    @PutMapping("batch")
+    //@PutMapping("batch")
     @WebLog
     @ApiLog(title = "根据 id 批量更新全部字段", description = "根据 id 批量更新全部字段", type = OperateType.UPDATE, isSaveRequestData = false, isSaveResultData = false)
     default R<Collection<? extends T>> updateAllFieldBatch(@Valid @NotNull @RequestBody Collection<U> domains) {
@@ -240,7 +275,7 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "根据 id 更新指定字段")
-    @PatchMapping
+    //@PatchMapping
     @WebLog
     @ApiLog(title = "根据 id 更新指定字段", description = "根据 id 更新指定字段", type = OperateType.UPDATE)
     default R<? extends T> updateAssignField(@Valid @NotNull @RequestBody U domain) {
@@ -256,7 +291,7 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "根据 id 批量更新指定字段")
-    @PatchMapping("batch")
+    //@PatchMapping("batch")
     @WebLog
     @ApiLog(title = "根据 id 批量更新指定字段", description = "根据 id 批量更新指定字段", type = OperateType.UPDATE, isSaveRequestData = false, isSaveResultData = false)
     default R<Collection<? extends T>> updateAssignFieldBatch(@Valid @NotNull @RequestBody Collection<U> domains) {
@@ -272,11 +307,11 @@ public interface FullBaseController<T extends BaseEntity
      * @since 1.0.0
      */
     @Operation(summary = "根据 id 删除记录")
-    @DeleteMapping("{id}")
+    //@DeleteMapping("{id}")
     @WebLog
     @ApiLog(title = "根据 id 删除记录", description = "根据 id 删除记录", type = OperateType.DELETE)
     default R<? extends T> delete(@PathVariable P id) {
-        return getBaseService().customizeRemoveById(id) ? R.ok(String.format("删除%s成功！", getResource())) : R.fail(String.format("删除%s失败！", getResource()));
+        return getBaseService().removeById(id) ? R.ok(String.format("删除%s成功！", getResource())) : R.fail(String.format("删除%s失败！", getResource()));
     }
 
     /**
@@ -288,11 +323,11 @@ public interface FullBaseController<T extends BaseEntity
      * @since 2.2.3
      */
     @Operation(summary = "根据 id 批量删除记录")
-    @DeleteMapping("batch")
+    //@DeleteMapping("batch")
     @WebLog
     @ApiLog(title = "根据 id 批量删除记录", description = "根据 id 批量删除记录", type = OperateType.DELETE)
     default R<? extends T> deleteBatch(@RequestParam Set<P> id) {
-        return getBaseService().customizeRemoveByIds(id) ? R.ok(String.format("批量删除%s成功！", getResource())) : R.fail(String.format("批量删除%s失败！", getResource()));
+        return getBaseService().removeByIds(id) ? R.ok(String.format("批量删除%s成功！", getResource())) : R.fail(String.format("批量删除%s失败！", getResource()));
     }
 
 }

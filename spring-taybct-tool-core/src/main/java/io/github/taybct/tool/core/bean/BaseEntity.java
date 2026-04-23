@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.github.taybct.tool.core.annotation.TableFieldDefault;
-import io.github.taybct.tool.core.bean.service.IBaseService;
 import io.github.taybct.tool.core.constant.DateConstants;
 import io.github.taybct.tool.core.handle.TableFieldDefaultLoginUserIdHandler;
 import io.github.taybct.tool.core.handle.TableFieldDefaultPKHandler;
@@ -19,9 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,12 +77,8 @@ public class BaseEntity<P extends Serializable, U extends Serializable> implemen
 
     /**
      * 扩展字段 <br>
-     * 这里考虑到，如果业务要求要加字段，可以在这个 expansion 里面添加进去，然后再做一些其他的操作，这个不属于任何的实体 <br>
-     * 这一般会用在需要添加字段的表的操作里面，你可以在 IBaseService 看一下这几个接口，你可以实现这几个接口来实现扩展字段的一些操作
+     * 这里考虑到，如果业务要求要加字段，可以在这个 expansion 里面添加进去，然后再做一些其他的操作，这个不属于任何的实体
      *
-     * @see IBaseService#queryExpansion(List)
-     * @see IBaseService#saveExpansion(Collection)
-     * @see IBaseService#removeExpansion(Collection)
      * @since 1.0.4
      */
     @Schema(description = "扩展字段")
