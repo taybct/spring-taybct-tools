@@ -84,6 +84,11 @@ public class ScheduledLogCentralizedDTO implements Message{
      */
     private String parentRunId;
 
+    /**
+     * 执行耗时（毫秒）
+     */
+    private Long executionTime;
+
     @Override
     @JsonIgnore
     public String getPayload() {
