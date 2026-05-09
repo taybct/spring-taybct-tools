@@ -35,10 +35,10 @@ public class Condition<T> {
         QueryWrapper<T> qw = new QueryWrapper();
         // 排序字段
         if (StringUtils.isNotBlank((String) query.get(PageRequestConstants.PAGE_SORT_ASC))) {
-            qw.orderByAsc((String) query.get(PageRequestConstants.PAGE_SORT_ASC));
+            qw.checkSqlInjection().orderByAsc((String) query.get(PageRequestConstants.PAGE_SORT_ASC));
         }
         if (StringUtils.isNotBlank((String) query.get(PageRequestConstants.PAGE_SORT_DESC))) {
-            qw.orderByDesc((String) query.get(PageRequestConstants.PAGE_SORT_DESC));
+            qw.checkSqlInjection().orderByDesc((String) query.get(PageRequestConstants.PAGE_SORT_DESC));
         }
         // 移除排序字段，避免查询报错
         query.remove(PageRequestConstants.PAGE_SORT_ASC);

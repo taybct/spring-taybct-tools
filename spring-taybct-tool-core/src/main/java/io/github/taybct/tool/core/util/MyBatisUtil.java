@@ -170,13 +170,13 @@ public class MyBatisUtil {
                     if (fieldOrder.length > 1) {
                         String order = fieldOrder[1];
                         if (order.equalsIgnoreCase("asc")) {
-                            wrapper.orderByAsc(field);
+                            wrapper.checkSqlInjection().orderByAsc(field);
                         } else {
-                            wrapper.orderByDesc(field);
+                            wrapper.checkSqlInjection().orderByDesc(field);
                         }
                     } else {
                         // 默认正序
-                        wrapper.orderByAsc(field);
+                        wrapper.checkSqlInjection().orderByAsc(field);
                     }
                 });
             }
