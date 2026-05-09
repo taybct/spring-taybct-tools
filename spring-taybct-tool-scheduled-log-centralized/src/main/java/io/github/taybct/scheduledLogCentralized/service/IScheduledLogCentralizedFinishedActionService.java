@@ -1,7 +1,7 @@
 package io.github.taybct.scheduledLogCentralized.service;
 
 import io.github.taybct.scheduledLogCentralized.enums.ScheduledLogCentralizedStatusEnum;
-import io.github.taybct.scheduledLogCentralized.service.entity.ScheduledLogCentralized;
+import io.github.taybct.scheduledLogCentralized.entity.ScheduledLogCentralized;
 
 import java.util.Collection;
 

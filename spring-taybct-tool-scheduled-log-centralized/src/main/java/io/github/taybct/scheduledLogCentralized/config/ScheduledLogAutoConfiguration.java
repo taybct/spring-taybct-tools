@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnClass(RequestInterceptor.class)
 public class ScheduledLogAutoConfiguration {
 
     @Bean
-    @ConditionalOnClass(RequestInterceptor.class)
     public ScheduledFeignInterceptor scheduledFeignInterceptor() {
         return new ScheduledFeignInterceptor();
     }

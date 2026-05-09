@@ -1,6 +1,6 @@
 package io.github.taybct.scheduledLogCentralized.dto;
 
-import io.github.taybct.scheduledLogCentralized.service.entity.ScheduledLogCentralized;
+import io.github.taybct.scheduledLogCentralized.entity.ScheduledLogCentralized;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

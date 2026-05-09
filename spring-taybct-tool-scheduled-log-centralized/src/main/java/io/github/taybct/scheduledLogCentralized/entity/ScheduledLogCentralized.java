@@ -1,4 +1,4 @@
-package io.github.taybct.scheduledLogCentralized.service.entity;
+package io.github.taybct.scheduledLogCentralized.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -32,36 +32,69 @@ import java.time.LocalDateTime;
 public class ScheduledLogCentralized implements Serializable {
 
     private static final long serialVersionUID = -2710074899213437355L;
-
+    
+    /**
+     * id
+     */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
+    /**
+     * 生成日志时间
+     */
     @Schema(description = "生成日志时间")
     @DateTimeFormat(pattern = DateConstants.format.YYYY_MM_DD_HH_mm_ss)
     @JsonFormat(pattern = DateConstants.format.YYYY_MM_DD_HH_mm_ss)
     private LocalDateTime successTime;
 
+    /**
+     * 本次运行id
+     */
     @Schema(description = "本次运行id")
     private String runId;
 
+    /**
+     * 模块名称
+     */
     @Schema(description = "模块名称")
     private String moduleName;
 
+    /**
+     * 方法名称
+     */
     @Schema(description = "方法名称")
     private String methodName;
 
+    /**
+     * 是否成功
+     */
     @Schema(description = "是否成功")
     private String status;
 
+    /**
+     * 日志内容
+     */
     @Schema(description = "日志内容")
     private String log;
 
+    /**
+     * 插入时间
+     */
     @Schema(description = "插入时间")
     @DateTimeFormat(pattern = DateConstants.format.YYYY_MM_DD_HH_mm_ss)
     @JsonFormat(pattern = DateConstants.format.YYYY_MM_DD_HH_mm_ss)
     private LocalDateTime insertTime;
 
+    /**
+     * 父级调用runId
+     */
     @Schema(description = "父级调用runId")
     private String parentRunId;
+
+    /**
+     * 执行耗时（毫秒）
+     */
+    @Schema(description = "执行耗时（毫秒）")
+    private Long executionTime;
 }

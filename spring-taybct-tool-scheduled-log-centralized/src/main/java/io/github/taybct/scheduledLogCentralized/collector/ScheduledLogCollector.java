@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,11 +44,15 @@ public class ScheduledLogCollector {
             scheduledLogCentralizedDto.setParentRunId(snapshot.getParentRunId());
             scheduledLogCentralizedDto.setModuleName(snapshot.getModule());
             scheduledLogCentralizedDto.setMethodName(snapshot.getMethod());
+            LocalDateTime startTime = snapshot.getStartTime();
+            long millis = Duration.between(startTime, LocalDateTime.now(ZoneId.of("Asia/Shanghai"))).toMillis();
+            scheduledLogCentralizedDto.setExecutionTime(millis);
         }
         scheduledLogCentralizedDto.setStatus(status);
         //如果没有收到日志打印，设置null值
         String message = CollectionUtil.isEmpty(logs) ? null : String.join("", logs);
         scheduledLogCentralizedDto.setLog(message);
-        messageSendService.send(scheduledLogCentralizedDto);//使用发送mq的方式
+        //使用发送mq的方式
+        messageSendService.send(scheduledLogCentralizedDto);
     }
 }
