@@ -3,6 +3,7 @@ package io.github.taybct.tool.core.util.sm;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.SM2;
 import io.github.taybct.tool.core.exception.def.BaseException;
+import io.github.taybct.tool.core.util.ResourceUtil;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.util.FileUtil;
@@ -37,12 +38,9 @@ import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.encoders.Hex;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
@@ -424,7 +422,12 @@ public class SM2Coder {
      */
     public static KeyPair newKeyPair(SM2Properties properties) {
         return Optional.ofNullable(properties).map(p -> {
-            ClassPathResource resource = new ClassPathResource(p.getResource());
+            Resource resource = null;
+            try {
+                resource = ResourceUtil.getSpringResource(p.getResource());
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             if (resource.exists()) {
                 if (p.getExpireCheck()) {
                     try {
@@ -781,7 +784,7 @@ public class SM2Coder {
      * @return 私钥
      */
     public static PrivateKey getPrivateKey(String alias, String password) throws IOException, UnrecoverableKeyException, CertificateException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException {
-        ClassPathResource resource = new ClassPathResource(CER_PATH + KEY_STORE_NAME);
+        Resource resource = ResourceUtil.getSpringResource(CER_PATH + KEY_STORE_NAME);
         return getPrivateKey(alias, password, resource.getInputStream());
     }
 
@@ -818,7 +821,7 @@ public class SM2Coder {
      * @return 证书
      */
     public static Certificate getCer(String alias, String password) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException {
-        ClassPathResource resource = new ClassPathResource(CER_PATH + KEY_STORE_NAME);
+        Resource resource = ResourceUtil.getSpringResource(CER_PATH + KEY_STORE_NAME);
         return getCer(alias, password, resource.getInputStream());
     }
 
@@ -897,7 +900,7 @@ public class SM2Coder {
      * @return 证书
      */
     public static Certificate getCer() throws IOException, CertificateException, NoSuchProviderException {
-        ClassPathResource resource = new ClassPathResource(CER_PATH + CER_NAME);
+        Resource resource = ResourceUtil.getSpringResource(CER_PATH + CER_NAME);
         return getCer(resource.getInputStream());
     }
 
@@ -928,9 +931,8 @@ public class SM2Coder {
      * @return 私钥
      */
     public static PrivateKey getPrivate() throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        ClassPathResource resource = new ClassPathResource(CER_PATH + PRIVATE_KEY_NAME);
-        InputStream inputStream = resource.getInputStream();
-        byte[] bytes = FileUtil.readAsByteArray(inputStream);
+        Resource resource = ResourceUtil.getSpringResource(CER_PATH + PRIVATE_KEY_NAME);
+        byte[] bytes = FileUtil.readAsByteArray(resource.getInputStream());
         return getPrivateKey(bytes);
     }
 

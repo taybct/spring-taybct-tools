@@ -1,6 +1,7 @@
 package io.github.taybct.tool.core.util.rsa;
 
 import io.github.taybct.tool.core.exception.def.BaseException;
+import io.github.taybct.tool.core.util.ResourceUtil;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.utils.Base64;
@@ -19,13 +20,10 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import javax.crypto.Cipher;
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.*;
@@ -352,7 +350,12 @@ public class RSACoder {
      */
     public static KeyPair newKeyPair(RSAProperties properties) {
         return Optional.ofNullable(properties).map(p -> {
-            ClassPathResource resource = new ClassPathResource(p.getResource());
+            Resource resource;
+            try {
+                resource = ResourceUtil.getSpringResource(p.getResource());
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             if (resource.exists()) {
                 // 如果文件存在才加载
                 if (p.getExpireCheck()) {
@@ -727,7 +730,7 @@ public class RSACoder {
      * @return 私钥
      */
     public static PrivateKey getPrivateKey(String alias, String password) throws IOException, UnrecoverableKeyException, CertificateException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException {
-        ClassPathResource resource = new ClassPathResource(CER_PATH + KEY_STORE_NAME);
+        Resource resource = ResourceUtil.getSpringResource(CER_PATH + KEY_STORE_NAME);
         return getPrivateKey(alias, password, resource.getInputStream());
     }
 
@@ -764,7 +767,7 @@ public class RSACoder {
      * @return 证书
      */
     public static Certificate getCer(String alias, String password) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException {
-        ClassPathResource resource = new ClassPathResource(CER_PATH + KEY_STORE_NAME);
+        Resource resource = ResourceUtil.getSpringResource(CER_PATH + KEY_STORE_NAME);
         return getCer(alias, password, resource.getInputStream());
     }
 
@@ -843,7 +846,7 @@ public class RSACoder {
      * @return 证书
      */
     public static Certificate getCer() throws IOException, CertificateException, NoSuchProviderException {
-        ClassPathResource resource = new ClassPathResource(CER_PATH + CER_NAME);
+        Resource resource = ResourceUtil.getSpringResource(CER_PATH + CER_NAME);
         return getCer(resource.getInputStream());
     }
 
@@ -874,9 +877,8 @@ public class RSACoder {
      * @return 私钥
      */
     public static PrivateKey getPrivate() throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        ClassPathResource resource = new ClassPathResource(CER_PATH + PRIVATE_KEY_NAME);
-        InputStream inputStream = resource.getInputStream();
-        byte[] bytes = FileUtil.readAsByteArray(inputStream);
+        Resource resource = ResourceUtil.getSpringResource(CER_PATH + PRIVATE_KEY_NAME);
+        byte[] bytes = FileUtil.readAsByteArray(resource.getInputStream());
         return getPrivateKey(bytes);
     }
 

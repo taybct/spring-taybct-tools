@@ -8,6 +8,7 @@ import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.handler.inter.IExcelDictHandler;
 import cn.afterturn.easypoi.handler.inter.IWriter;
 import cn.afterturn.easypoi.word.WordExportUtil;
+import io.github.taybct.tool.core.util.ResourceUtil;
 import io.github.taybct.tool.core.util.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,7 +57,7 @@ public class EasyPOIUtil {
      */
     public static void exportExcelTemplate(List values, String tempName, String dowName, HttpServletResponse response) throws IOException {
         //获得模版
-        ClassPathResource tempFileName = new ClassPathResource(tempName);
+        Resource tempFileName = ResourceUtil.getSpringResource(tempName);
         Map beans = new HashMap();
         //导出列表名
         beans.put("values", values);

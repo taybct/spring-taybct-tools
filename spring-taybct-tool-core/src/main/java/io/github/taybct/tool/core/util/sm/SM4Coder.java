@@ -3,18 +3,16 @@ package io.github.taybct.tool.core.util.sm;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import io.github.taybct.tool.core.config.PropConfig;
+import io.github.taybct.tool.core.util.ResourceUtil;
 import io.github.taybct.tool.core.util.ObjectUtil;
 import io.github.taybct.tool.core.util.StringUtil;
 import lombok.SneakyThrows;
 import org.aspectj.util.FileUtil;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import javax.crypto.KeyGenerator;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -111,15 +109,15 @@ public class SM4Coder {
     }
 
     public static byte[] getSM4SecretKey() throws IOException, NoSuchAlgorithmException, NoSuchProviderException {
-        ClassPathResource resource = new ClassPathResource(CER_PATH + PRIVATE_KEY_NAME);
+        Resource resource = ResourceUtil.getSpringResource(CER_PATH + PRIVATE_KEY_NAME);
         if (resource.exists()) {
             return getSM4SecretKey(resource.getInputStream());
         }
         return generateKey();
     }
 
-    public static byte[] getSM4SecretKey(InputStream inputStream) throws IOException {
-        return FileUtil.readAsByteArray(inputStream);
+    public static byte[] getSM4SecretKey(InputStream stream) throws IOException {
+        return FileUtil.readAsByteArray(stream);
     }
 
     /**
