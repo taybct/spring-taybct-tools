@@ -5,7 +5,7 @@
     <!-- ============================= -->
 
     <appender name="SCHEDULED_CAPTURE"
-              class="io.github.taybct.scheduledLogCentralized.context.ScheduledLogCaptureAppender"/>
+              class="io.github.taybct.tool.scheduledlogcentralized.context.ScheduledLogCaptureAppender"/>
 
     <!--  引入了本xml后，会自动追加插入下面  -->
     <root level="info">

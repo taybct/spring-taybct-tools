@@ -1,2 +1,2 @@
-scheduledDubboConsumerFilter=io.github.taybct.scheduledLogCentralized.dubbo.ScheduledDubboConsumerFilter
-scheduledDubboProviderFilter=io.github.taybct.scheduledLogCentralized.dubbo.ScheduledDubboProviderFilter
+scheduledDubboConsumerFilter=dubbo.io.github.taybct.tool.scheduledlogcentralized.ScheduledDubboConsumerFilter
+scheduledDubboProviderFilter=dubbo.io.github.taybct.tool.scheduledlogcentralized.ScheduledDubboProviderFilter
