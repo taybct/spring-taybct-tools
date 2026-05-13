@@ -1,4 +1,4 @@
-package io.github.taybct.tool.core.filter;
+package io.github.taybct.tool.launch.filter;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.filter.Filter;
